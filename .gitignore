@@ -18,3 +18,4 @@ _audio_archive/
 *.p12
 *.keystore
 keystore.properties
+dist/
