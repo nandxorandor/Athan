@@ -64,7 +64,7 @@ class AthanCatalog(context: Context) {
         Log.i(TAG, "catalogue: ${general.size} general, ${fajr.size} fajr")
     }
 
-    /** Default when the user has not chosen: Original recording 1, else first. */
+    /** Default when the user has not chosen: Developer athan 1, else first. */
     val defaultGeneral: String?
         get() = general.firstOrNull { it.label == DEFAULT_GENERAL_LABEL }?.asset
             ?: general.firstOrNull()?.asset
@@ -112,10 +112,10 @@ class AthanCatalog(context: Context) {
     private fun formatDuration(seconds: Int?): String =
         if (seconds == null) "" else "%d:%02d".format(seconds / 60, seconds % 60)
 
-    // Only "original" and "fajr" ship today; the rest are kept so that dropping
+    // Only "developer" and "fajr" ship today; the rest are kept so that dropping
     // a properly licensed folder into audio/ names itself correctly.
     private fun displayName(category: String) = when (category) {
-        "original" -> "Original recording"
+        "developer" -> "Developer athan"
         "mecca" -> "Mecca — Masjid al-Haram"
         "madina" -> "Madina — Masjid an-Nabawi"
         "emarat" -> "Emirates"
@@ -130,7 +130,7 @@ class AthanCatalog(context: Context) {
         const val INDEX_FILE = "index.tsv"
         // Matched by label, not by filename, so renumbering the audio files
         // cannot silently change what a fresh install plays.
-        const val DEFAULT_GENERAL_LABEL = "Original recording 1"
+        const val DEFAULT_GENERAL_LABEL = "Developer athan 1"
         const val DEFAULT_FAJR_LABEL = "Fajr athan"
     }
 }

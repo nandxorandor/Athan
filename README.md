@@ -69,6 +69,11 @@ with the ringer down), and points to the qibla. Package
   <img src="docs/screenshots/heads-up.jpg" width="220" alt="Pre-prayer heads-up settings">
 </p>
 <p align="center">
+  <img src="docs/screenshots/athan-sound.jpg" width="220" alt="Separate sound choice for Fajr and for the other prayers">
+  <img src="docs/screenshots/sound-picker-other.jpg" width="220" alt="Sound picker: bundled recordings, a file from the device, or a ringtone">
+  <img src="docs/screenshots/sound-picker-fajr.jpg" width="220" alt="Fajr sound picker">
+</p>
+<p align="center">
   <img src="docs/screenshots/more-athans.jpg" width="220" alt="Links out to athan libraries in the browser">
   <img src="docs/screenshots/downloaded-athans.jpg" width="220" alt="Athans you downloaded yourself appear here">
 </p>
@@ -161,7 +166,7 @@ Attribution is not a licence, so redistributing those files in a public app is
 not something I was willing to do. Rather than ship audio I had no right to
 share, I recorded the athan myself:
 
-- **Original recording 1** and **2** — used for Dhuhr, Asr, Maghrib and Isha
+- **Developer athan 1** and **2** — used for Dhuhr, Asr, Maghrib and Isha
 - **Fajr athan** — the dawn call, which carries *aṣ-ṣalātu khayrun min an-nawm*
 
 I'm not a professional muezzin, and I know these won't be to everyone's taste.
