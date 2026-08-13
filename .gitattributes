@@ -1,0 +1,9 @@
+# Normalise to LF in the repository. gradlew must stay LF or it will not run on
+# Linux/macOS; the Windows .bat wrappers must stay CRLF.
+* text=auto eol=lf
+gradlew text eol=lf
+*.bat text eol=crlf
+
+*.png binary
+*.mp3 binary
+*.jar binary

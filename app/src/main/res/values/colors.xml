@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg">#0E1412</color>
+    <color name="surface">#16201C</color>
+    <color name="accent">#4FC79A</color>
+    <color name="text">#E6EDEA</color>
+    <color name="text_dim">#7C8A85</color>
+    <!-- Sunrise is not a prayer, so it reads differently from the five: warm
+         yellow rather than the green accent used for the next prayer. -->
+    <color name="sunrise">#FFC93C</color>
+    <!-- Unselected mode icons: visible enough to be tappable, quiet enough that
+         the selected one is unmistakable. -->
+    <color name="icon_idle">#46534E</color>
+
+    <!-- Compass. The classic red/pale needle pairing reads instantly as a
+         compass, which a single-colour arrow does not. -->
+    <color name="needle_head">#E5484D</color>
+    <color name="needle_tail">#8A9A95</color>
+    <color name="kaaba_body">#141414</color>
+    <color name="kaaba_band">#E8C15A</color>
+    <color name="warning_bg">#3A2A0E</color>
+    <color name="warning_text">#F0C674</color>
+
+    <!-- App volume slider — bright greens per the mockup. -->
+    <color name="volume_label">#A6E22E</color>
+    <color name="volume_green">#2FD968</color>
+
+    <!-- Launcher-icon backdrop: the night-sky teal at the artwork's own border,
+         so the parallax wobble never reveals a mismatched edge. -->
+    <color name="ic_launcher_bg">#113D3F</color>
+</resources>

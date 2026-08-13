@@ -1,0 +1,20 @@
+.gradle/
+build/
+local.properties
+.idea/
+*.iml
+.cxx/
+
+# Source recordings live here; only the processed copies under
+# app/src/main/assets are part of the build.
+audio/
+
+# Third-party recordings that are NOT ours to redistribute. Kept locally for
+# reference only — this line is the reason they stay out of the repo.
+_audio_archive/
+
+# Signing material never belongs in the tree.
+*.jks
+*.p12
+*.keystore
+keystore.properties

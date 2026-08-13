@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingStart="24dp"
+    android:paddingTop="28dp"
+    android:paddingEnd="24dp"
+    android:paddingBottom="28dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:letterSpacing="0.12"
+        android:text="@string/qibla"
+        android:textAllCaps="true"
+        android:textColor="@color/text_dim"
+        android:textSize="13sp" />
+
+    <TextView
+        android:id="@+id/bearingText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:textColor="@color/accent"
+        android:textSize="18sp" />
+
+    <com.ahmedkhalaf.athan.QiblaCompassView
+        android:id="@+id/compass"
+        android:layout_width="272dp"
+        android:layout_height="272dp"
+        android:layout_marginTop="22dp"
+        android:contentDescription="@string/qibla" />
+
+    <TextView
+        android:id="@+id/headingText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:textColor="@color/text"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:gravity="center"
+        android:text="@string/hold_flat"
+        android:textColor="@color/text_dim"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/calibrateWarning"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:background="@color/warning_bg"
+        android:padding="12dp"
+        android:text="@string/calibrate"
+        android:textColor="@color/warning_text"
+        android:textSize="13sp"
+        android:visibility="gone" />
+
+</LinearLayout>

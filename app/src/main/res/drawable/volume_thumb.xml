@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A green rounded block with three dark grip lines, matching the mockup thumb. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="46dp"
+    android:height="34dp"
+    android:viewportWidth="46"
+    android:viewportHeight="34">
+    <path
+        android:fillColor="@color/volume_green"
+        android:pathData="M6,1 L40,1 A5,5 0 0 1 45,6 L45,28 A5,5 0 0 1 40,33 L6,33 A5,5 0 0 1 1,28 L1,6 A5,5 0 0 1 6,1 Z" />
+    <path android:fillColor="@color/bg" android:pathData="M15,10.5 h16 v2.4 h-16 z" />
+    <path android:fillColor="@color/bg" android:pathData="M15,15.8 h16 v2.4 h-16 z" />
+    <path android:fillColor="@color/bg" android:pathData="M15,21.1 h16 v2.4 h-16 z" />
+</vector>

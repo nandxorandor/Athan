@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Themed-icon silhouette: a minaret with two galleries, a dome and a crescent,
+  drawn inside the 66dp safe circle so no mask clips it. Single flat colour on
+  purpose — the system tints this to the user's wallpaper palette.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108"
+    android:tint="#000000">
+
+    <!-- Crescent, up and to the left of the tower -->
+    <path android:fillColor="#FF000000"
+        android:pathData="M39,34 a13,13 0 1,1 -1.5,-12.6 a10.2,10.2 0 1,0 1.5,12.6 z" />
+
+    <!-- Base plinth -->
+    <path android:fillColor="#FF000000" android:pathData="M53,80 h22 v6 h-22 z" />
+
+    <!-- Lower shaft, gently tapering -->
+    <path android:fillColor="#FF000000" android:pathData="M56,80 L57.5,57 L70.5,57 L72,80 Z" />
+
+    <!-- Lower gallery -->
+    <path android:fillColor="#FF000000" android:pathData="M54,52 h20 v5 h-20 z" />
+
+    <!-- Upper shaft -->
+    <path android:fillColor="#FF000000" android:pathData="M59,52 L60,38 L68,38 L69,52 Z" />
+
+    <!-- Upper gallery -->
+    <path android:fillColor="#FF000000" android:pathData="M57,33.5 h14 v4.5 h-14 z" />
+
+    <!-- Dome and finial -->
+    <path android:fillColor="#FF000000"
+        android:pathData="M59.5,33.5 C59.5,26 61.5,21.5 64,19 C66.5,21.5 68.5,26 68.5,33.5 Z" />
+    <path android:fillColor="#FF000000"
+        android:pathData="M64,17.5 m-1.8,0 a1.8,1.8 0 1,0 3.6,0 a1.8,1.8 0 1,0 -3.6,0" />
+</vector>

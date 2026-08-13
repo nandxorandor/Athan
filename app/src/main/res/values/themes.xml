@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Athan" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowBackground">@color/bg</item>
+        <item name="colorPrimary">@color/accent</item>
+        <item name="colorOnPrimary">#08110D</item>
+        <item name="colorSecondaryContainer">#1E3A2F</item>
+        <item name="colorOnSecondaryContainer">@color/accent</item>
+    </style>
+
+    <style name="Theme.Athan.FullScreen">
+        <item name="android:windowFullscreen">true</item>
+    </style>
+</resources>

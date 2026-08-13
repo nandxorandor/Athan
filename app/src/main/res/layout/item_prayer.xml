@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingTop="6dp"
+    android:paddingBottom="6dp">
+
+    <!-- maxLines guards the layout: three 34dp icons plus the time leave just
+         enough for "Maghrib" and "☀️ Sunrise", and a wrap here would silently
+         double the row height. -->
+    <TextView
+        android:id="@+id/prayerLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/text"
+        android:textSize="17sp" />
+
+    <!-- Right-aligned as a fixed block so the icons line up down the column
+         instead of drifting with the length of each prayer's name. -->
+    <LinearLayout
+        android:id="@+id/modeGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/modeSound"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/mode_sound"
+            android:padding="6dp"
+            android:src="@drawable/ic_mode_sound" />
+
+        <ImageView
+            android:id="@+id/modeVibrate"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/mode_vibrate"
+            android:padding="6dp"
+            android:src="@drawable/ic_mode_vibrate" />
+
+        <ImageView
+            android:id="@+id/modeSilent"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/mode_silent"
+            android:padding="6dp"
+            android:src="@drawable/ic_mode_silent" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/prayerTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:textColor="@color/text"
+        android:textSize="17sp" />
+
+</LinearLayout>
