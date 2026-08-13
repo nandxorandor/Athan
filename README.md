@@ -1,13 +1,45 @@
-# Athan — offline prayer times & adhan for Android
+<p align="center">
+  <img src="Athan_app_icon.png" alt="Athan" width="150">
+</p>
 
-A small, free prayer-times app that works entirely on your phone. No account, no
-ads, no tracking, no network calls. It calculates prayer times offline, plays the
-athan at the right moment (even with the ringer down), and points to the qibla.
+<h1 align="center">Athan</h1>
 
-- **Package:** `com.ahmedkhalaf.athan`
-- **Requires:** Android 8.0 (Oreo) or newer
-- **Size:** about 6 MB
-- **Price:** free, and free of ads
+<p align="center">
+  <b>Offline prayer times, athan and qibla for Android.</b><br>
+  No account, no ads, no tracking, no network calls.
+</p>
+
+<p align="center">
+  <a href="../../releases/latest"><img src="https://img.shields.io/badge/download-APK%20v1.0-2FD968?style=flat-square" alt="Download APK"></a>
+  <img src="https://img.shields.io/badge/Android-8.0%2B-4FC79A?style=flat-square" alt="Android 8.0+">
+  <img src="https://img.shields.io/badge/size-6%20MB-4FC79A?style=flat-square" alt="6 MB">
+  <img src="https://img.shields.io/badge/licence-MIT-4FC79A?style=flat-square" alt="MIT licence">
+</p>
+
+It calculates prayer times offline, plays the athan at the right moment (even
+with the ringer down), and points to the qibla. Package
+`com.ahmedkhalaf.athan`; free, and free of ads.
+
+---
+
+## Screenshots
+
+<p align="center">
+  <img src="docs/screenshots/home.jpg" width="220" alt="Prayer times for the day, with a per-prayer sound / vibrate / silent control">
+  <img src="docs/screenshots/settings.jpg" width="220" alt="Settings">
+  <img src="docs/screenshots/calculation-method.jpg" width="220" alt="Calculation method picker">
+</p>
+<p align="center">
+  <img src="docs/screenshots/qibla.jpg" width="220" alt="Qibla compass with a Kaaba marker on the dial">
+  <img src="docs/screenshots/qibla-accuracy.jpg" width="220" alt="Prompt to recalibrate the compass away from metal and magnets">
+  <img src="docs/screenshots/heads-up.jpg" width="220" alt="Pre-prayer heads-up settings">
+</p>
+<p align="center">
+  <img src="docs/screenshots/more-athans.jpg" width="220" alt="Links out to athan libraries in the browser">
+  <img src="docs/screenshots/downloaded-athans.jpg" width="220" alt="Athans you downloaded yourself appear here">
+</p>
+
+<p align="center"><sub>The city and the distance to Mecca are demo values; the app keeps your location on the device only.</sub></p>
 
 ---
 
