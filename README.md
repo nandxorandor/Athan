@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="Athan_app_icon.png" alt="Athan" width="150">
+  <img src="docs/icon.png" alt="Athan" width="150">
 </p>
 
 <h1 align="center">Athan</h1>
