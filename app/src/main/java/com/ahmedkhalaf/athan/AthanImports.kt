@@ -90,8 +90,20 @@ class AthanImports(context: Context) {
 
     private fun keyFor(path: String) = "name_" + File(path).name
 
-    private companion object {
-        const val DIR = "athans"
-        const val PREFS = "athan_imports"
+    companion object {
+        private const val DIR = "athans"
+        private const val PREFS = "athan_imports"
+
+        /** The permission without which [downloadsAudio] can only return empty. */
+        fun permission(): String =
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                android.Manifest.permission.READ_MEDIA_AUDIO
+            } else {
+                android.Manifest.permission.READ_EXTERNAL_STORAGE
+            }
+
+        fun canSeeDownloads(context: Context): Boolean =
+            context.checkSelfPermission(permission()) ==
+                android.content.pm.PackageManager.PERMISSION_GRANTED
     }
 }

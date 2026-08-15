@@ -4,16 +4,27 @@ import android.content.Context
 import android.util.Log
 
 data class AthanSound(
-    /** Asset path, e.g. "athan/mecca/4002.mp3". Stored in prefs. */
+    /** Asset path, e.g. "athan/egyptian/023.mp3". Stored in prefs. */
     val asset: String,
     val label: String,
     val duration: String,
+    /** Folder slug, e.g. "egyptian". Groups the credits screen. */
+    val category: String,
+    /** Reciter, from the recording's own ID3 title. Blank if untagged. */
+    val reciter: String,
+    /** Where the recording came from, from its ID3 artist tag. Blank if untagged. */
+    val source: String,
 )
 
 /**
  * Built by listing assets/athan at runtime rather than from a hardcoded list.
  * Adding recordings is then a matter of re-running tools/sync-audio.ps1 and
  * rebuilding — no Kotlin to edit, and no way for the two to drift apart.
+ *
+ * The same index carries the reciter and source of each recording, which the
+ * credits screen reads. Attribution is a licence condition for the downloaded
+ * recordings, so it is generated from the files themselves rather than typed
+ * into a list that could silently fall out of step with what actually ships.
  */
 class AthanCatalog(context: Context) {
 
@@ -26,11 +37,10 @@ class AthanCatalog(context: Context) {
     val general: List<AthanSound>
 
     init {
-        val durations = readIndex()
-        // Mecca and Madina first, then alphabetical. Plain alphabetical would put
-        // "egyptian" at the top, which also makes it the fallback default —
-        // the two Haramain recordings are the ones people expect to see first.
-        val preferred = listOf("mecca", "madina")
+        val index = readIndex()
+        // The app's own recordings first; everything else alphabetical. They are
+        // the default, and the only ones with no third party behind them.
+        val preferred = listOf(DEVELOPER)
         val categories = runCatching { assets.list(ROOT)?.toList() }.getOrNull().orEmpty()
             .filter { it != INDEX_FILE }
             .sortedWith(
@@ -48,30 +58,44 @@ class AthanCatalog(context: Context) {
 
         val all = byCategory.flatMap { (category, files) ->
             val display = displayName(category)
-            files.mapIndexed { index, file ->
+            files.mapIndexed { position, file ->
+                val entry = index["$category/$file"]
                 AthanSound(
                     asset = "$ROOT/$category/$file",
-                    // Numbered only when a category holds more than one, so a
-                    // lone recording reads "Kuwait" rather than "Kuwait 1".
-                    label = if (files.size == 1) display else "$display ${index + 1}",
-                    duration = formatDuration(durations["$category/$file"]),
+                    // The recording's own title names the reciter, which is far
+                    // more use than "Egyptian 3". Untagged files — the app's own
+                    // recordings — keep the numbered fallback; numbered only when
+                    // a category holds more than one, so a lone one reads "Kuwait".
+                    label = entry?.title?.takeIf { it.isNotBlank() }
+                        ?: if (files.size == 1) display else "$display ${position + 1}",
+                    duration = formatDuration(entry?.seconds),
+                    category = category,
+                    reciter = entry?.title.orEmpty(),
+                    source = entry?.source.orEmpty(),
                 )
             }
         }
 
-        fajr = all.filter { it.asset.startsWith("$ROOT/$FAJR/") }
-        general = all.filterNot { it.asset.startsWith("$ROOT/$FAJR/") }
+        fajr = all.filter { it.category == FAJR }
+        general = all.filterNot { it.category == FAJR }
         Log.i(TAG, "catalogue: ${general.size} general, ${fajr.size} fajr")
     }
 
-    /** Default when the user has not chosen: Developer athan 1, else first. */
+    /** Everything bundled, grouped for the credits screen. */
+    fun byCategory(): List<Pair<String, List<AthanSound>>> =
+        (general + fajr).groupBy { it.category }.map { (slug, sounds) -> displayName(slug) to sounds }
+
+    /**
+     * Defaults are matched on filename, not label: labels now come from the
+     * recordings' own tags, so a label match would break the moment a tag
+     * changed — and silently hand a fresh install someone else's recording.
+     */
     val defaultGeneral: String?
-        get() = general.firstOrNull { it.label == DEFAULT_GENERAL_LABEL }?.asset
+        get() = general.firstOrNull { it.asset.endsWith(DEFAULT_GENERAL_FILE) }?.asset
             ?: general.firstOrNull()?.asset
 
-    /** Default for Fajr: the bundled dawn recording, else first. */
     val defaultFajr: String?
-        get() = fajr.firstOrNull { it.label == DEFAULT_FAJR_LABEL }?.asset
+        get() = fajr.firstOrNull { it.asset.endsWith(DEFAULT_FAJR_FILE) }?.asset
             ?: fajr.firstOrNull()?.asset
 
     /**
@@ -95,30 +119,35 @@ class AthanCatalog(context: Context) {
     fun labelFor(asset: String): String =
         (general + fajr).firstOrNull { it.asset == asset }?.label ?: "Athan"
 
-    private fun readIndex(): Map<String, Int> = runCatching {
+    private data class Entry(val seconds: Int?, val title: String, val source: String)
+
+    /** slug/file → duration, reciter, source. Written by tools/sync-audio.ps1. */
+    private fun readIndex(): Map<String, Entry> = runCatching {
         assets.open("$ROOT/$INDEX_FILE").bufferedReader().useLines { lines ->
             lines.mapNotNull { line ->
                 val parts = line.split('\t')
                 if (parts.size < 3) return@mapNotNull null
-                val seconds = parts[2].trim().toIntOrNull() ?: return@mapNotNull null
-                "${parts[0]}/${parts[1]}" to seconds
+                "${parts[0]}/${parts[1]}" to Entry(
+                    seconds = parts[2].trim().toIntOrNull(),
+                    title = parts.getOrNull(3)?.trim().orEmpty(),
+                    source = parts.getOrNull(4)?.trim().orEmpty(),
+                )
             }.toMap()
         }
     }.getOrElse {
-        Log.w(TAG, "no duration index", it)
+        Log.w(TAG, "no audio index", it)
         emptyMap()
     }
 
     private fun formatDuration(seconds: Int?): String =
         if (seconds == null) "" else "%d:%02d".format(seconds / 60, seconds % 60)
 
-    // Only "developer" and "fajr" ship today; the rest are kept so that dropping
-    // a properly licensed folder into audio/ names itself correctly.
     private fun displayName(category: String) = when (category) {
-        "developer" -> "Developer athan"
+        DEVELOPER -> "Developer athan"
         "mecca" -> "Mecca — Masjid al-Haram"
         "madina" -> "Madina — Masjid an-Nabawi"
         "emarat" -> "Emirates"
+        "various" -> "Various reciters"
         FAJR -> "Fajr athan"
         else -> category.replaceFirstChar { it.uppercase() }
     }
@@ -127,10 +156,11 @@ class AthanCatalog(context: Context) {
         const val TAG = "AthanCatalog"
         const val ROOT = "athan"
         const val FAJR = "fajr"
+        const val DEVELOPER = "developer"
         const val INDEX_FILE = "index.tsv"
-        // Matched by label, not by filename, so renumbering the audio files
-        // cannot silently change what a fresh install plays.
-        const val DEFAULT_GENERAL_LABEL = "Developer athan 1"
-        const val DEFAULT_FAJR_LABEL = "Fajr athan"
+        // Category included in the match: a bare "001.mp3" would be free to
+        // start meaning a different recording the moment a folder is added.
+        const val DEFAULT_GENERAL_FILE = "kuwait/001.mp3"
+        const val DEFAULT_FAJR_FILE = "fajr/168410.mp3"
     }
 }

@@ -1,10 +1,7 @@
 package com.ahmedkhalaf.athan
 
-import android.Manifest
-import android.content.pm.PackageManager
 import android.media.AudioAttributes
 import android.media.MediaPlayer
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +9,6 @@ import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
@@ -46,6 +42,19 @@ class DownloadedAthansActivity : AppCompatActivity() {
         }
         prefs = Prefs(this)
         imports = AthanImports(this)
+    }
+
+    /**
+     * Rebuilt on every resume, not just at creation: the user leaves this screen
+     * for the browser, downloads, and comes back — a list built once would still
+     * be showing the folder as it looked before the download.
+     */
+    override fun onResume() {
+        super.onResume()
+        // Arriving here — from the banner or by hand — is the news being taken
+        // in, so nothing is left over to announce again elsewhere.
+        DownloadWatch.clearBanner(this)
+        DownloadWatch.takePending(this)
         build()
     }
 
@@ -191,12 +200,9 @@ class DownloadedAthansActivity : AppCompatActivity() {
         stopPreview()
     }
 
-    private fun audioPermission() =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) Manifest.permission.READ_MEDIA_AUDIO
-        else Manifest.permission.READ_EXTERNAL_STORAGE
+    private fun audioPermission() = AthanImports.permission()
 
-    private fun needsAudioPermission() =
-        ContextCompat.checkSelfPermission(this, audioPermission()) != PackageManager.PERMISSION_GRANTED
+    private fun needsAudioPermission() = !AthanImports.canSeeDownloads(this)
 
     private fun toast(resId: Int) =
         android.widget.Toast.makeText(this, resId, android.widget.Toast.LENGTH_SHORT).show()

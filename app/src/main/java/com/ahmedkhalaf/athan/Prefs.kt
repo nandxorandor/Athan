@@ -77,6 +77,39 @@ class Prefs(context: Context) {
         get() = sp.getBoolean(KEY_REMINDER_VIB, false)
         set(v) = sp.edit().putBoolean(KEY_REMINDER_VIB, v).apply()
 
+    /**
+     * Whether we have already offered to watch the Downloads folder. Asked once,
+     * on the first source link tap; a refusal must not re-prompt on every tap.
+     */
+    var downloadWatchAsked: Boolean
+        get() = sp.getBoolean(KEY_WATCH_ASKED, false)
+        set(v) = sp.edit().putBoolean(KEY_WATCH_ASKED, v).apply()
+
+    /**
+     * The three below are persisted rather than held in the activity because the
+     * whole point is to survive the app being killed while the user browses.
+     */
+
+    /** Downloads-folder audio as it looked when the browser was handed the link. */
+    var downloadSnapshot: Set<String>
+        get() = sp.getStringSet(KEY_DL_SNAPSHOT, emptySet()) ?: emptySet()
+        set(v) = sp.edit().putStringSet(KEY_DL_SNAPSHOT, v).apply()
+
+    /** Arrivals the user has not been told about in the app yet. */
+    var downloadPending: Set<String>
+        get() = sp.getStringSet(KEY_DL_PENDING, emptySet()) ?: emptySet()
+        set(v) = sp.edit().putStringSet(KEY_DL_PENDING, v).apply()
+
+    /** Whether a banner was raised for [downloadPending]. */
+    var downloadBannerPosted: Boolean
+        get() = sp.getBoolean(KEY_DL_BANNER, false)
+        set(v) = sp.edit().putBoolean(KEY_DL_BANNER, v).apply()
+
+    /** When the current watch began; 0 means not watching. */
+    var downloadWatchStartedAt: Long
+        get() = sp.getLong(KEY_DL_STARTED, 0L)
+        set(v) = sp.edit().putLong(KEY_DL_STARTED, v).apply()
+
     /** First-run compass notice; dismissed permanently by the checkbox. */
     var qiblaNoticeSeen: Boolean
         get() = sp.getBoolean(KEY_QIBLA_NOTICE, false)
@@ -119,6 +152,11 @@ class Prefs(context: Context) {
         const val KEY_METHOD = "method"
         const val KEY_MADHAB = "madhab"
         const val KEY_QIBLA_NOTICE = "qibla_notice_seen"
+        const val KEY_WATCH_ASKED = "download_watch_asked"
+        const val KEY_DL_SNAPSHOT = "download_snapshot"
+        const val KEY_DL_PENDING = "download_pending"
+        const val KEY_DL_BANNER = "download_banner_posted"
+        const val KEY_DL_STARTED = "download_watch_started"
         const val KEY_ADJUST = "adjust_minutes"
         const val KEY_MODE = "mode"
         const val KEY_VOLUME = "volume"

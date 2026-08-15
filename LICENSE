@@ -22,9 +22,22 @@ SOFTWARE.
 
 ---
 
-The bundled athan recordings under app/src/main/assets/athan/ are original
-recordings by Ahmed Khalaf, released under the Creative Commons Attribution 4.0
-International licence (CC BY 4.0): https://creativecommons.org/licenses/by/4.0/
+The MIT licence above covers the source code only. The audio under
+app/src/main/assets/athan/ is NOT covered by it, and comes in two kinds:
+
+1. Developer_Athan-1.mp3, Developer_Athan-2.mp3 and Developer_Athan-3_Fajr.mp3
+   are original recordings by Ahmed Khalaf, released under the Creative Commons
+   Attribution 4.0 International licence (CC BY 4.0):
+   https://creativecommons.org/licenses/by/4.0/
+
+2. Every other recording was published by IslamWeb (www.islamweb.net) and is
+   included here under the permission IslamWeb gives for its material in fatwa
+   no. 379009: use is allowed for non-commercial purposes provided the source is
+   named. Each recording is credited in the app under Settings -> Resources &
+   credits. These files remain the property of their reciters and of IslamWeb.
+   They are NOT relicensed by this repository and may not be used commercially,
+   and nothing here grants you any right beyond IslamWeb's own terms. If you
+   reuse this project, either honour those terms or remove the files.
 
 The launcher artwork (Athan_app_icon.png and the generated mipmap files) is
 (c) 2026 Ahmed Khalaf, all rights reserved, and is not covered by the MIT

@@ -46,6 +46,9 @@ class SettingsActivity : AppCompatActivity() {
         binding.methodRow.setOnClickListener { chooseMethod() }
         binding.madhabRow.setOnClickListener { chooseMadhab() }
         binding.adjustRow.setOnClickListener { chooseAdjustment() }
+        binding.creditsRow.setOnClickListener {
+            startActivity(Intent(this, CreditsActivity::class.java))
+        }
         binding.aboutRow.setOnClickListener {
             startActivity(Intent(this, AboutActivity::class.java))
         }

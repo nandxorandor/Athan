@@ -89,6 +89,12 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name=".CreditsActivity"
+            android:exported="false"
+            android:parentActivityName=".SettingsActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".AthanAudioOptionsActivity"
             android:exported="false"
             android:parentActivityName=".SettingsActivity"
@@ -132,6 +138,17 @@
 
         <receiver
             android:name=".AthanReceiver"
+            android:exported="false" />
+
+        <!-- Started by the system when Downloads changes, so a downloaded athan
+             is noticed even if the app was killed while the browser was open. -->
+        <service
+            android:name=".DownloadWatchJob"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <receiver
+            android:name=".DownloadDismissReceiver"
             android:exported="false" />
 
         <receiver

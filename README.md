@@ -10,10 +10,10 @@
 </p>
 
 <p align="center">
-  <a href="../../releases/latest"><img src="https://img.shields.io/badge/download-APK%20v1.0-2FD968?style=flat-square" alt="Download APK"></a>
+  <a href="../../releases/latest"><img src="https://img.shields.io/badge/download-APK%20v1.1-2FD968?style=flat-square" alt="Download APK"></a>
   <img src="https://img.shields.io/badge/Android-8.0%2B-4FC79A?style=flat-square" alt="Android 8.0+">
-  <img src="https://img.shields.io/badge/size-6%20MB-4FC79A?style=flat-square" alt="6 MB">
-  <img src="https://img.shields.io/badge/licence-MIT-4FC79A?style=flat-square" alt="MIT licence">
+  <img src="https://img.shields.io/badge/size-35%20MB-4FC79A?style=flat-square" alt="35 MB">
+  <img src="https://img.shields.io/badge/code-MIT-4FC79A?style=flat-square" alt="MIT licence for the code">
 </p>
 
 ---
@@ -34,7 +34,9 @@
 
 ### عن تسجيلات الأذان
 
-معظم تسجيلات الأذان المتاحة على الإنترنت محفوظة الحقوق لأصحابها من المؤذّنين وهيئات البثّ، والإشارة إلى المصدر ليست إذنًا بإعادة النشر. ولم أشأ أن أُضمّن التطبيق تسجيلات لا أملك حقّ توزيعها، فسجّلتُ الأذان بصوتي: تسجيلان لصلوات الظهر والعصر والمغرب والعشاء، وتسجيل خاصّ بالفجر لما فيه من «الصلاة خير من النوم».
+يضمّ التطبيق 29 تسجيلًا. ثلاثة منها بصوتي أنا: تسجيلان لصلوات الظهر والعصر والمغرب والعشاء، وتسجيل خاصّ بالفجر لما فيه من «الصلاة خير من النوم». وبقيّتها ممّا نشره موقع **إسلام ويب**، وقد أذِن الموقع في [الفتوى رقم 379009](https://www.islamweb.net/en/fatwa/379009/) بالانتفاع بمواده لغير أغراض تجاريّة بشرط ذكر المصدر ونسبته إليه — والتطبيق مجاني بلا إعلانات ولا مبيعات، وكلّ تسجيل منسوب إلى قارئه ومصدره في شاشة «المصادر والشكر» داخل الإعدادات.
+
+وما لم يُؤذن فيه لم أُضمّنه: تسجيلات الحرمين من بثّ التلفزيون السعودي ليست ملكًا لإسلام ويب حتى يأذن فيها، فتُركت خارج التطبيق.
 
 ولأنّ الأذواق تختلف، جعلتُ تغيير الصوت سهلًا: اختر أي ملف صوتي من هاتفك، أو افتح شاشة «مزيد من تسجيلات الأذان» التي تحيلك إلى مكتبات معروفة في المتصفّح — والتطبيق نفسه لا يُنزّل شيئًا ولا يستضيفه — ثم يظهر ما نزّلته ضمن «الأذانات المنزَّلة» لتختاره وتُثبّته.
 
@@ -44,7 +46,7 @@
 
 ### التحميل والتثبيت
 
-نزّل ملف `athan-v1.0.apk` من صفحة [الإصدارات](../../releases). عند فتحه سيطلب منك أندرويد السماح بالتثبيت من مصدر غير معروف، وهي رسالة معتادة لأي تطبيق يُثبَّت خارج متجر Play، ولا علاقة لها بالتطبيق نفسه. يتطلّب أندرويد 8.0 فأحدث، وحجمه نحو 6 ميجابايت.
+نزّل ملف `athan-v1.1.apk` من صفحة [الإصدارات](../../releases). عند فتحه سيطلب منك أندرويد السماح بالتثبيت من مصدر غير معروف، وهي رسالة معتادة لأي تطبيق يُثبَّت خارج متجر Play، ولا علاقة لها بالتطبيق نفسه. يتطلّب أندرويد 8.0 فأحدث، وحجمه نحو 35 ميجابايت.
 
 </div>
 
@@ -86,7 +88,7 @@ with the ringer down), and points to the qibla. Package
 
 **1. Download the APK**
 
-Go to the [**Releases**](../../releases) page and download `athan-v1.0.apk` from
+Go to the [**Releases**](../../releases) page and download `athan-v1.1.apk` from
 the latest release. You can do this straight from your phone's browser.
 
 **2. Allow the install**
@@ -158,31 +160,33 @@ phone has no magnetometer.
 
 ## About the athan recordings
 
-**The bundled athans are my own recordings.**
+**29 recordings ship with the app**, from two sources.
 
-Most adhan audio you find online — the well-known Mecca, Madina, Egyptian and
-Turkish recordings — is copyrighted by the broadcasters or reciters who made it.
-Attribution is not a licence, so redistributing those files in a public app is
-not something I was willing to do. Rather than ship audio I had no right to
-share, I recorded the athan myself:
+**Three are my own** — *Developer athan 1* and *2* for Dhuhr, Asr, Maghrib and
+Isha, and a *Fajr* recording carrying *aṣ-ṣalātu khayrun min an-nawm*.
 
-- **Developer athan 1** and **2** — used for Dhuhr, Asr, Maghrib and Isha
-- **Fajr athan** — the dawn call, which carries *aṣ-ṣalātu khayrun min an-nawm*
+**The rest were published by IslamWeb** (islamweb.net). IslamWeb permits its
+material to be used for non-commercial purposes provided the source is named —
+[fatwa no. 379009](https://www.islamweb.net/en/fatwa/379009/). This app is free,
+carries no ads and sells nothing, and every recording is credited to its reciter
+and source in the app under **Settings → Resources & credits**. That screen is
+generated from the shipped audio index, so it cannot list a recording the app
+does not have, or miss one it does.
 
-I'm not a professional muezzin, and I know these won't be to everyone's taste.
-So the app makes it easy to use something else:
+**What is deliberately not included:** the Mecca and Madina recordings. Those are
+Saudi state broadcasts — IslamWeb hosts them but does not own them, so its
+permission does not extend to them. Attribution is not a licence, and a credit
+line does not create a right to redistribute.
 
-- **Settings → Fajr Athan Sound / Athan Sound (other prayers) → Choose from
-  device…** — pick any audio file already on your phone
-- **Phone ringtone…** — use any ringtone or notification tone
-- **Settings → More athan recordings** — opens well-known athan libraries
-  (Wikimedia Commons, IslamWeb, Internet Archive) in your **browser**. The app
-  never downloads or hosts audio itself; you download what you want, then it
-  shows up under **Downloaded athans** in the sound picker and is copied into the
-  app so it stays available.
+Not to your taste? The app makes it easy to use something else:
 
-That way everyone can hear the muezzin they prefer, and no one's copyright is
-being redistributed by me.
+- **Settings → Athan audio options → Fajr Athan Sound / Athan Sound (other
+  prayers) → Choose from device…** — any audio file already on your phone
+- **Phone ringtone…** — any ringtone or notification tone
+- **Settings → Athan audio options → More athan recordings** — opens IslamWeb's
+  library in your **browser**. The app never downloads or hosts audio itself; you
+  download what you want, the app tells you when it lands, and it appears under
+  **Downloaded athans** ready to assign.
 
 ---
 
@@ -219,17 +223,29 @@ Requires JDK 17+ and the Android SDK (compileSdk 36, build-tools 35.0.1).
 The debug build needs no signing setup.
 
 The bundled audio is generated from source recordings by `tools/sync-audio.ps1`,
-which re-encodes anything above 100 kbps to 96 kbps mono and writes the duration
-index the app reads at runtime. The processed assets are committed, so you do not
-need to run it unless you are adding recordings of your own.
+which re-encodes anything above 100 kbps to 96 kbps mono and writes the index the
+app reads at runtime — durations, and each recording's reciter and source, taken
+from its own ID3 tags. The credits screen is built from that index, so attribution
+is generated rather than typed and cannot drift out of step with what ships. The
+processed assets are committed, so you do not need to run it unless you are
+adding recordings of your own.
 
 ---
 
 ## Licence
 
-Source code: [MIT](LICENSE).
-Bundled athan recordings: CC BY 4.0 (they are my own recordings).
-Launcher artwork: © 2026 Ahmed Khalaf, all rights reserved.
+**Source code:** [MIT](LICENSE).
+
+**Audio** — not covered by the MIT licence:
+- The three `Developer_Athan-*` recordings are mine, under CC BY 4.0.
+- Every other recording was published by IslamWeb and is included under its
+  non-commercial-with-attribution permission ([fatwa no.
+  379009](https://www.islamweb.net/en/fatwa/379009/)). They remain the property
+  of their reciters and of IslamWeb, are **not** relicensed here, and may not be
+  used commercially. If you fork this repo, either honour those terms or delete
+  the files.
+
+**Launcher artwork:** © 2026 Ahmed Khalaf, all rights reserved.
 
 ## Contact
 

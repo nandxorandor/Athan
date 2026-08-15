@@ -28,6 +28,24 @@
     <string name="more_athans_title">More athan recordings</string>
     <string name="more_athans_help">Open a source in your browser, download an athan to your phone, then pick it in a sound screen with “Choose from device”. The app doesn’t download or store these itself — it only opens the source’s page.</string>
     <string name="open_link">Open</string>
+    <string name="watch_downloads_title">Let Athan see your downloads?</string>
+    <string name="watch_downloads_body">Then it can tell you when a recording has finished downloading and offer to set it up. It only reads audio files already on this phone — nothing is sent anywhere.</string>
+    <string name="watch_downloads_allow">Allow</string>
+    <string name="not_now">Not now</string>
+    <string name="download_arrived_title">Athan downloaded</string>
+    <string name="download_arrived_one">“%1$s” is now in your Downloaded athans. Open it there to choose which prayers it plays for.</string>
+    <string name="download_arrived_many">%1$d new recordings are now in your Downloaded athans. Open them there to choose which prayers they play for.</string>
+    <!-- Kept short: a collapsed heads-up shows about two lines, and the two
+         action buttons below it carry the choice. -->
+    <string name="download_notify_one">“%1$s” is in your Downloaded athans</string>
+    <string name="download_notify_many">%1$d new athans are in your Downloaded athans</string>
+    <string name="download_notify_expanded_one">“%1$s” is now in your Downloaded athans. Choose which prayers it plays for.</string>
+    <string name="download_notify_expanded_many">%1$d new recordings are now in your Downloaded athans. Choose which prayers they play for.</string>
+    <string name="view_downloaded_short">View</string>
+    <string name="download_unseen_title">Finished downloading?</string>
+    <string name="download_unseen_body">Any athan you downloaded is waiting in Downloaded athans. Open it there to choose which prayers it plays for.</string>
+    <string name="view_downloaded">View downloaded athans</string>
+    <string name="keep_downloading">Keep downloading</string>
     <string name="reminder_title_short">Prayer time heads-up</string>
     <string name="reminder_summary_on">On · %1$d min before</string>
     <string name="reminder_summary_off">Off</string>
@@ -102,13 +120,23 @@
     <string name="assigned_other">Other prayers</string>
     <string name="assigned_both">Fajr &amp; other prayers</string>
     <string name="import_failed">Couldn\'t import that file</string>
+    <string name="credits_row">Resources &amp; credits</string>
+    <string name="credits_title">Resources &amp; credits</string>
+    <string name="credits_intro">Where every athan included in this app came from. Most were published by IslamWeb (islamweb.net), which permits its material to be used for non-commercial purposes as long as the source is named. This app is free, carries no ads, and sells nothing.</string>
+    <string name="credits_islamweb_permission">IslamWeb permission — fatwa no. 379009</string>
+    <string name="credit_source">Source: %1$s</string>
+    <string name="credit_source_unknown">Source: islamweb.net (reciter not named in the recording)</string>
+    <string name="credit_own_recording">Recorded by the developer</string>
+    <string name="credits_software">Software</string>
+    <string name="credits_software_detail">Prayer times are calculated with the open-source “adhan” library by Batoul Apps. The app itself makes no network requests and collects no data.</string>
+
     <string name="about">About</string>
     <string name="about_version">Version %1$s</string>
     <string name="about_developed_by">Developed by Ahmed Khalaf (A.K.)</string>
     <string name="about_contact">Contact</string>
     <string name="about_github">Follow me on GitHub: github.com/nandxorandor</string>
     <string name="about_audio_credit">Athan recordings</string>
-    <string name="about_audio_credit_detail">The bundled athans are my own recordings, so this app carries no third-party audio. You can use any recording you prefer instead — see Settings → Athan Sound.</string>
+    <string name="about_audio_credit_detail">Two of the bundled athans are my own recordings; the rest were published by IslamWeb and are included with the source named — see Settings → Resources &amp; credits. You can use any recording you prefer instead: Settings → Athan audio options.</string>
     <string name="about_privacy">No data is collected or sent from this app.</string>
     <string name="delete">Delete</string>
     <string name="delete_athan">Delete “%1$s”?</string>
@@ -121,6 +149,8 @@
     <string name="channel_athan_desc">The call to prayer at each prayer time</string>
     <string name="channel_athan_quiet">Athan (window already open)</string>
     <string name="channel_athan_quiet_desc">Silent placeholder shown while the athan window is on screen</string>
+    <string name="channel_download">Downloaded athans</string>
+    <string name="channel_download_desc">Confirms when an athan you downloaded is ready to set up</string>
 
     <string name="exact_alarm_blocked">Exact alarms are turned off, so the athan can\'t fire on time. Tap to allow.</string>
 </resources>

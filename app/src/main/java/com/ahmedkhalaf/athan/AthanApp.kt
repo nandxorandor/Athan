@@ -39,11 +39,25 @@ class AthanApp : Application() {
             enableVibration(false)
         }
 
-        manager.createNotificationChannels(listOf(alert, quiet))
+        // "Your athan finished downloading". High importance so it banners over
+        // the browser the user is still standing in — that is the whole point of
+        // it — but silent, because the browser has already made its own noise.
+        val download = NotificationChannel(
+            CHANNEL_DOWNLOAD,
+            getString(R.string.channel_download),
+            NotificationManager.IMPORTANCE_HIGH
+        ).apply {
+            description = getString(R.string.channel_download_desc)
+            setSound(null, null)
+            enableVibration(false)
+        }
+
+        manager.createNotificationChannels(listOf(alert, quiet, download))
     }
 
     companion object {
         const val CHANNEL_ATHAN = "athan"
         const val CHANNEL_ATHAN_QUIET = "athan_quiet"
+        const val CHANNEL_DOWNLOAD = "athan_download"
     }
 }
