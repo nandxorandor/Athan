@@ -63,6 +63,11 @@ class AthanService : Service() {
         Log.i(TAG, "start $slot mode=${Prefs(this).modeFor(slot)}")
         startForeground(NOTIFICATION_ID, buildNotification(slot))
 
+        // The heads-up popup, if one is still on screen, stands down here: the
+        // thing it was warning about has arrived, and two prayer windows at once
+        // would leave the user closing the wrong one.
+        sendBroadcast(Intent(ACTION_STARTED).setPackage(packageName))
+
         // The device may be dozing; hold the CPU just long enough to get audio
         // running. Released in onDestroy.
         wakeLock = getSystemService(PowerManager::class.java)
@@ -208,6 +213,7 @@ class AthanService : Service() {
         const val ACTION_SET_VOLUME = "com.ahmedkhalaf.athan.SET_VOLUME"
         const val EXTRA_VOLUME = "volume"
         const val ACTION_FINISHED = "com.ahmedkhalaf.athan.FINISHED"
+        const val ACTION_STARTED = "com.ahmedkhalaf.athan.STARTED"
         private const val TAG = "AthanService"
         private const val NOTIFICATION_ID = 42
         private const val TIMEOUT_MS = 10 * 60 * 1000L

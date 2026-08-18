@@ -18,10 +18,25 @@ class ReminderActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityReminderBinding
 
-    /** Closes the popup if the reminder ends on its own (sound finished / timeout). */
-    private val finished = object : BroadcastReceiver() {
+    private val handler = android.os.Handler(android.os.Looper.getMainLooper())
+
+    /**
+     * Stands down when the athan itself begins. Deliberately not tied to the
+     * reminder *sound* ending: the tone lasts a couple of seconds, and a popup
+     * that vanished with it would be gone long before you looked up. It stays
+     * until you close it or the prayer arrives, which is the whole point of a
+     * "be ready" warning.
+     */
+    private val athanStarted = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) = finish()
     }
+
+    /**
+     * Backstop for the case where the athan never announces itself — a denied
+     * foreground-service start throws, and the popup would otherwise sit there
+     * until the user found it.
+     */
+    private val expire = Runnable { finish() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,9 +48,22 @@ class ReminderActivity : AppCompatActivity() {
         binding.closeButton.setOnClickListener { dismiss() }
 
         ContextCompat.registerReceiver(
-            this, finished, IntentFilter(ReminderService.ACTION_FINISHED),
+            this, athanStarted, IntentFilter(AthanService.ACTION_STARTED),
             ContextCompat.RECEIVER_NOT_EXPORTED
         )
+        scheduleExpiry()
+    }
+
+    /**
+     * Closes shortly after the prayer time itself, in case the athan never
+     * arrives to close it. A minute of grace, so it never races the athan and
+     * steals the moment the popup exists to announce.
+     */
+    private fun scheduleExpiry() {
+        handler.removeCallbacks(expire)
+        val next = PrayerEngine(Prefs(this)).next() ?: return
+        val delay = next.time.time - System.currentTimeMillis() + GRACE_MS
+        handler.postDelayed(expire, delay.coerceIn(GRACE_MS, MAX_ALIVE_MS))
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -75,6 +103,13 @@ class ReminderActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        runCatching { unregisterReceiver(finished) }
+        handler.removeCallbacks(expire)
+        runCatching { unregisterReceiver(athanStarted) }
+    }
+
+    private companion object {
+        const val GRACE_MS = 60_000L
+        /** Never linger longer than this, whatever the clock says. */
+        const val MAX_ALIVE_MS = 30 * 60 * 1000L
     }
 }
