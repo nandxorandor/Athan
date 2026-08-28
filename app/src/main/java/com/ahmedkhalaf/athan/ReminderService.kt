@@ -25,6 +25,11 @@ import androidx.core.app.NotificationCompat
  * timeout, and closes its popup on the way out.
  */
 class ReminderService : Service() {
+    // Notifications this service posts are user-visible text, so it needs the
+    // chosen language too — a service context does not inherit an activity's.
+    override fun attachBaseContext(newBase: android.content.Context) {
+        super.attachBaseContext(AppLocale.wrap(newBase))
+    }
 
     private var player: MediaPlayer? = null
     private var vibrator: Vibrator? = null

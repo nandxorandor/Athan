@@ -8,7 +8,6 @@ import android.view.View
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
@@ -20,7 +19,7 @@ import com.ahmedkhalaf.athan.databinding.ActivityDownloadedAthansBinding
  * Fajr, the other prayers, or both — so a downloaded file is never silently
  * tied to whichever screen happened to be open.
  */
-class DownloadedAthansActivity : AppCompatActivity() {
+class DownloadedAthansActivity : LocalizedActivity() {
 
     private lateinit var binding: ActivityDownloadedAthansBinding
     private lateinit var prefs: Prefs

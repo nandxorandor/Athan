@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The Arabic interface.
+
+  The adhkar headings are here like any other label. What is NOT here is the
+  adhkar themselves — they live in assets/adhkar/*.tsv, are Qur'an and hadith,
+  and exist in one language only, so there is nothing to translate. The two
+  language names (lang_english, lang_arabic) fall through to values/ instead:
+  each is written in its own language on both sides of the switch.
+-->
+<resources>
+    <string name="app_name">أذان</string>
+
+    <string name="fajr">الفجر</string>
+    <string name="sunrise">☀️ الشروق</string>
+    <string name="dhuhr">الظهر</string>
+    <string name="asr">العصر</string>
+    <string name="maghrib">المغرب</string>
+    <string name="isha">العشاء</string>
+
+    <string name="set_location">تعيين الموقع</string>
+    <string name="location_set">تم تعيين الموقع</string>
+    <string name="change">تغيير</string>
+    <string name="city_hint">اسم المدينة</string>
+    <string name="search">بحث</string>
+    <string name="use_gps">تحديد موقعي</string>
+    <string name="city_not_found">تعذّر العثور على هذه المدينة</string>
+    <string name="location_denied">تم رفض إذن الموقع</string>
+    <string name="no_fix">لا يوجد تحديد حديث للموقع — افتح الخرائط مرة واحدة، أو اكتب اسم المدينة</string>
+    <string name="no_location_yet">عيّن موقعك لعرض أوقات الصلاة</string>
+    <string name="next_in">%1$s بعد %2$s</string>
+    <string name="countdown_hm">%1$d س %2$02d د</string>
+    <string name="countdown_ms">%1$d د %2$02d ث</string>
+    <string name="time_pattern">h:mm a</string>
+    <string name="hijri_date_pattern">EEEE، d MMMM yyyy G</string>
+
+    <string name="app_volume">مستوى صوت التطبيق</string>
+
+    <string name="more_athans_row">تسجيلات أذان إضافية</string>
+    <string name="more_athans_title">تسجيلات أذان إضافية</string>
+    <string name="more_athans_help">افتح أحد المصادر في المتصفح، ونزّل أذانًا إلى هاتفك، ثم اخترهُ من شاشة الصوت عبر «اختيار من الجهاز». التطبيق لا ينزّل هذه التسجيلات ولا يحفظها بنفسه — كل ما يفعله هو فتح صفحة المصدر.</string>
+    <string name="open_link">فتح</string>
+    <string name="watch_downloads_title">هل تسمح للتطبيق برؤية تنزيلاتك؟</string>
+    <string name="watch_downloads_body">عندها يستطيع إخبارك عند اكتمال تنزيل تسجيل، وعرض إعداده لك. لا يقرأ سوى الملفات الصوتية الموجودة على هذا الهاتف — ولا يُرسل أي شيء إلى أي جهة.</string>
+    <string name="watch_downloads_allow">السماح</string>
+    <string name="not_now">ليس الآن</string>
+    <string name="download_arrived_title">تم تنزيل الأذان</string>
+    <string name="download_arrived_one">«%1$s» صار الآن ضمن الأذانات المنزّلة. افتحه من هناك لتختار الصلوات التي يُرفع فيها.</string>
+    <string name="download_arrived_many">‏%1$d تسجيلات جديدة صارت ضمن الأذانات المنزّلة. افتحها من هناك لتختار الصلوات التي تُرفع فيها.</string>
+    <string name="download_notify_one">«%1$s» ضمن الأذانات المنزّلة</string>
+    <string name="download_notify_many">‏%1$d أذانات جديدة ضمن الأذانات المنزّلة</string>
+    <string name="download_notify_expanded_one">«%1$s» صار الآن ضمن الأذانات المنزّلة. اختر الصلوات التي يُرفع فيها.</string>
+    <string name="download_notify_expanded_many">‏%1$d تسجيلات جديدة صارت ضمن الأذانات المنزّلة. اختر الصلوات التي تُرفع فيها.</string>
+    <string name="view_downloaded_short">عرض</string>
+    <string name="download_unseen_title">هل انتهى التنزيل؟</string>
+    <string name="download_unseen_body">أي أذان نزّلته ينتظرك في «الأذانات المنزّلة». افتحه من هناك لتختار الصلوات التي يُرفع فيها.</string>
+    <string name="view_downloaded">عرض الأذانات المنزّلة</string>
+    <string name="keep_downloading">متابعة التنزيل</string>
+    <string name="reminder_title_short">تنبيه قبل الصلاة</string>
+    <string name="reminder_summary_on">مفعّل · قبل %1$d دقيقة</string>
+    <string name="reminder_summary_off">متوقف</string>
+    <string name="reminder_explainer">نافذة قصيرة تظهر قبل كل صلاة، لتكون مستعدًا في وقتك.</string>
+    <string name="reminder_enable">تفعيل التنبيه</string>
+    <string name="reminder_how_early">قبل الأذان بـ</string>
+    <string name="minutes_5">5 دقائق</string>
+    <string name="minutes_10">10 دقائق</string>
+    <string name="minutes_15">15 دقيقة</string>
+    <string name="reminder_sound">صوت التنبيه</string>
+    <string name="reminder_sound_toggle">صوت التنبيه</string>
+    <string name="reminder_tone">النغمة</string>
+    <string name="reminder_vibrate">اهتزاز</string>
+    <string name="default_tone">النغمة الافتراضية</string>
+    <string name="reminder_heading">تنبيه</string>
+    <string name="reminder_title">%1$s قريبًا</string>
+    <string name="reminder_body">استعد — %1$s بعد %2$d دقيقة</string>
+    <string name="reminder_popup">استعد لصلاة %1$s بعد %2$d دقيقة</string>
+    <string name="reminder_popup_countdown">استعد لصلاة %1$s بعد %2$s</string>
+    <string name="reminder_popup_now">حان وقت %1$s</string>
+    <string name="close">إغلاق</string>
+    <string name="qibla">القبلة</string>
+
+    <string name="adhkar_morning">أذكار الصباح</string>
+    <string name="adhkar_evening">أذكار المساء</string>
+    <string name="adhkar_morning_when">تُقال بعد صلاة الفجر إلى طلوع الشمس</string>
+    <string name="adhkar_evening_when">تُقال بعد صلاة العصر إلى غروب الشمس</string>
+    <string name="adhkar_unavailable">تعذّر تحميل الأذكار</string>
+    <string name="language">اللغة</string>
+
+    <string name="qibla_notice_title">دقة البوصلة</string>
+    <string name="qibla_notice_body">هل يبدو السهم خاطئًا؟ أمِل الهاتف وأدره عدة مرات، بعيدًا عن المعادن والمغناطيس.</string>
+    <string name="dont_show_again">لا تعرض هذا مرة أخرى</string>
+    <string name="location_off_title">خدمة الموقع معطّلة</string>
+    <string name="location_off_body">فعّل خدمة الموقع ليقرأ التطبيق إحداثياتك. تحتاج إليها مرة واحدة فقط — بعدها تُحسب أوقات الصلاة والقبلة على الجهاز نفسه، دون إنترنت ودون أي تتبّع.</string>
+    <string name="open_settings">فتح الإعدادات</string>
+    <string name="qibla_bearing">%1$d° من الشمال · %2$d كم إلى مكة</string>
+    <string name="heading_now">تتّجه إلى %1$d° · أدر %2$d° %3$s</string>
+    <string name="turn_right">يمينًا</string>
+    <string name="turn_left">يسارًا</string>
+    <string name="hold_flat">أمسك الهاتف أفقيًا وأدره حتى يشير السهم إلى الأعلى</string>
+    <string name="qibla_aligned">أنت تواجه القبلة</string>
+    <string name="calibrate">دقة البوصلة منخفضة. أمِل الهاتف وأدره عدة مرات، وابتعد عن المعادن والمغناطيس.</string>
+    <string name="no_compass">لا يحتوي هذا الهاتف على بوصلة. الاتجاه المذكور أعلاه يظل صالحًا مع أي بوصلة.</string>
+    <string name="mode_sound">صوت</string>
+    <string name="mode_vibrate">اهتزاز</string>
+    <string name="mode_silent">صامت</string>
+
+    <string name="settings">الإعدادات</string>
+    <string name="athan_audio_options">خيارات صوت الأذان</string>
+    <string name="athan_recording">تسجيل الأذان</string>
+    <string name="calculation_method">طريقة الحساب</string>
+    <string name="juristic_method">حساب العصر</string>
+    <string name="time_adjustment">تعديل الوقت</string>
+    <string name="time_adjustment_hint">يُزيح كل أوقات الصلاة. استخدمه عند تغيّر التوقيت موسميًا، أو عندما يختلف تقويم بلدك عن الحساب.</string>
+    <string name="adjust_none">بدون تعديل</string>
+    <string name="adjust_plus">+%d دقيقة</string>
+    <string name="adjust_minus">−%d دقيقة</string>
+    <string name="madhab_shafi">الجمهور</string>
+    <string name="madhab_shafi_long">الجمهور (الشافعي والمالكي والحنبلي)</string>
+    <string name="madhab_hanafi">الحنفي</string>
+    <string name="for_other_prayers">الظهر والعصر والمغرب والعشاء</string>
+    <string name="for_fajr">الفجر</string>
+    <string name="fajr_explainer">أذان الفجر فيه زيادة، لذلك يُختار على حدة.</string>
+    <string name="fajr_athan_sound">صوت أذان الفجر</string>
+    <string name="athan_sound_other">صوت الأذان (باقي الصلوات)</string>
+    <string name="choose_from_device">اختيار من الجهاز…</string>
+    <string name="phone_ringtone">نغمات الهاتف…</string>
+    <string name="custom_sound">صوت مخصص</string>
+    <string name="bundled_athans">الأذانات المضمّنة</string>
+    <string name="downloaded_athans">الأذانات المنزّلة</string>
+    <string name="show_downloaded">أظهر الأذانات التي نزّلتها…</string>
+    <string name="downloaded_help">الأذانات التي تنزّلها من المتصفح تظهر هنا. اضغط على أحدها لتختار الصلوات التي يُرفع فيها.</string>
+    <string name="downloaded_empty">لا توجد أذانات منزّلة بعد. استخدم «تسجيلات أذان إضافية» لتنزيل بعضها، ثم ستظهر هنا.</string>
+    <string name="use_athan_for">استخدام هذا الأذان لـ</string>
+    <string name="dest_fajr">الفجر</string>
+    <string name="dest_other">باقي الصلوات</string>
+    <string name="dest_both">كليهما</string>
+    <string name="assigned_fajr">أذان الفجر</string>
+    <string name="assigned_other">باقي الصلوات</string>
+    <string name="assigned_both">الفجر وباقي الصلوات</string>
+    <string name="import_failed">تعذّر استيراد هذا الملف</string>
+    <string name="credits_row">المصادر والشكر</string>
+    <string name="credits_title">المصادر والشكر</string>
+    <string name="credits_intro">مصدر كل أذان مضمَّن في هذا التطبيق. معظمها منشور على «إسلام ويب» (islamweb.net)، وهو يجيز استخدام مواده لأغراض غير تجارية ما دام المصدر مذكورًا. هذا التطبيق مجاني، ولا يحمل إعلانات، ولا يبيع شيئًا.</string>
+    <string name="credits_islamweb_permission">إذن إسلام ويب — فتوى رقم 379009</string>
+    <string name="credit_source">المصدر: %1$s</string>
+    <string name="credit_source_unknown">المصدر: islamweb.net (اسم المؤذن غير مذكور في التسجيل)</string>
+    <string name="credit_own_recording">تسجيل من إعداد المطوّر</string>
+    <string name="credits_software">البرمجيات</string>
+    <string name="credits_software_detail">تُحسب أوقات الصلاة بمكتبة «adhan» مفتوحة المصدر من Batoul Apps. والتطبيق نفسه لا يجري أي اتصال بالشبكة ولا يجمع أي بيانات.</string>
+
+    <string name="about">عن التطبيق</string>
+    <string name="about_version">الإصدار %1$s</string>
+    <string name="about_developed_by">تطوير A.M.K.&#x200E;</string>
+    <string name="about_contact">للتواصل</string>
+    <string name="about_github">تابعني على GitHub: github.com/nandxorandor</string>
+    <string name="about_audio_credit">تسجيلات الأذان</string>
+    <string name="about_audio_credit_detail">اثنان من الأذانات المضمّنة من تسجيلي الخاص، وبقيتها منشورة على «إسلام ويب» ومضمَّنة مع ذكر المصدر — انظر الإعدادات ← المصادر والشكر. ويمكنك استخدام أي تسجيل تفضّله بدلًا منها: الإعدادات ← خيارات صوت الأذان.</string>
+    <string name="about_privacy">لا يجمع هذا التطبيق أي بيانات ولا يرسل شيئًا خارج الجهاز.</string>
+    <string name="delete">حذف</string>
+    <string name="delete_athan">حذف «%1$s»؟</string>
+
+    <string name="athan_body">حان وقت الصلاة</string>
+    <string name="stop">إيقاف</string>
+
+    <string name="channel_athan">الأذان</string>
+    <string name="channel_athan_desc">الأذان عند دخول وقت كل صلاة</string>
+    <string name="channel_athan_quiet">الأذان (النافذة مفتوحة)</string>
+    <string name="channel_athan_quiet_desc">إشعار صامت يظهر أثناء عرض نافذة الأذان</string>
+    <string name="channel_download">الأذانات المنزّلة</string>
+    <string name="channel_download_desc">يؤكّد جاهزية الأذان الذي نزّلته لإعداده</string>
+
+    <string name="exact_alarm_blocked">التنبيهات الدقيقة معطّلة، فلن ينطلق الأذان في وقته. اضغط للسماح.</string>
+
+    <string name="method_north_america">أمريكا الشمالية (ISNA)</string>
+    <string name="method_mwl">رابطة العالم الإسلامي</string>
+    <string name="method_egyptian">الهيئة المصرية العامة للمساحة</string>
+    <string name="method_karachi">كراتشي</string>
+    <string name="method_umm_al_qura">أم القرى (مكة المكرمة)</string>
+    <string name="method_dubai">دبي</string>
+    <string name="method_moonsighting">لجنة رؤية الهلال</string>
+    <string name="method_kuwait">الكويت</string>
+    <string name="method_qatar">قطر</string>
+    <string name="method_singapore">سنغافورة</string>
+    <string name="method_turkey">تركيا</string>
+    <string name="method_tehran">طهران</string>
+    <string name="method_other">أخرى</string>
+
+    <string name="category_developer">أذان المطوّر</string>
+    <string name="category_mecca">مكة — المسجد الحرام</string>
+    <string name="category_madina">المدينة — المسجد النبوي</string>
+    <string name="category_emarat">الإمارات</string>
+    <string name="category_various">مؤذنون متنوعون</string>
+    <string name="category_egyptian">مصر</string>
+    <string name="category_turkish">تركيا</string>
+    <string name="category_kuwait">الكويت</string>
+    <string name="category_georgia">جورجيا</string>
+    <string name="category_fajr">أذان الفجر</string>
+
+    <string name="source_islamweb">إسلام ويب — مكتبة الأذان</string>
+    <string name="source_islamweb_note">مؤذنون كثيرون (التنزيل من موقعهم)</string>
+</resources>

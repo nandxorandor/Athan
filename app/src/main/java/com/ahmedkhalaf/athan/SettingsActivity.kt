@@ -8,7 +8,6 @@ import android.widget.NumberPicker
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
@@ -20,7 +19,7 @@ import com.batoulapps.adhan.CalculationMethod
  * screen so that screen stays a single glance: next prayer, today's times, and
  * how the athan will announce itself.
  */
-class SettingsActivity : AppCompatActivity() {
+class SettingsActivity : LocalizedActivity() {
 
     private lateinit var binding: ActivitySettingsBinding
     private lateinit var prefs: Prefs
@@ -181,19 +180,21 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun methodLabel(name: String): String = when (name) {
-        "NORTH_AMERICA" -> "North America (ISNA)"
-        "MUSLIM_WORLD_LEAGUE" -> "Muslim World League"
-        "EGYPTIAN" -> "Egyptian General Authority"
-        "KARACHI" -> "Karachi"
-        "UMM_AL_QURA" -> "Umm al-Qura (Makkah)"
-        "DUBAI" -> "Dubai"
-        "MOON_SIGHTING_COMMITTEE" -> "Moonsighting Committee"
-        "KUWAIT" -> "Kuwait"
-        "QATAR" -> "Qatar"
-        "SINGAPORE" -> "Singapore"
-        "TURKEY" -> "Turkey"
-        "TEHRAN" -> "Tehran"
-        "OTHER" -> "Other"
+        "NORTH_AMERICA" -> getString(R.string.method_north_america)
+        "MUSLIM_WORLD_LEAGUE" -> getString(R.string.method_mwl)
+        "EGYPTIAN" -> getString(R.string.method_egyptian)
+        "KARACHI" -> getString(R.string.method_karachi)
+        "UMM_AL_QURA" -> getString(R.string.method_umm_al_qura)
+        "DUBAI" -> getString(R.string.method_dubai)
+        "MOON_SIGHTING_COMMITTEE" -> getString(R.string.method_moonsighting)
+        "KUWAIT" -> getString(R.string.method_kuwait)
+        "QATAR" -> getString(R.string.method_qatar)
+        "SINGAPORE" -> getString(R.string.method_singapore)
+        "TURKEY" -> getString(R.string.method_turkey)
+        "TEHRAN" -> getString(R.string.method_tehran)
+        "OTHER" -> getString(R.string.method_other)
+        // A method the library added since this list was written: better a
+        // readable English name than a raw SCREAMING_CASE constant.
         else -> name.lowercase().replace('_', ' ').replaceFirstChar { it.uppercase() }
     }
 

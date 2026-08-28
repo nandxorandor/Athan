@@ -3,14 +3,13 @@ package com.ahmedkhalaf.athan
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import com.ahmedkhalaf.athan.databinding.ActivityAboutBinding
 
 /** App identity, contact details, and credits for the included recordings. */
-class AboutActivity : AppCompatActivity() {
+class AboutActivity : LocalizedActivity() {
 
     private lateinit var binding: ActivityAboutBinding
 

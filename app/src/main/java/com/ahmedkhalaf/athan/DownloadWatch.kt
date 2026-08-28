@@ -194,6 +194,11 @@ object DownloadWatch {
 
 /** Started by the system when the watched MediaStore collections change. */
 class DownloadWatchJob : JobService() {
+    // Notifications this service posts are user-visible text, so it needs the
+    // chosen language too — a service context does not inherit an activity's.
+    override fun attachBaseContext(newBase: android.content.Context) {
+        super.attachBaseContext(AppLocale.wrap(newBase))
+    }
 
     override fun onStartJob(params: JobParameters): Boolean {
         // A MediaStore query is disk work; the job's callback runs on the main

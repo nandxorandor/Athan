@@ -23,6 +23,14 @@ class Prefs(context: Context) {
         get() = Double.fromBits(sp.getLong(KEY_LNG, NO_LOCATION.toRawBits()))
         set(v) = sp.edit().putLong(KEY_LNG, v.toRawBits()).apply()
 
+    /**
+     * "en" or "ar"; empty until the user picks one, which is what lets a fresh
+     * install follow the phone's own language instead of guessing English.
+     */
+    var language: String
+        get() = sp.getString(KEY_LANGUAGE, "") ?: ""
+        set(v) = sp.edit().putString(KEY_LANGUAGE, v).apply()
+
     var cityName: String
         get() = sp.getString(KEY_CITY, "") ?: ""
         set(v) = sp.edit().putString(KEY_CITY, v).apply()
@@ -149,6 +157,7 @@ class Prefs(context: Context) {
         const val KEY_LAT = "lat"
         const val KEY_LNG = "lng"
         const val KEY_CITY = "city"
+        const val KEY_LANGUAGE = "language"
         const val KEY_METHOD = "method"
         const val KEY_MADHAB = "madhab"
         const val KEY_QIBLA_NOTICE = "qibla_notice_seen"

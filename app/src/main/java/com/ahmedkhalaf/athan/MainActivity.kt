@@ -18,7 +18,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -37,14 +36,21 @@ import java.util.concurrent.TimeUnit
  * the athan will announce itself. Anything configured once lives in
  * SettingsActivity behind the gear.
  */
-class MainActivity : AppCompatActivity() {
+class MainActivity : LocalizedActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var prefs: Prefs
     private lateinit var engine: PrayerEngine
 
-    private val timeFormat = SimpleDateFormat("h:mm a", Locale.getDefault())
-    private val hijriDateFormat = DateTimeFormatter.ofPattern("EEEE, d MMMM yyyy G", Locale.getDefault())
+    // Built lazily, not at construction: a field initialiser runs before
+    // attachBaseContext has applied the chosen language, so an eager formatter
+    // would keep the previous locale for the life of the screen.
+    private val timeFormat by lazy {
+        SimpleDateFormat(getString(R.string.time_pattern), Locale.getDefault())
+    }
+    private val hijriDateFormat by lazy {
+        DateTimeFormatter.ofPattern(getString(R.string.hijri_date_pattern), Locale.getDefault())
+    }
     private val ticker = Handler(Looper.getMainLooper())
 
     private val tick = object : Runnable {
@@ -80,6 +86,13 @@ class MainActivity : AppCompatActivity() {
         binding.qiblaButton.setOnClickListener {
             startActivity(Intent(this, QiblaActivity::class.java))
         }
+        binding.morningAdhkarButton.setOnClickListener {
+            startActivity(AdhkarActivity.intent(this, AdhkarSitting.MORNING))
+        }
+        binding.eveningAdhkarButton.setOnClickListener {
+            startActivity(AdhkarActivity.intent(this, AdhkarSitting.EVENING))
+        }
+        bindLanguageSwitch()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
             ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
@@ -89,6 +102,29 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (!prefs.hasLocation) chooseLocation()
+    }
+
+    /**
+     * Checking a button fires the listener, so the current language is set
+     * before the listener exists — otherwise simply opening the screen would
+     * look like a change and recreate the activity on every launch.
+     */
+    private fun bindLanguageSwitch() {
+        val current = AppLocale.current(this)
+        binding.languageGroup.check(
+            if (current == AppLanguage.ARABIC) R.id.langArabic else R.id.langEnglish
+        )
+        binding.languageGroup.addOnButtonCheckedListener { _, checkedId, isChecked ->
+            if (!isChecked) return@addOnButtonCheckedListener
+            val chosen =
+                if (checkedId == R.id.langArabic) AppLanguage.ARABIC else AppLanguage.ENGLISH
+            if (chosen == AppLocale.current(this)) return@addOnButtonCheckedListener
+            AppLocale.set(this, chosen)
+            // The channel names live in the system's notification settings, so
+            // they only follow the language if we rename them here.
+            AthanApp.createChannels(this)
+            recreate()
+        }
     }
 
     private fun applyInsets() {
@@ -194,8 +230,8 @@ class MainActivity : AppCompatActivity() {
         val hours = TimeUnit.MILLISECONDS.toHours(remaining)
         val minutes = TimeUnit.MILLISECONDS.toMinutes(remaining) % 60
         val seconds = TimeUnit.MILLISECONDS.toSeconds(remaining) % 60
-        val left = if (hours > 0) String.format(Locale.getDefault(), "%dh %02dm", hours, minutes)
-        else String.format(Locale.getDefault(), "%dm %02ds", minutes, seconds)
+        val left = if (hours > 0) getString(R.string.countdown_hm, hours, minutes)
+        else getString(R.string.countdown_ms, minutes, seconds)
         binding.nextPrayer.text =
             getString(R.string.next_in, getString(next.slot.labelRes), left)
     }

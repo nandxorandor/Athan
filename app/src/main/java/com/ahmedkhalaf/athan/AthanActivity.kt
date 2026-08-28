@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.ahmedkhalaf.athan.databinding.ActivityAthanBinding
 import java.text.SimpleDateFormat
@@ -17,7 +16,7 @@ import java.util.Locale
  * The announcement itself: prayer name, time, and one way to stop it. Shows
  * over the lock screen so it is readable without unlocking the phone.
  */
-class AthanActivity : AppCompatActivity() {
+class AthanActivity : LocalizedActivity() {
 
     private lateinit var binding: ActivityAthanBinding
     private lateinit var prefs: Prefs
@@ -66,7 +65,7 @@ class AthanActivity : AppCompatActivity() {
         binding.prayerName.text =
             slot?.let { getString(it.labelRes) } ?: getString(R.string.app_name)
         binding.prayerTime.text =
-            SimpleDateFormat("h:mm a", Locale.getDefault()).format(Date())
+            SimpleDateFormat(getString(R.string.time_pattern), Locale.getDefault()).format(Date())
         val showVolume = slot?.let { prefs.modeFor(it) == AthanMode.SOUND } == true
         binding.volumeLabel.visibility = if (showVolume) android.view.View.VISIBLE else android.view.View.GONE
         binding.volumeSlider.visibility = if (showVolume) android.view.View.VISIBLE else android.view.View.GONE

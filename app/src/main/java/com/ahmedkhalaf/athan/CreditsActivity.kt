@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
@@ -19,7 +18,7 @@ import com.ahmedkhalaf.athan.databinding.ActivityCreditsBinding
  * shipped audio index rather than a hand-written list — a credit that can drift
  * out of step with the files is worse than none.
  */
-class CreditsActivity : AppCompatActivity() {
+class CreditsActivity : LocalizedActivity() {
 
     private lateinit var binding: ActivityCreditsBinding
 

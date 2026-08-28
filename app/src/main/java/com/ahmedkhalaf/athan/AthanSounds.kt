@@ -26,7 +26,7 @@ data class AthanSound(
  * recordings, so it is generated from the files themselves rather than typed
  * into a list that could silently fall out of step with what actually ships.
  */
-class AthanCatalog(context: Context) {
+class AthanCatalog(private val context: Context) {
 
     private val assets = context.applicationContext.assets
 
@@ -142,13 +142,21 @@ class AthanCatalog(context: Context) {
     private fun formatDuration(seconds: Int?): String =
         if (seconds == null) "" else "%d:%02d".format(seconds / 60, seconds % 60)
 
+    // Read through the caller's context, not the application's: the language
+    // can change while the process lives, and the application context keeps
+    // whatever locale it was created with.
     private fun displayName(category: String) = when (category) {
-        DEVELOPER -> "Developer athan"
-        "mecca" -> "Mecca — Masjid al-Haram"
-        "madina" -> "Madina — Masjid an-Nabawi"
-        "emarat" -> "Emirates"
-        "various" -> "Various reciters"
-        FAJR -> "Fajr athan"
+        DEVELOPER -> context.getString(R.string.category_developer)
+        "mecca" -> context.getString(R.string.category_mecca)
+        "madina" -> context.getString(R.string.category_madina)
+        "emarat" -> context.getString(R.string.category_emarat)
+        "various" -> context.getString(R.string.category_various)
+        "egyptian" -> context.getString(R.string.category_egyptian)
+        "turkish" -> context.getString(R.string.category_turkish)
+        "kuwait" -> context.getString(R.string.category_kuwait)
+        "georgia" -> context.getString(R.string.category_georgia)
+        FAJR -> context.getString(R.string.category_fajr)
+        // A folder added after this list was written still needs a heading.
         else -> category.replaceFirstChar { it.uppercase() }
     }
 

@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
@@ -26,7 +25,7 @@ import com.ahmedkhalaf.athan.databinding.ActivityMoreAthansBinding
  * is still in the browser, and the same news as a dialog if they come back here
  * without having dealt with it.
  */
-class MoreAthansActivity : AppCompatActivity() {
+class MoreAthansActivity : LocalizedActivity() {
 
     private lateinit var binding: ActivityMoreAthansBinding
     private lateinit var prefs: Prefs
@@ -46,12 +45,12 @@ class MoreAthansActivity : AppCompatActivity() {
     }
 
     /** name, one-line note, and the page (not a raw file) to open. */
-    private data class Source(val name: String, val note: String, val url: String)
+    private data class Source(val nameRes: Int, val noteRes: Int, val url: String)
 
     private val sources = listOf(
         Source(
-            "IslamWeb — athan library",
-            "Many reciters (download on their site)",
+            R.string.source_islamweb,
+            R.string.source_islamweb_note,
             "https://audio.islamweb.net/audio/index.php?Gtype=1&page=AudioGroup"
         ),
     )
@@ -70,8 +69,8 @@ class MoreAthansActivity : AppCompatActivity() {
 
         sources.forEach { source ->
             val row = LayoutInflater.from(this).inflate(R.layout.item_link, binding.list, false)
-            row.findViewById<TextView>(R.id.linkName).text = source.name
-            row.findViewById<TextView>(R.id.linkNote).text = source.note
+            row.findViewById<TextView>(R.id.linkName).setText(source.nameRes)
+            row.findViewById<TextView>(R.id.linkNote).setText(source.noteRes)
             row.setOnClickListener { open(source.url) }
             binding.list.addView(row)
         }

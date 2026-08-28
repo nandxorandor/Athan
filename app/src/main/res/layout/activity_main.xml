@@ -17,9 +17,9 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingStart="24dp"
-        android:paddingTop="24dp"
+        android:paddingTop="16dp"
         android:paddingEnd="24dp"
-        android:paddingBottom="24dp">
+        android:paddingBottom="16dp">
 
         <LinearLayout
             android:id="@+id/locationRow"
@@ -89,13 +89,13 @@
             android:id="@+id/timesContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="14dp"
             android:orientation="vertical" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:orientation="horizontal">
 
             <com.google.android.material.button.MaterialButton
@@ -140,6 +140,106 @@
                 app:iconPadding="6dp"
                 app:iconSize="20dp" />
         </LinearLayout>
+
+        <!-- Evening on the left, morning on the right: the row reads
+             right-to-left like the Arabic on the buttons themselves, and the
+             icons carry the time of day so neither label has to. -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/eveningAdhkarButton"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:layout_weight="1"
+                android:insetLeft="0dp"
+                android:insetRight="0dp"
+                android:maxLines="1"
+                android:minWidth="0dp"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                android:text="@string/adhkar_evening"
+                android:textAllCaps="false"
+                app:autoSizeMaxTextSize="14sp"
+                app:autoSizeMinTextSize="10sp"
+                app:autoSizeStepGranularity="1sp"
+                app:autoSizeTextType="uniform"
+                app:icon="@drawable/ic_adhkar_evening"
+                app:iconGravity="textStart"
+                app:iconPadding="6dp"
+                app:iconSize="20dp"
+                app:iconTint="@color/text" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/morningAdhkarButton"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_weight="1"
+                android:insetLeft="0dp"
+                android:insetRight="0dp"
+                android:maxLines="1"
+                android:minWidth="0dp"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                android:text="@string/adhkar_morning"
+                android:textAllCaps="false"
+                app:autoSizeMaxTextSize="14sp"
+                app:autoSizeMinTextSize="10sp"
+                app:autoSizeStepGranularity="1sp"
+                app:autoSizeTextType="uniform"
+                app:icon="@drawable/ic_adhkar_morning"
+                app:iconGravity="textStart"
+                app:iconPadding="6dp"
+                app:iconSize="20dp"
+                app:iconTint="@color/sunrise" />
+        </LinearLayout>
+
+        <!-- The language switch sits on the home screen rather than inside
+             Settings: an Arabic reader who opens an English app should not have
+             to read English to find it. -->
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/languageGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:selectionRequired="true"
+            app:singleSelection="true">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/langEnglish"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:insetLeft="0dp"
+                android:insetRight="0dp"
+                android:maxLines="1"
+                android:minWidth="0dp"
+                android:text="@string/lang_english"
+                android:textAllCaps="false"
+                android:textSize="15sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/langArabic"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:insetLeft="0dp"
+                android:insetRight="0dp"
+                android:maxLines="1"
+                android:minWidth="0dp"
+                android:text="@string/lang_arabic"
+                android:textAllCaps="false"
+                android:textSize="15sp" />
+        </com.google.android.material.button.MaterialButtonToggleGroup>
 
     </LinearLayout>
 </ScrollView>

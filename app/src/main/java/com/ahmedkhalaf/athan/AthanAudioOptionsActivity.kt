@@ -2,14 +2,13 @@ package com.ahmedkhalaf.athan
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import com.ahmedkhalaf.athan.databinding.ActivityAthanAudioOptionsBinding
 
 /** Groups every recording-related option under one Settings entry. */
-class AthanAudioOptionsActivity : AppCompatActivity() {
+class AthanAudioOptionsActivity : LocalizedActivity() {
 
     private lateinit var binding: ActivityAthanAudioOptionsBinding
     private lateinit var prefs: Prefs

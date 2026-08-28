@@ -13,7 +13,6 @@ import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
@@ -24,7 +23,7 @@ import com.ahmedkhalaf.athan.databinding.ActivitySoundPickerBinding
  * the [EXTRA_FOR_FAJR] flag. Offers the bundled recordings plus two ways to use
  * the phone's own audio: any saved file, or a system ringtone.
  */
-class SoundPickerActivity : AppCompatActivity() {
+class SoundPickerActivity : LocalizedActivity() {
 
     private lateinit var binding: ActivitySoundPickerBinding
     private lateinit var prefs: Prefs

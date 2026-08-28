@@ -20,6 +20,14 @@
     <string name="no_fix">No recent location fix — open Maps once, or type a city</string>
     <string name="no_location_yet">Set a location to see prayer times</string>
     <string name="next_in">%1$s in %2$s</string>
+    <!-- The countdown's units are words, so they are translated like any other
+         text rather than formatted into the string in Kotlin. -->
+    <string name="countdown_hm">%1$dh %2$02dm</string>
+    <string name="countdown_ms">%1$dm %2$02ds</string>
+    <!-- Date and clock patterns, per language: Arabic separates with its own
+         comma. Digits stay Western in both (see AppLanguage.ARABIC). -->
+    <string name="time_pattern">h:mm a</string>
+    <string name="hijri_date_pattern">EEEE, d MMMM yyyy G</string>
 
     <string name="app_volume">App Volume</string>
     <string name="volume_percent">%1$d%%</string>
@@ -64,10 +72,59 @@
     <string name="reminder_title">%1$s soon</string>
     <string name="reminder_body">Be ready — %1$s in %2$d minutes</string>
     <string name="reminder_popup">Be ready for %1$s in %2$d minutes</string>
+    <string name="reminder_popup_countdown">Be ready for %1$s in %2$s</string>
+    <string name="reminder_popup_now">It\'s time for %1$s</string>
     <string name="close">Close</string>
     <string name="volume_min">0</string>
     <string name="volume_max">100</string>
     <string name="qibla">Qibla</string>
+
+    <!-- Headings and captions are labels, so they follow the language. The
+         athkar themselves never do: they are Qur'an and hadith, and exist in
+         one language only. -->
+    <string name="adhkar_morning">Morning Athkar</string>
+    <string name="adhkar_evening">Evening Athkar</string>
+    <string name="adhkar_morning_when">Said after Fajr, until sunrise</string>
+    <string name="adhkar_evening_when">Said after Asr, until sunset</string>
+    <string name="adhkar_unavailable">Couldn\'t load the athkar</string>
+
+    <!-- The two language names are written in their own language in both
+         locales, so they are never translated. -->
+    <string name="lang_english">English</string>
+    <string name="lang_arabic">عربي</string>
+    <string name="language">Language</string>
+
+    <!-- Calculation methods and audio categories were literals in Kotlin until
+         the app became bilingual; they are resources now so both languages
+         come from the same place. -->
+    <string name="method_north_america">North America (ISNA)</string>
+    <string name="method_mwl">Muslim World League</string>
+    <string name="method_egyptian">Egyptian General Authority</string>
+    <string name="method_karachi">Karachi</string>
+    <string name="method_umm_al_qura">Umm al-Qura (Makkah)</string>
+    <string name="method_dubai">Dubai</string>
+    <string name="method_moonsighting">Moonsighting Committee</string>
+    <string name="method_kuwait">Kuwait</string>
+    <string name="method_qatar">Qatar</string>
+    <string name="method_singapore">Singapore</string>
+    <string name="method_turkey">Turkey</string>
+    <string name="method_tehran">Tehran</string>
+    <string name="method_other">Other</string>
+
+    <string name="category_developer">Developer athan</string>
+    <string name="category_mecca">Mecca — Masjid al-Haram</string>
+    <string name="category_madina">Madina — Masjid an-Nabawi</string>
+    <string name="category_emarat">Emirates</string>
+    <string name="category_various">Various reciters</string>
+    <string name="category_egyptian">Egyptian</string>
+    <string name="category_turkish">Turkish</string>
+    <string name="category_kuwait">Kuwait</string>
+    <string name="category_georgia">Georgia</string>
+    <string name="category_fajr">Fajr athan</string>
+
+    <string name="source_islamweb">IslamWeb — athan library</string>
+    <string name="source_islamweb_note">Many reciters (download on their site)</string>
+
     <string name="qibla_notice_title">Compass accuracy</string>
     <string name="qibla_notice_body">Arrow looks wrong? Tilt and turn the phone a few times, away from metal and magnets.</string>
     <string name="dont_show_again">Don\'t show this again</string>

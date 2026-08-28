@@ -7,7 +7,6 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
@@ -23,7 +22,7 @@ import kotlin.math.tan
  * Points at the Kaaba. The bearing is pure spherical geometry from the saved
  * coordinates; the only live input is the phone's heading.
  */
-class QiblaActivity : AppCompatActivity(), SensorEventListener {
+class QiblaActivity : LocalizedActivity(), SensorEventListener {
 
     private lateinit var binding: ActivityQiblaBinding
     private lateinit var sensors: SensorManager

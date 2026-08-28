@@ -58,6 +58,13 @@
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait" />
 
+        <!-- Morning and evening remembrances; the sitting comes in as an extra. -->
+        <activity
+            android:name=".AdhkarActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
+
         <activity
             android:name=".SoundPickerActivity"
             android:exported="false"
