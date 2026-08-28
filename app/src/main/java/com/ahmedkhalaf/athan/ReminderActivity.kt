@@ -6,15 +6,15 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.ahmedkhalaf.athan.databinding.ActivityReminderBinding
 
 /**
- * The heads-up popup: "Be ready for {prayer} in {N} minutes", with one Close
- * button. Shows over the lock screen so it is readable without unlocking.
+ * The heads-up popup: "Be ready for {prayer} in 9m 12s", counting down to the
+ * prayer itself, with one Close button. Shows over the lock screen so it is
+ * readable without unlocking, and stays until you close it or the athan starts.
  */
-class ReminderActivity : AppCompatActivity() {
+class ReminderActivity : LocalizedActivity() {
 
     private lateinit var binding: ActivityReminderBinding
 
@@ -37,6 +37,16 @@ class ReminderActivity : AppCompatActivity() {
      * until the user found it.
      */
     private val expire = Runnable { finish() }
+
+    private var prayerName: String = ""
+    private var target: java.util.Date? = null
+
+    private val tick = object : Runnable {
+        override fun run() {
+            updateCountdown()
+            handler.postDelayed(this, 1_000L)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,9 +86,38 @@ class ReminderActivity : AppCompatActivity() {
         val slot = runCatching {
             Slot.valueOf(intent.getStringExtra(AthanScheduler.EXTRA_SLOT) ?: "")
         }.getOrNull()
-        val name = slot?.let { getString(it.labelRes) } ?: getString(R.string.app_name)
-        binding.reminderText.text =
-            getString(R.string.reminder_popup, name, Prefs(this).reminderMinutes)
+        prayerName = slot?.let { getString(it.labelRes) } ?: getString(R.string.app_name)
+
+        // The prayer's actual time, not the setting the alarm was scheduled
+        // from: now that the popup stays until the athan, "in 10 minutes" would
+        // still claim ten minutes nine minutes later.
+        target = PrayerEngine(Prefs(this)).next()?.time
+
+        handler.removeCallbacks(tick)
+        handler.post(tick)
+    }
+
+    private fun updateCountdown() {
+        val at = target
+        val remaining = if (at == null) -1L else at.time - System.currentTimeMillis()
+        binding.reminderText.text = if (at == null || remaining <= 0L) {
+            getString(R.string.reminder_popup_now, prayerName)
+        } else {
+            getString(R.string.reminder_popup_countdown, prayerName, formatLeft(remaining))
+        }
+    }
+
+    /** Seconds shown below the hour, so the last minute visibly moves. */
+    private fun formatLeft(ms: Long): String {
+        val totalSeconds = ms / 1000
+        val hours = totalSeconds / 3600
+        val minutes = (totalSeconds % 3600) / 60
+        val seconds = totalSeconds % 60
+        return if (hours > 0) {
+            getString(R.string.countdown_hm, hours, minutes)
+        } else {
+            getString(R.string.countdown_ms, minutes, seconds)
+        }
     }
 
     private fun showOverLockScreen() {
@@ -104,6 +143,7 @@ class ReminderActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         handler.removeCallbacks(expire)
+        handler.removeCallbacks(tick)
         runCatching { unregisterReceiver(athanStarted) }
     }
 
