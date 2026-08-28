@@ -149,10 +149,15 @@ class MainActivity : LocalizedActivity() {
         }
         val fahrenheit = prefs.fahrenheit
         val value = if (fahrenheit) reading.celsius * 9 / 5 + 32 else reading.celsius
-        binding.temperature.text = getString(
+        val degrees = getString(
             if (fahrenheit) R.string.temperature_fahrenheit else R.string.temperature_celsius,
             Math.round(value).toInt()
         )
+        // The symbol leads: the sky is the thing you take in at a glance, and
+        // the number is what you read second.
+        binding.temperature.text = reading.symbol.let {
+            if (it.isEmpty()) degrees else "$it $degrees"
+        }
         binding.temperature.visibility = View.VISIBLE
     }
 

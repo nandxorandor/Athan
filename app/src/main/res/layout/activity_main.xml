@@ -51,7 +51,7 @@
                 android:maxLines="1"
                 android:text="@string/set_location"
                 android:textColor="@color/text"
-                android:textSize="18sp" />
+                android:textSize="17sp" />
 
             <!-- Rides on the location row rather than taking a line of its
                  own: it belongs to the place, and the home screen has no
@@ -61,15 +61,15 @@
                 android:id="@+id/temperature"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
+                android:layout_marginStart="4dp"
                 android:background="@drawable/bg_temperature"
                 android:maxLines="1"
-                android:paddingStart="12dp"
+                android:paddingStart="9dp"
                 android:paddingTop="6dp"
-                android:paddingEnd="12dp"
+                android:paddingEnd="9dp"
                 android:paddingBottom="6dp"
                 android:textColor="@color/temperature_text"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:visibility="gone" />
         </LinearLayout>
 

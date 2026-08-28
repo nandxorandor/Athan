@@ -25,8 +25,38 @@ import java.util.concurrent.Executors
  */
 object Weather {
 
-    /** A reading, and when it was taken. */
-    data class Reading(val celsius: Double, val takenAt: Long)
+    /**
+     * A reading, and when it was taken. [code] is the WMO weather code for the
+     * current conditions; [rainComing] is set when the next few hours hold rain
+     * or snow that is not already falling.
+     */
+    data class Reading(
+        val celsius: Double,
+        val takenAt: Long,
+        val code: Int = -1,
+        val rainComing: Boolean = false,
+    ) {
+        /**
+         * One character for the sky. WMO codes group cleanly: 0 clear,
+         * 1-3 increasing cloud, 45-48 fog, 51-67 drizzle and rain, 71-77 snow,
+         * 80-82 showers, 95-99 thunderstorm.
+         *
+         * The umbrella is deliberately not the rain cloud: it says "not now,
+         * but soon", which a rain icon under a clear sky could not.
+         */
+        val symbol: String
+            get() = when {
+                code < 0 -> ""
+                code in 95..99 -> "⛈️"
+                code in 71..77 || code == 85 || code == 86 -> "❄️"
+                code in 51..67 || code in 80..82 -> "🌧️"
+                code in 45..48 -> "🌫️"
+                rainComing -> "🌂"
+                code == 3 -> "☁️"
+                code in 1..2 -> "🌤️"
+                else -> "☀️"
+            }
+    }
 
     private val io = Executors.newSingleThreadExecutor { r ->
         Thread(r, "weather").apply { isDaemon = true }
@@ -86,7 +116,11 @@ object Weather {
             String.format(
                 Locale.US,
                 "https://api.open-meteo.com/v1/forecast" +
-                    "?latitude=%.4f&longitude=%.4f&current=temperature_2m",
+                    "?latitude=%.4f&longitude=%.4f" +
+                    "&current=temperature_2m,weather_code" +
+                    // Six hours is far enough ahead to be worth knowing and
+                    // near enough to still be true. One request, not two.
+                    "&hourly=weather_code&forecast_hours=6",
                 latitude, longitude
             )
         )
@@ -100,14 +134,30 @@ object Weather {
                 error("HTTP ${connection.responseCode}")
             }
             val body = connection.inputStream.bufferedReader().use { it.readText() }
-            val celsius = JSONObject(body)
-                .getJSONObject("current")
-                .getDouble("temperature_2m")
-            Reading(celsius, System.currentTimeMillis())
+            val json = JSONObject(body)
+            val current = json.getJSONObject("current")
+            val code = current.optInt("weather_code", -1)
+            Reading(
+                celsius = current.getDouble("temperature_2m"),
+                takenAt = System.currentTimeMillis(),
+                code = code,
+                // Only worth flagging when nothing is falling already: an
+                // umbrella beside a rain cloud tells you nothing new.
+                rainComing = !isWet(code) && rainAhead(json),
+            )
         } finally {
             connection.disconnect()
         }
     }
+
+    /** Drizzle, rain, showers, snow or thunderstorm - anything falling. */
+    private fun isWet(code: Int) = code in 51..67 || code in 71..86 || code in 95..99
+
+    /** True if any of the next few hours forecasts something falling. */
+    private fun rainAhead(json: JSONObject): Boolean = runCatching {
+        val codes = json.getJSONObject("hourly").getJSONArray("weather_code")
+        (0 until codes.length()).any { isWet(codes.getInt(it)) }
+    }.getOrDefault(false)
 
     private const val TAG = "Weather"
 
