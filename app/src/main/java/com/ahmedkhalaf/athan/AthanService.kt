@@ -87,6 +87,50 @@ class AthanService : Service() {
         return START_NOT_STICKY
     }
 
+    /**
+     * The du'aa said after the athan, a couple of seconds behind the call so it
+     * does not tread on the last word. Returns false if there is nothing to
+     * play, which is the caller's signal to stop as it always did — every
+     * failure path here has to end in the service stopping, or the foreground
+     * notification would outlive the sound.
+     */
+    private fun playDua(prefs: Prefs): Boolean {
+        if (!prefs.afterAthanDua) return false
+        return runCatching {
+            player?.release()
+            player = MediaPlayer().apply {
+                setAudioAttributes(
+                    AudioAttributes.Builder()
+                        .setUsage(AudioAttributes.USAGE_ALARM)
+                        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                        .build()
+                )
+                assets.openFd(DUA_ASSET).use {
+                    setDataSource(it.fileDescriptor, it.startOffset, it.length)
+                }
+                val v = prefs.volume / 100f
+                setVolume(v, v)
+                setOnCompletionListener {
+                    Log.i(TAG, "du'aa finished")
+                    stopSelf()
+                }
+                setOnErrorListener { _, what, extra ->
+                    Log.e(TAG, "du'aa error what=$what extra=$extra")
+                    stopSelf()
+                    true
+                }
+                prepare()
+            }
+            // The pause is the point: straight after the call it sounds like a
+            // continuation of the recording rather than a response to it.
+            handler.postDelayed({ runCatching { player?.start() } }, DUA_DELAY_MS)
+            true
+        }.getOrElse {
+            Log.e(TAG, "could not play the du'aa", it)
+            false
+        }
+    }
+
     private fun playAthan(slot: Slot) {
         val prefs = Prefs(this)
         val catalog = AthanCatalog(this)
@@ -114,7 +158,10 @@ class AthanService : Service() {
                 setVolume(v, v)
                 setOnCompletionListener {
                     Log.i(TAG, "playback finished")
-                    stopSelf()
+                    // The du'aa follows the call, so the service must not stop
+                    // here: the athan and the du'aa are one announcement, and
+                    // the window stays until both are done.
+                    if (!playDua(prefs)) stopSelf()
                 }
                 setOnErrorListener { _, what, extra ->
                     Log.e(TAG, "playback error what=$what extra=$extra")
@@ -218,6 +265,8 @@ class AthanService : Service() {
         const val ACTION_SET_VOLUME = "com.ahmedkhalaf.athan.SET_VOLUME"
         const val EXTRA_VOLUME = "volume"
         const val ACTION_FINISHED = "com.ahmedkhalaf.athan.FINISHED"
+        private const val DUA_ASSET = "dua/after-athan-dua.mp3"
+        private const val DUA_DELAY_MS = 2_000L
         const val ACTION_STARTED = "com.ahmedkhalaf.athan.STARTED"
         private const val TAG = "AthanService"
         private const val NOTIFICATION_ID = 42

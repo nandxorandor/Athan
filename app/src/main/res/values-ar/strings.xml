@@ -146,7 +146,7 @@
     <string name="credit_source_unknown">المصدر: islamweb.net (اسم المؤذن غير مذكور في التسجيل)</string>
     <string name="credit_own_recording">تسجيل من إعداد المطوّر</string>
     <string name="credits_software">البرمجيات</string>
-    <string name="credits_software_detail">تُحسب أوقات الصلاة بمكتبة «adhan» مفتوحة المصدر من Batoul Apps. والتطبيق نفسه لا يجري أي اتصال بالشبكة ولا يجمع أي بيانات.</string>
+    <string name="credits_software_detail">تُحسب أوقات الصلاة بمكتبة «adhan» مفتوحة المصدر من Batoul Apps. وكل ما يعرضه التطبيق — مواقيت الصلاة والقبلة والأذكار وتقويم رمضان — يُحسب على هاتفك. ودرجة الحرارة هي الاستثناء الوحيد، ويمكن إيقافها.</string>
 
     <string name="about">عن التطبيق</string>
     <string name="about_version">الإصدار %1$s</string>
@@ -155,7 +155,7 @@
     <string name="about_github">تابعني على GitHub: github.com/nandxorandor</string>
     <string name="about_audio_credit">تسجيلات الأذان</string>
     <string name="about_audio_credit_detail">اثنان من الأذانات المضمّنة من تسجيلي الخاص، وبقيتها منشورة على «إسلام ويب» ومضمَّنة مع ذكر المصدر — انظر الإعدادات ← المصادر والشكر. ويمكنك استخدام أي تسجيل تفضّله بدلًا منها: الإعدادات ← خيارات صوت الأذان.</string>
-    <string name="about_privacy">لا يجمع هذا التطبيق أي بيانات ولا يرسل شيئًا خارج الجهاز.</string>
+    <string name="about_privacy">لا يجمع هذا التطبيق أي بيانات. والشيء الوحيد الذي يُرسله هو إحداثياتك لمعرفة درجة الحرارة — وذلك فقط عند تفعيلها. وإن أوقفتها من الإعدادات لم يعد يتصل بالشبكة إطلاقًا.</string>
     <string name="delete">حذف</string>
     <string name="delete_athan">حذف «%1$s»؟</string>
 
@@ -198,4 +198,45 @@
 
     <string name="source_islamweb">إسلام ويب — مكتبة الأذان</string>
     <string name="source_islamweb_note">مؤذنون كثيرون (التنزيل من موقعهم)</string>
+
+    <string name="temperature">درجة الحرارة</string>
+    <string name="temperature_enable">إظهار درجة الحرارة</string>
+    <string name="temperature_explainer">الجزء الوحيد من التطبيق الذي يستخدم الإنترنت. تُرسل إحداثياتك إلى Open-Meteo لمعرفة الطقس عندك — ولا يُرسل شيء سواها، ولا يُحفظ شيء. وإذا أوقفته لم يعد التطبيق يتصل بالشبكة إطلاقًا.</string>
+    <string name="temperature_units">الوحدة</string>
+    <string name="unit_celsius">مئوية</string>
+    <string name="unit_fahrenheit">فهرنهايت</string>
+    <string name="temperature_summary_on">مفعّل · %1$s</string>
+    <string name="temperature_summary_off">متوقف · بلا اتصال بالشبكة</string>
+    <string name="temperature_notice_title">هل تريد إظهار درجة الحرارة؟</string>
+    <string name="temperature_notice_body">يمكن للتطبيق عرض درجة الحرارة عند موقعك. ولذلك تُرسل إحداثياتك إلى Open-Meteo — وهذا هو الشيء الوحيد الذي يُرسله هذا التطبيق إلى أي جهة.
+
+أمّا كل ما عدا ذلك — مواقيت الصلاة، والقبلة، والأذكار، وتقويم رمضان — فيُحسب على هذا الهاتف ويعمل دون أي اتصال.
+
+ويمكنك تغيير ذلك متى شئت من الإعدادات.</string>
+    <string name="temperature_notice_yes">أظهرها</string>
+    <string name="temperature_notice_no">لا، ابقَ دون اتصال</string>
+    <string name="credits_weather">الطقس</string>
+    <string name="credits_weather_detail">بيانات درجة الحرارة من Open-Meteo.com، مستخدمة بموجب رخصة CC BY 4.0. ولا تُطلب إلا عند تفعيل درجة الحرارة.</string>
+
+    <string name="ramadan">تقويم رمضان</string>
+    <string name="ramadan_short">تقويم رمضان</string>
+    <string name="ramadan_title">رمضان %1$d هـ</string>
+    <string name="ramadan_subtitle">%1$s · %2$s</string>
+    <string name="ramadan_share">مشاركة الجدول</string>
+    <string name="ramadan_saved">حُفِظ في مجلد التنزيلات</string>
+    <string name="ramadan_save_failed">تعذّر حفظ الجدول</string>
+    <string name="ramadan_col_day">#</string>
+    <string name="ramadan_col_date">التاريخ</string>
+    <string name="ramadan_col_suhoor">السحور</string>
+    <string name="ramadan_col_iftar">الإفطار</string>
+    <string name="ramadan_footnote">التواريخ وفق تقويم أم القرى، وهو محسوب لا مبنيّ على الرؤية، فقد يبدأ مسجدك الشهر أو يختمه قبل ذلك بيوم أو بعده. فراجع هذه المواقيت مع جدول مسجدك قبل الاعتماد عليها.</string>
+    <string name="ramadan_no_location">عيّن موقعك لإنشاء الجدول</string>
+    <string name="ramadan_prompt_title">رمضان على الأبواب</string>
+    <string name="ramadan_prompt_body">هل تريد جدول الشهر كاملاً — السحور والإفطار وكل الصلوات، لـ %1$d يومًا؟</string>
+    <string name="ramadan_prompt_yes">أرِني</string>
+    <string name="ramadan_prompt_no">ليس هذا العام</string>
+    <string name="ramadan_auto_offer">اعرضه تلقائيًا كل رمضان</string>
+
+    <string name="after_athan_dua">تشغيل الدعاء بعد الأذان</string>
+    <string name="after_athan_dua_explainer">يبدأ بعد انتهاء الأذان بثوانٍ. والأذان والدعاء إعلان واحد، فتبقى النافذة حتى ينتهيا معًا.</string>
 </resources>

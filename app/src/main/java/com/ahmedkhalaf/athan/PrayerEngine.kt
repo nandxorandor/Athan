@@ -56,8 +56,16 @@ class PrayerEngine(private val prefs: Prefs) {
         date?.let { Date(it.time + prefs.adjustmentMinutes * 60_000L) }
 
     /** Today's times including sunrise, in order. Empty with no location set. */
-    fun today(): List<Pair<Slot, Date>> {
-        val times = timesOn(Date()) ?: return emptyList()
+    fun today(): List<Pair<Slot, Date>> = on(Date())
+
+    /**
+     * Any day's times, in order. Today's list is the common case, but the
+     * Ramadan calendar needs a month of them, and both must come out of the
+     * same place — a timetable that disagreed with the home screen by a minute
+     * would be worse than no timetable.
+     */
+    fun on(date: Date): List<Pair<Slot, Date>> {
+        val times = timesOn(date) ?: return emptyList()
         return Slot.entries.mapNotNull { slot ->
             shift(times.timeForPrayer(slot.prayer))?.let { slot to it }
         }

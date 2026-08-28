@@ -92,6 +92,17 @@ class MainActivity : LocalizedActivity() {
         binding.eveningAdhkarButton.setOnClickListener {
             startActivity(AdhkarActivity.intent(this, AdhkarSitting.EVENING))
         }
+        // Tap the reading to flip the unit. The setting also lives in Settings,
+        // but this is where you are actually looking when you want the other
+        // one, and a number is a big enough target on its own.
+        binding.temperature.setOnClickListener {
+            prefs.fahrenheit = !prefs.fahrenheit
+            showTemperature(Weather.current())
+            pulseTemperature()
+        }
+        binding.ramadanButton.setOnClickListener {
+            startActivity(RamadanActivity.intent(this))
+        }
         bindLanguageSwitch()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
@@ -127,6 +138,97 @@ class MainActivity : LocalizedActivity() {
         }
     }
 
+    /**
+     * Never shown unless a reading is in hand: an empty slot, a dash or a
+     * spinner would all be noise on a screen whose job is the prayer times.
+     */
+    private fun showTemperature(reading: Weather.Reading?) {
+        if (reading == null || !prefs.weatherEnabled) {
+            binding.temperature.visibility = View.GONE
+            return
+        }
+        val fahrenheit = prefs.fahrenheit
+        val value = if (fahrenheit) reading.celsius * 9 / 5 + 32 else reading.celsius
+        binding.temperature.text = getString(
+            if (fahrenheit) R.string.temperature_fahrenheit else R.string.temperature_celsius,
+            Math.round(value).toInt()
+        )
+        binding.temperature.visibility = View.VISIBLE
+    }
+
+    /**
+     * A brief swell on the glow when the unit changes, so the tap is
+     * acknowledged even though the digits barely move.
+     */
+    private fun pulseTemperature() {
+        binding.temperature.animate().cancel()
+        binding.temperature.scaleX = 1f
+        binding.temperature.scaleY = 1f
+        binding.temperature.animate()
+            .scaleX(1.12f).scaleY(1.12f)
+            .setDuration(110)
+            .withEndAction {
+                binding.temperature.animate().scaleX(1f).scaleY(1f).setDuration(140).start()
+            }
+            .start()
+    }
+
+    /**
+     * Asked once, before a single coordinate leaves the phone. Returns true if
+     * the dialog is on screen, so the caller knows to leave the user alone.
+     */
+    private fun askAboutTemperature(): Boolean {
+        if (prefs.weatherNoticeSeen || !prefs.hasLocation) return false
+        val body = TextView(this).apply {
+            setText(R.string.temperature_notice_body)
+            setTextColor(getColor(R.color.text_dim))
+            textSize = 15f
+            setLineSpacing(4f, 1f)
+            val pad = (resources.displayMetrics.density * 24).toInt()
+            setPadding(pad, 0, pad, 0)
+        }
+        MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.temperature_notice_title)
+            .setView(android.widget.ScrollView(this).apply { addView(body) })
+            .setCancelable(false)
+            .setPositiveButton(R.string.temperature_notice_yes) { _, _ ->
+                prefs.weatherNoticeSeen = true
+                prefs.weatherEnabled = true
+                refresh()
+            }
+            .setNegativeButton(R.string.temperature_notice_no) { _, _ ->
+                prefs.weatherNoticeSeen = true
+                prefs.weatherEnabled = false
+                Weather.forget()
+                showTemperature(null)
+            }
+            .show()
+        return true
+    }
+
+    /**
+     * The month's timetable, offered once in the fortnight before the first
+     * fast. The dismissal is stored as a Hijri year rather than a flag so
+     * "not this year" lapses on its own next Ramadan instead of silently
+     * switching the feature off for good.
+     */
+    private fun offerRamadanIfDue() {
+        if (!prefs.ramadanPromptEnabled || !prefs.hasLocation) return
+        val year = RamadanCalendar.upcomingHijriYear()
+        if (year == 0 || prefs.ramadanPromptDismissedYear == year) return
+        if (!RamadanCalendar.isSeason(year)) return
+
+        prefs.ramadanPromptDismissedYear = year
+        MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.ramadan_prompt_title)
+            .setMessage(getString(R.string.ramadan_prompt_body, RamadanCalendar.daysIn(year)))
+            .setPositiveButton(R.string.ramadan_prompt_yes) { _, _ ->
+                startActivity(RamadanActivity.intent(this, year))
+            }
+            .setNegativeButton(R.string.ramadan_prompt_no, null)
+            .show()
+    }
+
     private fun applyInsets() {
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
             val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -141,6 +243,10 @@ class MainActivity : LocalizedActivity() {
         ticker.post(tick)
         AthanScheduler.scheduleNext(this)
         warnIfExactAlarmsBlocked()
+        // Order matters: the temperature notice is asked once and answered
+        // before anything is fetched, and only after that can Ramadan have the
+        // screen. Two dialogs at once on a first launch is nobody's welcome.
+        if (!askAboutTemperature()) offerRamadanIfDue()
     }
 
     override fun onPause() {
@@ -153,6 +259,8 @@ class MainActivity : LocalizedActivity() {
             if (prefs.hasLocation) prefs.cityName.ifBlank { getString(R.string.location_set) }
             else getString(R.string.set_location)
         updateHijriDate()
+        showTemperature(Weather.current())
+        Weather.refresh(this) { reading -> runOnUiThread { showTemperature(reading) } }
 
         val times = engine.today()
         binding.timesContainer.removeAllViews()

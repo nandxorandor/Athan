@@ -60,6 +60,25 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:letterSpacing="0.1"
+            android:text="@string/credits_weather"
+            android:textAllCaps="true"
+            android:textColor="@color/text_dim"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:lineSpacingExtra="3dp"
+            android:text="@string/credits_weather_detail"
+            android:textColor="@color/text"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:letterSpacing="0.1"
             android:text="@string/credits_software"
             android:textAllCaps="true"
             android:textColor="@color/text_dim"

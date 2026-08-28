@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingStart="24dp"
+    android:paddingTop="8dp"
+    android:paddingEnd="24dp"
+    android:paddingBottom="8dp">
+
+    <CheckBox
+        android:id="@+id/temperatureEnabled"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/temperature_enable"
+        android:textColor="@color/text"
+        android:textSize="16sp" />
+
+    <!-- The whole privacy story in one paragraph, next to the switch that
+         controls it rather than buried in a policy nobody opens. -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:lineSpacingExtra="2dp"
+        android:text="@string/temperature_explainer"
+        android:textColor="@color/text_dim"
+        android:textSize="13sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:letterSpacing="0.08"
+        android:text="@string/temperature_units"
+        android:textAllCaps="true"
+        android:textColor="@color/text_dim"
+        android:textSize="12sp" />
+
+    <RadioGroup
+        android:id="@+id/temperatureUnits"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/unitCelsius"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/unit_celsius"
+            android:textColor="@color/text"
+            android:textSize="15sp" />
+
+        <RadioButton
+            android:id="@+id/unitFahrenheit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/unit_fahrenheit"
+            android:textColor="@color/text"
+            android:textSize="15sp" />
+    </RadioGroup>
+
+</LinearLayout>

@@ -30,6 +30,10 @@ class AthanAudioOptionsActivity : LocalizedActivity() {
         binding.otherSoundRow.setOnClickListener {
             startActivity(Intent(this, SoundPickerActivity::class.java))
         }
+        binding.duaSwitch.isChecked = Prefs(this).afterAthanDua
+        binding.duaSwitch.setOnCheckedChangeListener { _, checked ->
+            Prefs(this).afterAthanDua = checked
+        }
         binding.downloadedRow.setOnClickListener {
             startActivity(Intent(this, DownloadedAthansActivity::class.java))
         }

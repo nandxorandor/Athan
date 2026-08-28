@@ -15,6 +15,10 @@ class Prefs(context: Context) {
     private val sp = context.applicationContext
         .getSharedPreferences("athan", Context.MODE_PRIVATE)
 
+    /** The countries that still give the weather in Fahrenheit. */
+    private val defaultFahrenheit: Boolean =
+        java.util.Locale.getDefault().country in setOf("US", "LR", "MM", "BS", "BZ", "KY", "PW")
+
     var latitude: Double
         get() = Double.fromBits(sp.getLong(KEY_LAT, NO_LOCATION.toRawBits()))
         set(v) = sp.edit().putLong(KEY_LAT, v.toRawBits()).apply()
@@ -30,6 +34,54 @@ class Prefs(context: Context) {
     var language: String
         get() = sp.getString(KEY_LANGUAGE, "") ?: ""
         set(v) = sp.edit().putString(KEY_LANGUAGE, v).apply()
+
+    /**
+     * The temperature on the home screen. On by default, and the one switch
+     * that takes the app back to making no network requests at all.
+     */
+    var weatherEnabled: Boolean
+        get() = sp.getBoolean(KEY_WEATHER, true)
+        set(v) = sp.edit().putBoolean(KEY_WEATHER, v).apply()
+
+    /**
+     * Whether the first-run notice about the temperature has been shown. It is
+     * asked once, before any coordinates leave the device.
+     */
+    var weatherNoticeSeen: Boolean
+        get() = sp.getBoolean(KEY_WEATHER_NOTICE, false)
+        set(v) = sp.edit().putBoolean(KEY_WEATHER_NOTICE, v).apply()
+
+    /**
+     * Fahrenheit rather than Celsius. Defaults from the phone's own region on
+     * first read, so a US phone shows °F and everywhere else °C without anyone
+     * having to find the setting.
+     */
+    var fahrenheit: Boolean
+        get() = sp.getBoolean(KEY_FAHRENHEIT, defaultFahrenheit)
+        set(v) = sp.edit().putBoolean(KEY_FAHRENHEIT, v).apply()
+
+    /** Offer the month's timetable as Ramadan comes round. */
+    var ramadanPromptEnabled: Boolean
+        get() = sp.getBoolean(KEY_RAMADAN_PROMPT, true)
+        set(v) = sp.edit().putBoolean(KEY_RAMADAN_PROMPT, v).apply()
+
+    /**
+     * The Hijri year whose offer was dismissed. A year rather than a flag, so
+     * "not this year" lapses on its own next Ramadan instead of switching the
+     * feature off for good.
+     */
+    var ramadanPromptDismissedYear: Int
+        get() = sp.getInt(KEY_RAMADAN_YEAR, 0)
+        set(v) = sp.edit().putInt(KEY_RAMADAN_YEAR, v).apply()
+
+    /**
+     * The du'aa said after the athan. On by default: it is the natural
+     * companion to the call, and one toggle away for anyone who would rather
+     * it did not play.
+     */
+    var afterAthanDua: Boolean
+        get() = sp.getBoolean(KEY_AFTER_DUA, true)
+        set(v) = sp.edit().putBoolean(KEY_AFTER_DUA, v).apply()
 
     var cityName: String
         get() = sp.getString(KEY_CITY, "") ?: ""
@@ -158,6 +210,12 @@ class Prefs(context: Context) {
         const val KEY_LNG = "lng"
         const val KEY_CITY = "city"
         const val KEY_LANGUAGE = "language"
+        const val KEY_WEATHER = "weather_enabled"
+        const val KEY_WEATHER_NOTICE = "weather_notice_seen"
+        const val KEY_FAHRENHEIT = "fahrenheit"
+        const val KEY_RAMADAN_PROMPT = "ramadan_prompt"
+        const val KEY_RAMADAN_YEAR = "ramadan_prompt_year"
+        const val KEY_AFTER_DUA = "after_athan_dua"
         const val KEY_METHOD = "method"
         const val KEY_MADHAB = "madhab"
         const val KEY_QIBLA_NOTICE = "qibla_notice_seen"

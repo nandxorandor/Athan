@@ -185,7 +185,7 @@
     <string name="credit_source_unknown">Source: islamweb.net (reciter not named in the recording)</string>
     <string name="credit_own_recording">Recorded by the developer</string>
     <string name="credits_software">Software</string>
-    <string name="credits_software_detail">Prayer times are calculated with the open-source “adhan” library by Batoul Apps. The app itself makes no network requests and collects no data.</string>
+    <string name="credits_software_detail">Prayer times are calculated with the open-source “adhan” library by Batoul Apps. Everything the app shows — prayer times, the qibla, the athkar and the Ramadan calendar — is computed on your phone. The temperature is the only exception, and it can be switched off.</string>
 
     <string name="about">About</string>
     <string name="about_version">Version %1$s</string>
@@ -194,7 +194,7 @@
     <string name="about_github">Follow me on GitHub: github.com/nandxorandor</string>
     <string name="about_audio_credit">Athan recordings</string>
     <string name="about_audio_credit_detail">Two of the bundled athans are my own recordings; the rest were published by IslamWeb and are included with the source named — see Settings → Resources &amp; credits. You can use any recording you prefer instead: Settings → Athan audio options.</string>
-    <string name="about_privacy">No data is collected or sent from this app.</string>
+    <string name="about_privacy">No data is collected from this app. The one thing it ever sends is your coordinates, to look up the temperature — and only while that is switched on. Turn it off in Settings and the app makes no network requests at all.</string>
     <string name="delete">Delete</string>
     <string name="delete_athan">Delete “%1$s”?</string>
 
@@ -210,4 +210,52 @@
     <string name="channel_download_desc">Confirms when an athan you downloaded is ready to set up</string>
 
     <string name="exact_alarm_blocked">Exact alarms are turned off, so the athan can\'t fire on time. Tap to allow.</string>
+
+    <!-- Temperature. The only networked feature in the app; everything about
+         its wording is meant to make that plain rather than bury it. -->
+    <string name="temperature">Temperature</string>
+    <string name="temperature_celsius">%1$d°C</string>
+    <string name="temperature_fahrenheit">%1$d°F</string>
+    <string name="temperature_enable">Show the temperature</string>
+    <string name="temperature_explainer">The only part of Athan that uses the internet. Your coordinates are sent to Open-Meteo to look up the weather where you are — nothing else is sent, and nothing is stored. Turn this off and the app makes no network requests at all.</string>
+    <string name="temperature_units">Units</string>
+    <string name="unit_celsius">Celsius</string>
+    <string name="unit_fahrenheit">Fahrenheit</string>
+    <string name="temperature_summary_on">On · %1$s</string>
+    <string name="temperature_summary_off">Off · no network requests</string>
+    <string name="temperature_notice_title">Show the temperature?</string>
+    <string name="temperature_notice_body">Athan can show the current temperature where you are. To do it, your coordinates are sent to Open-Meteo — that is the one and only thing this app ever sends anywhere.
+
+Everything else — prayer times, the qibla, the athkar, the Ramadan calendar — is calculated on this phone and works with no connection at all.
+
+You can change this any time in Settings.</string>
+    <string name="temperature_notice_yes">Show it</string>
+    <string name="temperature_notice_no">No, stay offline</string>
+    <string name="credits_weather">Weather</string>
+    <string name="credits_weather_detail">Temperature data by Open-Meteo.com, used under CC BY 4.0. Requested only while the temperature is switched on.</string>
+
+    <!-- Ramadan calendar, ported from the Windows app. -->
+    <string name="ramadan">Ramadan calendar</string>
+    <!-- The home-screen button, which has a third of a row to live in. -->
+    <string name="ramadan_short">Ramadan Cal</string>
+    <string name="ramadan_title">Ramadan %1$d AH</string>
+    <string name="ramadan_subtitle">%1$s · %2$s</string>
+    <string name="ramadan_share">Share the timetable</string>
+    <string name="ramadan_saved">Saved to your Downloads</string>
+    <string name="ramadan_save_failed">Couldn\'t save the timetable</string>
+    <string name="ramadan_col_day">#</string>
+    <string name="ramadan_col_date">Date</string>
+    <string name="ramadan_col_suhoor">Suhoor</string>
+    <string name="ramadan_col_iftar">Iftar</string>
+    <string name="ramadan_footnote">Dates follow the Umm al-Qura calendar, which is calculated rather than sighted, so your local mosque may begin or end the month a day either side. Check these times against your mosque\'s timetable before relying on them.</string>
+    <string name="ramadan_no_location">Set your location to build the timetable</string>
+    <string name="ramadan_prompt_title">Ramadan is coming</string>
+    <string name="ramadan_prompt_body">Would you like the whole month\'s timetable — suhoor, iftar and every prayer, for all %1$d days?</string>
+    <string name="ramadan_prompt_yes">Show me</string>
+    <string name="ramadan_prompt_no">Not this year</string>
+    <string name="ramadan_auto_offer">Offer this automatically each Ramadan</string>
+
+    <!-- The du'aa said after the athan, ported from the Windows app. -->
+    <string name="after_athan_dua">Play the du\'aa after the athan</string>
+    <string name="after_athan_dua_explainer">دعاء بعد الأذان — starts a couple of seconds after the call ends. The athan and the du\'aa count as one announcement, so the window stays until both are done.</string>
 </resources>

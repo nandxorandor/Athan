@@ -3,6 +3,12 @@
 
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
+    <!-- The ONLY networked feature is the temperature on the home screen, and
+         it can be switched off entirely (Settings -> Temperature). Prayer
+         times, the qibla, the athkar and the Ramadan calendar are all computed
+         on the device and never need this. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <!-- Read audio so the "Downloaded athans" list can show files the user
          downloaded, without them having to hunt through a file picker. -->
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
@@ -59,6 +65,24 @@
             android:screenOrientation="portrait" />
 
         <!-- Morning and evening remembrances; the sitting comes in as an extra. -->
+        <!-- Hands the Ramadan CSV to the share sheet from cacheDir, so the
+             timetable can be sent on without any storage permission. -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <activity
+            android:name=".RamadanActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
+
         <activity
             android:name=".AdhkarActivity"
             android:exported="false"

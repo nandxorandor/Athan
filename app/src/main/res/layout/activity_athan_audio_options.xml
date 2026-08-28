@@ -75,6 +75,33 @@
                 android:textSize="14sp" />
         </LinearLayout>
 
+        <!-- The du'aa belongs with the athan sounds: it is part of the same
+             announcement, not a separate alert. -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp">
+
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/duaSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/after_athan_dua"
+                android:textColor="@color/text"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:lineSpacingExtra="2dp"
+                android:text="@string/after_athan_dua_explainer"
+                android:textColor="@color/text_dim"
+                android:textSize="13sp" />
+        </LinearLayout>
+
         <LinearLayout
             android:id="@+id/downloadedRow"
             android:layout_width="match_parent"

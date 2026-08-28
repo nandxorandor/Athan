@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The glow behind the temperature. A soft radial wash rather than a hard pill:
+  the reading should look lit from within, not boxed in beside the city name.
+-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="oval">
+            <gradient
+                android:centerColor="#334FC79A"
+                android:endColor="#004FC79A"
+                android:gradientRadius="34dp"
+                android:startColor="#554FC79A"
+                android:type="radial" />
+        </shape>
+    </item>
+</layer-list>

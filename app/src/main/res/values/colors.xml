@@ -12,6 +12,20 @@
          the selected one is unmistakable. -->
     <color name="icon_idle">#46534E</color>
 
+    <!-- Jumu'ah in the Ramadan table. The weekday name does not fit the column,
+         so the one day that has to stand out does it with a tint. -->
+    <color name="friday">#1B3B2E</color>
+
+    <!-- Today, during the month. Brighter than the Friday tint and brighter
+         than the banding, because on the day you are fasting this is the only
+         row you are actually looking for. -->
+    <color name="today_row">#2E6B4F</color>
+    <color name="today_text">#EAFBF3</color>
+
+    <!-- The temperature reads brighter than the city beside it: it is the one
+         live value on the screen, and the glow behind it says so. -->
+    <color name="temperature_text">#8FE8C4</color>
+
     <!-- Compass. The classic red/pale needle pairing reads instantly as a
          compass, which a single-colour arrow does not. -->
     <color name="needle_head">#E5484D</color>

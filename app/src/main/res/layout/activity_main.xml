@@ -52,6 +52,25 @@
                 android:text="@string/set_location"
                 android:textColor="@color/text"
                 android:textSize="18sp" />
+
+            <!-- Rides on the location row rather than taking a line of its
+                 own: it belongs to the place, and the home screen has no
+                 vertical room to spare. Gone until a reading actually
+                 arrives, so a failed fetch leaves no empty gap. -->
+            <TextView
+                android:id="@+id/temperature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:background="@drawable/bg_temperature"
+                android:maxLines="1"
+                android:paddingStart="12dp"
+                android:paddingTop="6dp"
+                android:paddingEnd="12dp"
+                android:paddingBottom="6dp"
+                android:textColor="@color/temperature_text"
+                android:textSize="18sp"
+                android:visibility="gone" />
         </LinearLayout>
 
         <TextView
@@ -89,13 +108,13 @@
             android:id="@+id/timesContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
+            android:layout_marginTop="10dp"
             android:orientation="vertical" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="12dp"
             android:orientation="horizontal">
 
             <com.google.android.material.button.MaterialButton
@@ -147,7 +166,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="6dp"
             android:orientation="horizontal">
 
             <com.google.android.material.button.MaterialButton
@@ -204,11 +223,21 @@
         <!-- The language switch sits on the home screen rather than inside
              Settings: an Arabic reader who opens an English app should not have
              to read English to find it. -->
-        <com.google.android.material.button.MaterialButtonToggleGroup
-            android:id="@+id/languageGroup"
+        <!-- The language switch and the Ramadan calendar share the last row.
+             The switch stays a two-segment pill and the calendar is an
+             ordinary button, so the calendar never reads as a third language. -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="6dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/languageGroup"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.35"
             app:selectionRequired="true"
             app:singleSelection="true">
 
@@ -222,9 +251,14 @@
                 android:insetRight="0dp"
                 android:maxLines="1"
                 android:minWidth="0dp"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
                 android:text="@string/lang_english"
                 android:textAllCaps="false"
-                android:textSize="15sp" />
+                app:autoSizeMaxTextSize="15sp"
+                app:autoSizeMinTextSize="10sp"
+                app:autoSizeStepGranularity="1sp"
+                app:autoSizeTextType="uniform" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/langArabic"
@@ -236,10 +270,36 @@
                 android:insetRight="0dp"
                 android:maxLines="1"
                 android:minWidth="0dp"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
                 android:text="@string/lang_arabic"
                 android:textAllCaps="false"
-                android:textSize="15sp" />
+                app:autoSizeMaxTextSize="15sp"
+                app:autoSizeMinTextSize="10sp"
+                app:autoSizeStepGranularity="1sp"
+                app:autoSizeTextType="uniform" />
         </com.google.android.material.button.MaterialButtonToggleGroup>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/ramadanButton"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:insetLeft="0dp"
+                android:insetRight="0dp"
+                android:maxLines="1"
+                android:minWidth="0dp"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                android:text="@string/ramadan_short"
+                android:textAllCaps="false"
+                app:autoSizeMaxTextSize="14sp"
+                app:autoSizeMinTextSize="9sp"
+                app:autoSizeStepGranularity="1sp"
+                app:autoSizeTextType="uniform" />
+        </LinearLayout>
 
     </LinearLayout>
 </ScrollView>

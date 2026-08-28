@@ -12,6 +12,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import com.ahmedkhalaf.athan.databinding.ActivitySettingsBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.batoulapps.adhan.CalculationMethod
 
 /**
@@ -45,6 +46,10 @@ class SettingsActivity : LocalizedActivity() {
         binding.methodRow.setOnClickListener { chooseMethod() }
         binding.madhabRow.setOnClickListener { chooseMadhab() }
         binding.adjustRow.setOnClickListener { chooseAdjustment() }
+        binding.temperatureRow.setOnClickListener { chooseTemperature() }
+        binding.ramadanRow.setOnClickListener {
+            startActivity(RamadanActivity.intent(this))
+        }
         binding.creditsRow.setOnClickListener {
             startActivity(Intent(this, CreditsActivity::class.java))
         }
@@ -67,6 +72,55 @@ class SettingsActivity : LocalizedActivity() {
             if (prefs.reminderEnabled) getString(R.string.reminder_summary_on, prefs.reminderMinutes)
             else getString(R.string.reminder_summary_off)
         binding.appVolumeName.text = getString(R.string.volume_percent, prefs.volume)
+        binding.temperatureName.text =
+            if (prefs.weatherEnabled) getString(
+                R.string.temperature_summary_on,
+                getString(
+                    if (prefs.fahrenheit) R.string.unit_fahrenheit else R.string.unit_celsius
+                )
+            )
+            else getString(R.string.temperature_summary_off)
+        binding.ramadanName.text = getString(R.string.ramadan_title, RamadanCalendar.upcomingHijriYear())
+    }
+
+    /**
+     * The temperature switch and its units in one dialog, with the explainer
+     * spelling out that this is the only thing the app ever sends anywhere.
+     * Turning it off drops the cached reading immediately, so the home screen
+     * does not keep showing a number the user just declined.
+     */
+    private fun chooseTemperature() {
+        val content = layoutInflater.inflate(R.layout.dialog_temperature, null)
+        val enabled = content.findViewById<android.widget.CheckBox>(R.id.temperatureEnabled)
+        val units = content.findViewById<android.widget.RadioGroup>(R.id.temperatureUnits)
+        val celsius = content.findViewById<android.widget.RadioButton>(R.id.unitCelsius)
+        val fahrenheit = content.findViewById<android.widget.RadioButton>(R.id.unitFahrenheit)
+
+        enabled.isChecked = prefs.weatherEnabled
+        units.isEnabled = prefs.weatherEnabled
+        if (prefs.fahrenheit) fahrenheit.isChecked = true else celsius.isChecked = true
+        // Units mean nothing while the feature is off; grey them out rather
+        // than letting someone set a preference that does not apply.
+        fun syncUnits(on: Boolean) {
+            celsius.isEnabled = on
+            fahrenheit.isEnabled = on
+        }
+        syncUnits(prefs.weatherEnabled)
+        enabled.setOnCheckedChangeListener { _, checked -> syncUnits(checked) }
+
+        MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.temperature)
+            .setView(content)
+            .setPositiveButton(android.R.string.ok) { _, _ ->
+                prefs.weatherEnabled = enabled.isChecked
+                prefs.fahrenheit = fahrenheit.isChecked
+                // Answered here, so the home screen never asks again.
+                prefs.weatherNoticeSeen = true
+                if (!enabled.isChecked) Weather.forget()
+                refresh()
+            }
+            .setNegativeButton(android.R.string.cancel, null)
+            .show()
     }
 
     /** Any change here moves the prayer times, so the alarm must be re-armed. */
