@@ -19,3 +19,7 @@ _audio_archive/
 *.keystore
 keystore.properties
 dist/
+
+# Raw phone captures. The padded Play-ready versions in store/play/ are the
+# ones that matter; these are the working originals.
+store/play/raw/
