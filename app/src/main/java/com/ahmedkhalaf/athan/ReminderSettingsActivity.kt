@@ -32,6 +32,28 @@ class ReminderSettingsActivity : LocalizedActivity() {
         applied()
     }
 
+    /**
+     * Any audio file on the phone, not just what the ringtone picker lists.
+     * The reminder is often something with meaning in it — a hadith urging
+     * people to come early, a du'aa — and such a recording sits in Downloads,
+     * where a ringtone picker will never show it.
+     */
+    private val pickFile = registerForActivityResult(
+        ActivityResultContracts.OpenDocument()
+    ) { uri ->
+        if (uri == null) return@registerForActivityResult
+        // Without the persistable grant the URI is readable now and dead by
+        // tomorrow's Fajr, which is exactly when it is needed.
+        runCatching {
+            contentResolver.takePersistableUriPermission(
+                uri, Intent.FLAG_GRANT_READ_URI_PERMISSION
+            )
+        }
+        prefs.reminderSound = uri.toString()
+        refresh()
+        applied()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityReminderSettingsBinding.inflate(layoutInflater)
@@ -67,7 +89,7 @@ class ReminderSettingsActivity : LocalizedActivity() {
             applied()
         }
 
-        binding.toneRow.setOnClickListener { pickSound() }
+        binding.toneRow.setOnClickListener { chooseSoundSource() }
 
         // Sound and Vibrate are mutually exclusive; exactly one is on. Setting
         // the checked state fires the listener, so guard against the ping-pong.
@@ -115,6 +137,23 @@ class ReminderSettingsActivity : LocalizedActivity() {
         if (view is android.view.ViewGroup) {
             for (i in 0 until view.childCount) setEnabledDeep(view.getChildAt(i), enabled)
         }
+    }
+
+    /**
+     * Two ways in, asked before either: the phone's own tones, or a file the
+     * user has put there themselves.
+     */
+    private fun chooseSoundSource() {
+        val options = arrayOf(
+            getString(R.string.phone_ringtone),
+            getString(R.string.choose_from_device),
+        )
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle(R.string.reminder_sound)
+            .setItems(options) { _, which ->
+                if (which == 0) pickSound() else pickFile.launch(arrayOf("audio/*"))
+            }
+            .show()
     }
 
     private fun pickSound() {
