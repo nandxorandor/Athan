@@ -65,6 +65,7 @@ class AthanService : Service() {
             return START_NOT_STICKY
         }
         active = true
+        isPlaying = true
         Log.i(TAG, "start $slot mode=${Prefs(this).modeFor(slot)}")
         startForeground(NOTIFICATION_ID, buildNotification(slot))
 
@@ -248,6 +249,7 @@ class AthanService : Service() {
         super.onDestroy()
         Log.i(TAG, "stop")
         active = false
+        isPlaying = false
         handler.removeCallbacks(stopRunnable)
         player?.runCatching { stop() }
         player?.release()
@@ -261,6 +263,20 @@ class AthanService : Service() {
     }
 
     companion object {
+        /**
+         * Whether an athan is sounding right now.
+         *
+         * The notification carries a Stop and so does the window, but neither
+         * is guaranteed to be in front of you: Android 14 lets people swipe an
+         * ongoing foreground-service notification away, and the window can be
+         * dismissed with Back. That left the athan playing with no visible way
+         * to stop it — opening the app showed the ordinary home screen. This
+         * flag lets the home screen offer a Stop of its own.
+         */
+        @Volatile
+        var isPlaying: Boolean = false
+            private set
+
         const val ACTION_STOP = "com.ahmedkhalaf.athan.STOP"
         const val ACTION_SET_VOLUME = "com.ahmedkhalaf.athan.SET_VOLUME"
         const val EXTRA_VOLUME = "volume"

@@ -201,6 +201,9 @@
     <string name="athan_title">%1$s</string>
     <string name="athan_body">It\'s time for prayer</string>
     <string name="stop">Stop</string>
+    <!-- The home screen's own Stop, for when neither the notification nor the
+         athan window is in front of the user any more. -->
+    <string name="stop_athan_now">Stop the athan</string>
 
     <string name="channel_athan">Athan</string>
     <string name="channel_athan_desc">The call to prayer at each prayer time</string>

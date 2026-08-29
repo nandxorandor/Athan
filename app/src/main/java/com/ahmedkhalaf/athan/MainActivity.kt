@@ -103,6 +103,15 @@ class MainActivity : LocalizedActivity() {
         binding.ramadanButton.setOnClickListener {
             startActivity(RamadanActivity.intent(this))
         }
+        binding.stopAthanBar.setText(R.string.stop_athan_now)
+        binding.stopAthanBar.setOnClickListener {
+            startService(
+                Intent(this, AthanService::class.java).setAction(AthanService.ACTION_STOP)
+            )
+            // The service takes a moment to die; hide immediately so the tap
+            // is acknowledged rather than looking ignored.
+            binding.stopAthanBar.visibility = View.GONE
+        }
         bindLanguageSwitch()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
@@ -244,6 +253,10 @@ class MainActivity : LocalizedActivity() {
 
     override fun onResume() {
         super.onResume()
+        // Before the first tick, so opening the app mid-athan shows the Stop
+        // straight away rather than a second later.
+        binding.stopAthanBar.visibility =
+            if (AthanService.isPlaying) View.VISIBLE else View.GONE
         refresh()
         ticker.post(tick)
         AthanScheduler.scheduleNext(this)
@@ -334,6 +347,10 @@ class MainActivity : LocalizedActivity() {
 
     private fun updateCountdown() {
         updateHijriDate()
+        // Checked on the same one-second tick as the countdown: no receiver to
+        // register, and it cannot get stuck showing after the athan has ended.
+        binding.stopAthanBar.visibility =
+            if (AthanService.isPlaying) View.VISIBLE else View.GONE
         val next = engine.next() ?: return
         val remaining = next.time.time - System.currentTimeMillis()
         if (remaining <= 0) {

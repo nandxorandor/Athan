@@ -161,6 +161,7 @@
 
     <string name="athan_body">حان وقت الصلاة</string>
     <string name="stop">إيقاف</string>
+    <string name="stop_athan_now">إيقاف الأذان</string>
 
     <string name="channel_athan">الأذان</string>
     <string name="channel_athan_desc">الأذان عند دخول وقت كل صلاة</string>

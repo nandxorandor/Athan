@@ -21,6 +21,26 @@
         android:paddingEnd="24dp"
         android:paddingBottom="16dp">
 
+        <!--
+          Shown only while an athan is actually sounding. The notification and
+          the athan window both carry a Stop, but neither is guaranteed to be
+          in front of you - Android 14 lets an ongoing notification be swiped
+          away, and the window can be dismissed with Back. Without this, the
+          app you open to stop the sound looks exactly like an app with
+          nothing playing.
+        -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/stopAthanBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:visibility="gone"
+            app:icon="@drawable/ic_athan"
+            app:iconGravity="textStart"
+            app:iconPadding="8dp" />
+
         <LinearLayout
             android:id="@+id/locationRow"
             android:layout_width="match_parent"
