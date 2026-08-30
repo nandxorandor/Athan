@@ -62,9 +62,6 @@
     <string name="reminder_explainer">نافذة قصيرة تظهر قبل كل صلاة، لتكون مستعدًا في وقتك.</string>
     <string name="reminder_enable">تفعيل التنبيه</string>
     <string name="reminder_how_early">قبل الأذان بـ</string>
-    <string name="minutes_5">5 دقائق</string>
-    <string name="minutes_10">10 دقائق</string>
-    <string name="minutes_15">15 دقيقة</string>
     <string name="reminder_sound">صوت التنبيه</string>
     <string name="reminder_sound_toggle">صوت التنبيه</string>
     <string name="reminder_tone">النغمة</string>
@@ -212,6 +209,7 @@
     <string name="temperature_unit_summary">تظهر في الشاشة الرئيسية وعند الضغط عليها</string>
     <string name="reminder_volume">مستوى صوت التنبيه</string>
     <string name="reminder_volume_summary">مستقل عن مستوى صوت الأذان</string>
+    <string name="minutes_value">%1$d دقيقة</string>
     <string name="temperature_notice_title">هل تريد إظهار درجة الحرارة؟</string>
     <string name="temperature_notice_body">يمكن للتطبيق عرض درجة الحرارة عند موقعك. ولذلك تُرسل إحداثياتك إلى Open-Meteo — وهذا هو الشيء الوحيد الذي يُرسله هذا التطبيق إلى أي جهة.
 

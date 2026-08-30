@@ -60,9 +60,6 @@
     <string name="reminder_explainer">A short pop-up before each prayer, so you can be ready in time.</string>
     <string name="reminder_enable">Enable heads-up</string>
     <string name="reminder_how_early">How early</string>
-    <string name="minutes_5">5 min</string>
-    <string name="minutes_10">10 min</string>
-    <string name="minutes_15">15 min</string>
     <string name="reminder_sound">Heads-up sound</string>
     <string name="reminder_sound_toggle">Heads-up sound</string>
     <string name="reminder_tone">Tone</string>
@@ -230,6 +227,7 @@
     <string name="temperature_unit_summary">Shown on the home screen and when you tap it</string>
     <string name="reminder_volume">Heads-up volume</string>
     <string name="reminder_volume_summary">Separate from the athan volume</string>
+    <string name="minutes_value">%1$d min</string>
     <string name="temperature_notice_title">Show the temperature?</string>
     <string name="temperature_notice_body">Athan can show the current temperature where you are. To do it, your coordinates are sent to Open-Meteo — that is the one and only thing this app ever sends anywhere.
 

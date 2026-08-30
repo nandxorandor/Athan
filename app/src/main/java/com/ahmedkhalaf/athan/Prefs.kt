@@ -15,10 +15,6 @@ class Prefs(context: Context) {
     private val sp = context.applicationContext
         .getSharedPreferences("athan", Context.MODE_PRIVATE)
 
-    /** The countries that still give the weather in Fahrenheit. */
-    private val defaultFahrenheit: Boolean =
-        java.util.Locale.getDefault().country in setOf("US", "LR", "MM", "BS", "BZ", "KY", "PW")
-
     var latitude: Double
         get() = Double.fromBits(sp.getLong(KEY_LAT, NO_LOCATION.toRawBits()))
         set(v) = sp.edit().putLong(KEY_LAT, v.toRawBits()).apply()
@@ -52,12 +48,13 @@ class Prefs(context: Context) {
         set(v) = sp.edit().putBoolean(KEY_WEATHER_NOTICE, v).apply()
 
     /**
-     * Fahrenheit rather than Celsius. Defaults from the phone's own region on
-     * first read, so a US phone shows °F and everywhere else °C without anyone
-     * having to find the setting.
+     * Fahrenheit rather than Celsius. Celsius is the default everywhere, by
+     * request: this used to key off the phone's region, which meant a US phone
+     * could not be given a Celsius default at all. Anyone who wants Fahrenheit
+     * sets it once, from Settings or by tapping the reading on the home screen.
      */
     var fahrenheit: Boolean
-        get() = sp.getBoolean(KEY_FAHRENHEIT, defaultFahrenheit)
+        get() = sp.getBoolean(KEY_FAHRENHEIT, false)
         set(v) = sp.edit().putBoolean(KEY_FAHRENHEIT, v).apply()
 
     /** Offer the month's timetable as Ramadan comes round. */
@@ -122,10 +119,15 @@ class Prefs(context: Context) {
         get() = sp.getBoolean(KEY_REMINDER_ON, false)
         set(v) = sp.edit().putBoolean(KEY_REMINDER_ON, v).apply()
 
-    /** How many minutes before the prayer the heads-up fires. */
+    /**
+     * How many minutes before the prayer the heads-up fires, [MIN_REMINDER] to
+     * [MAX_REMINDER]. Was a three-way 5/10/15 picker; a slider covers the same
+     * ground and everything between, without a wider default changing for
+     * anyone already set.
+     */
     var reminderMinutes: Int
-        get() = sp.getInt(KEY_REMINDER_MIN, 10)
-        set(v) = sp.edit().putInt(KEY_REMINDER_MIN, v).apply()
+        get() = sp.getInt(KEY_REMINDER_MIN, 10).coerceIn(MIN_REMINDER, MAX_REMINDER)
+        set(v) = sp.edit().putInt(KEY_REMINDER_MIN, v.coerceIn(MIN_REMINDER, MAX_REMINDER)).apply()
 
     /** Reminder sound: a "content://" ringtone URI, or "" for the default. */
     var reminderSound: String
@@ -216,35 +218,39 @@ class Prefs(context: Context) {
         get() = sp.getString(KEY_OTHER_SOUND, "") ?: ""
         set(v) = sp.edit().putString(KEY_OTHER_SOUND, v).apply()
 
-    private companion object {
-        const val KEY_LAT = "lat"
-        const val KEY_LNG = "lng"
-        const val KEY_CITY = "city"
-        const val KEY_LANGUAGE = "language"
-        const val KEY_WEATHER = "weather_enabled"
-        const val KEY_WEATHER_NOTICE = "weather_notice_seen"
-        const val KEY_FAHRENHEIT = "fahrenheit"
-        const val KEY_RAMADAN_PROMPT = "ramadan_prompt"
-        const val KEY_RAMADAN_YEAR = "ramadan_prompt_year"
-        const val KEY_AFTER_DUA = "after_athan_dua"
-        const val KEY_METHOD = "method"
-        const val KEY_MADHAB = "madhab"
-        const val KEY_QIBLA_NOTICE = "qibla_notice_seen"
-        const val KEY_WATCH_ASKED = "download_watch_asked"
-        const val KEY_DL_SNAPSHOT = "download_snapshot"
-        const val KEY_DL_PENDING = "download_pending"
-        const val KEY_DL_BANNER = "download_banner_posted"
-        const val KEY_DL_STARTED = "download_watch_started"
-        const val KEY_ADJUST = "adjust_minutes"
-        const val KEY_MODE = "mode"
-        const val KEY_VOLUME = "volume"
-        const val KEY_REMINDER_ON = "reminder_on"
-        const val KEY_REMINDER_MIN = "reminder_min"
-        const val KEY_REMINDER_SOUND = "reminder_sound"
-        const val KEY_REMINDER_VIB = "reminder_vib"
-        const val KEY_REMINDER_VOL = "reminder_volume"
-        const val KEY_FAJR_SOUND = "fajr_sound"
-        const val KEY_OTHER_SOUND = "other_sound"
-        val NO_LOCATION = Double.NaN
+    companion object {
+        /** The heads-up slider's bounds. Zero would mean "at the prayer". */
+        const val MIN_REMINDER = 1
+        const val MAX_REMINDER = 60
+
+        private const val KEY_LAT = "lat"
+        private const val KEY_LNG = "lng"
+        private const val KEY_CITY = "city"
+        private const val KEY_LANGUAGE = "language"
+        private const val KEY_WEATHER = "weather_enabled"
+        private const val KEY_WEATHER_NOTICE = "weather_notice_seen"
+        private const val KEY_FAHRENHEIT = "fahrenheit"
+        private const val KEY_RAMADAN_PROMPT = "ramadan_prompt"
+        private const val KEY_RAMADAN_YEAR = "ramadan_prompt_year"
+        private const val KEY_AFTER_DUA = "after_athan_dua"
+        private const val KEY_METHOD = "method"
+        private const val KEY_MADHAB = "madhab"
+        private const val KEY_QIBLA_NOTICE = "qibla_notice_seen"
+        private const val KEY_WATCH_ASKED = "download_watch_asked"
+        private const val KEY_DL_SNAPSHOT = "download_snapshot"
+        private const val KEY_DL_PENDING = "download_pending"
+        private const val KEY_DL_BANNER = "download_banner_posted"
+        private const val KEY_DL_STARTED = "download_watch_started"
+        private const val KEY_ADJUST = "adjust_minutes"
+        private const val KEY_MODE = "mode"
+        private const val KEY_VOLUME = "volume"
+        private const val KEY_REMINDER_ON = "reminder_on"
+        private const val KEY_REMINDER_MIN = "reminder_min"
+        private const val KEY_REMINDER_SOUND = "reminder_sound"
+        private const val KEY_REMINDER_VIB = "reminder_vib"
+        private const val KEY_REMINDER_VOL = "reminder_volume"
+        private const val KEY_FAJR_SOUND = "fajr_sound"
+        private const val KEY_OTHER_SOUND = "other_sound"
+        private val NO_LOCATION = Double.NaN
     }
 }

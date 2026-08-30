@@ -72,22 +72,36 @@ class ReminderSettingsActivity : LocalizedActivity() {
             applied()
         }
 
-        binding.minutesGroup.check(
-            when (prefs.reminderMinutes) {
-                5 -> R.id.min5
-                15 -> R.id.min15
-                else -> R.id.min10
+        // SeekBar counts from 0, the setting from MIN_REMINDER, so the two are
+        // one apart throughout.
+        binding.minutesSlider.max = Prefs.MAX_REMINDER - Prefs.MIN_REMINDER
+        binding.minutesSlider.progress = prefs.reminderMinutes - Prefs.MIN_REMINDER
+        binding.minutesSlider.progressTintList =
+            android.content.res.ColorStateList.valueOf(getColor(R.color.volume_green))
+        binding.minutesSlider.progressBackgroundTintList =
+            android.content.res.ColorStateList.valueOf(getColor(R.color.volume_green))
+        binding.minutesSlider.thumb = getDrawable(R.drawable.volume_thumb)
+        binding.minutesValue.text = getString(R.string.minutes_value, prefs.reminderMinutes)
+        binding.minutesSlider.setOnSeekBarChangeListener(
+            object : android.widget.SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(
+                    bar: android.widget.SeekBar,
+                    progress: Int,
+                    fromUser: Boolean,
+                ) {
+                    if (!fromUser) return
+                    val minutes = progress + Prefs.MIN_REMINDER
+                    prefs.reminderMinutes = minutes
+                    binding.minutesValue.text = getString(R.string.minutes_value, minutes)
+                }
+
+                override fun onStartTrackingTouch(bar: android.widget.SeekBar) = Unit
+
+                // Re-arm once, on release. Doing it per step would rewrite the
+                // alarm sixty times across one drag.
+                override fun onStopTrackingTouch(bar: android.widget.SeekBar) = applied()
             }
         )
-        binding.minutesGroup.addOnButtonCheckedListener { _, checkedId, isChecked ->
-            if (!isChecked) return@addOnButtonCheckedListener
-            prefs.reminderMinutes = when (checkedId) {
-                R.id.min5 -> 5
-                R.id.min15 -> 15
-                else -> 10
-            }
-            applied()
-        }
 
         binding.toneRow.setOnClickListener { chooseSoundSource() }
 

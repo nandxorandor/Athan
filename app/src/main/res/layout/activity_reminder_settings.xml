@@ -51,64 +51,35 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="@string/reminder_how_early"
-                android:textColor="@color/text"
-                android:textSize="16sp" />
-
-            <com.google.android.material.button.MaterialButtonToggleGroup
-                android:id="@+id/minutesGroup"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                app:selectionRequired="true"
-                app:singleSelection="true">
+                android:layout_marginTop="24dp"
+                android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/min5"
-                    style="?attr/materialButtonOutlinedStyle"
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:insetLeft="0dp"
-                    android:insetRight="0dp"
-                    android:minWidth="0dp"
-                    android:paddingStart="4dp"
-                    android:paddingEnd="4dp"
-                    android:text="@string/minutes_5"
-                    android:textAllCaps="false" />
+                    android:text="@string/reminder_how_early"
+                    android:textColor="@color/text"
+                    android:textSize="16sp" />
 
-                <Button
-                    android:id="@+id/min10"
-                    style="?attr/materialButtonOutlinedStyle"
-                    android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/minutesValue"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:insetLeft="0dp"
-                    android:insetRight="0dp"
-                    android:minWidth="0dp"
-                    android:paddingStart="4dp"
-                    android:paddingEnd="4dp"
-                    android:text="@string/minutes_10"
-                    android:textAllCaps="false" />
+                    android:textColor="@color/accent"
+                    android:textSize="16sp" />
+            </LinearLayout>
 
-                <Button
-                    android:id="@+id/min15"
-                    style="?attr/materialButtonOutlinedStyle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:insetLeft="0dp"
-                    android:insetRight="0dp"
-                    android:minWidth="0dp"
-                    android:paddingStart="4dp"
-                    android:paddingEnd="4dp"
-                    android:text="@string/minutes_15"
-                    android:textAllCaps="false" />
-            </com.google.android.material.button.MaterialButtonToggleGroup>
+            <!-- A slider rather than the old 5/10/15 buttons: the same choices
+                 plus everything between, in the space three buttons took. -->
+            <SeekBar
+                android:id="@+id/minutesSlider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp" />
 
             <!-- Sound and Vibrate are mutually exclusive: exactly one is on. -->
             <com.google.android.material.materialswitch.MaterialSwitch
