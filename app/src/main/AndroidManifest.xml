@@ -189,6 +189,9 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
                 <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+                <!-- The clock itself being set, not just the zone. Alarms hold
+                     absolute times, so without this they are left stranded. -->
+                <action android:name="android.intent.action.TIME_SET" />
             </intent-filter>
         </receiver>
 

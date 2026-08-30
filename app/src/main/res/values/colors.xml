@@ -41,5 +41,7 @@
 
     <!-- Launcher-icon backdrop: the night-sky teal at the artwork's own border,
          so the parallax wobble never reveals a mismatched edge. -->
-    <color name="ic_launcher_bg">#113D3F</color>
+    <!-- Matches the artwork tile's own dark border, so the inset foreground
+         reads as one icon rather than a picture floating on a coloured card. -->
+    <color name="ic_launcher_bg">#181817</color>
 </resources>

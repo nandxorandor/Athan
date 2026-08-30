@@ -35,6 +35,7 @@ class ReminderService : Service() {
     private var vibrator: Vibrator? = null
     private val handler = android.os.Handler(android.os.Looper.getMainLooper())
     private val stopRunnable = Runnable { stopSelf() }
+    private val silenceRunnable = Runnable { releasePlayer() }
     private var active = false
 
     override fun onBind(intent: Intent?): IBinder? = null
@@ -60,10 +61,21 @@ class ReminderService : Service() {
         // Exactly one of the two, never both.
         if (prefs.reminderVibrate) vibrate() else playSound(prefs)
 
-        // Safety net: never let the reminder sound run forever, even if the
-        // recording is long or completion never fires.
-        handler.postDelayed(stopRunnable, MAX_MS)
+        // How long the heads-up stays on screen. Android decides how long the
+        // floating banner itself hovers (a few seconds, not ours to set), but
+        // the notification below it lives exactly this long, so the reminder is
+        // still there to be found and dismissed a minute later.
+        handler.postDelayed(stopRunnable, VISIBLE_MS)
+        // And the tone never outlives that, however long the file is.
+        handler.postDelayed(silenceRunnable, MAX_SOUND_MS)
         return START_NOT_STICKY
+    }
+
+    /** Stops the tone without ending the service or hiding the notification. */
+    private fun releasePlayer() {
+        player?.runCatching { stop() }
+        player?.release()
+        player = null
     }
 
     private fun playSound(prefs: Prefs) {
@@ -88,8 +100,12 @@ class ReminderService : Service() {
                 // The heads-up's own slider, not the athan's.
                 val v = prefs.reminderVolume / 100f
                 setVolume(v, v)
-                setOnCompletionListener { stopSelf() }
-                setOnErrorListener { _, _, _ -> stopSelf(); true }
+                // Release the player, but leave the service - and so the
+                // notification - alive. Ending the service here was why the
+                // heads-up vanished a few seconds after it appeared: the tone
+                // is short, and it took the notification down with it.
+                setOnCompletionListener { releasePlayer() }
+                setOnErrorListener { _, _, _ -> releasePlayer(); true }
                 prepare()
                 start()
             }
@@ -128,19 +144,32 @@ class ReminderService : Service() {
         val minutes = Prefs(this).reminderMinutes
         val builder = NotificationCompat.Builder(
             this,
-            if (visible) AthanApp.CHANNEL_ATHAN_QUIET else AthanApp.CHANNEL_ATHAN
+            if (visible) AthanApp.CHANNEL_REMINDER else AthanApp.CHANNEL_ATHAN
         )
             .setSmallIcon(R.drawable.ic_athan)
             .setContentTitle(getString(R.string.reminder_title, getString(slot.labelRes)))
             .setContentText(getString(R.string.reminder_body, getString(slot.labelRes), minutes))
             .setCategory(NotificationCompat.CATEGORY_REMINDER)
             .setAutoCancel(false)
-            .setOngoing(true)
+            // Not ongoing: a heads-up is information, not something to be
+            // trapped by. Swipe dismisses it, Close dismisses it, and it clears
+            // itself after VISIBLE_MS if simply left alone.
+            .setOngoing(false)
             .setContentIntent(full)
             .addAction(0, getString(R.string.close), stop)
+            // Swiping it away must also end the service, or it would sit there
+            // for the rest of the minute with nothing on screen.
+            .setDeleteIntent(stop)
+            // Clears itself even if the service is killed before its timer runs.
+            .setTimeoutAfter(VISIBLE_MS)
 
+        // Unlocked: a banner at the top of whatever the user is doing, tappable
+        // to open the full window. It used to go out on the quiet channel, which
+        // by design can never banner - so an unlocked phone played the tone and
+        // showed nothing at all. Locked or screen-off: the full-screen intent,
+        // which is the only thing that gets a window up over the keyguard.
         return if (visible) {
-            builder.setPriority(NotificationCompat.PRIORITY_LOW).build()
+            builder.setPriority(NotificationCompat.PRIORITY_HIGH).build()
         } else {
             builder.setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setFullScreenIntent(full, true)
@@ -152,9 +181,8 @@ class ReminderService : Service() {
         super.onDestroy()
         active = false
         handler.removeCallbacks(stopRunnable)
-        player?.runCatching { stop() }
-        player?.release()
-        player = null
+        handler.removeCallbacks(silenceRunnable)
+        releasePlayer()
         vibrator?.cancel()
         sendBroadcast(Intent(ACTION_FINISHED).setPackage(packageName))
     }
@@ -164,6 +192,10 @@ class ReminderService : Service() {
         const val ACTION_FINISHED = "com.ahmedkhalaf.athan.REMINDER_FINISHED"
         private const val TAG = "ReminderService"
         private const val NOTIFICATION_ID = 43
-        private const val MAX_MS = 60_000L
+        /** How long the heads-up notification stays up before clearing itself. */
+        private const val VISIBLE_MS = 60_000L
+
+        /** A long recording must not keep playing for the whole visible minute. */
+        private const val MAX_SOUND_MS = 15_000L
     }
 }

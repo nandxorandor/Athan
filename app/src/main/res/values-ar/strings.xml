@@ -166,6 +166,8 @@
     <string name="channel_athan_quiet_desc">إشعار صامت يظهر أثناء عرض نافذة الأذان</string>
     <string name="channel_download">الأذانات المنزّلة</string>
     <string name="channel_download_desc">يؤكّد جاهزية الأذان الذي نزّلته لإعداده</string>
+    <string name="channel_reminder">تنبيه قرب الصلاة</string>
+    <string name="channel_reminder_desc">الإشعار الذي يظهر قبل كل صلاة أثناء استخدامك للهاتف</string>
 
     <string name="exact_alarm_blocked">التنبيهات الدقيقة معطّلة، فلن ينطلق الأذان في وقته. اضغط للسماح.</string>
 

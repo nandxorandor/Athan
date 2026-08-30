@@ -208,6 +208,8 @@
     <string name="channel_athan_quiet_desc">Silent placeholder shown while the athan window is on screen</string>
     <string name="channel_download">Downloaded athans</string>
     <string name="channel_download_desc">Confirms when an athan you downloaded is ready to set up</string>
+    <string name="channel_reminder">Prayer time heads-up</string>
+    <string name="channel_reminder_desc">The banner shown before each prayer while you are using the phone</string>
 
     <string name="exact_alarm_blocked">Exact alarms are turned off, so the athan can\'t fire on time. Tap to allow.</string>
 

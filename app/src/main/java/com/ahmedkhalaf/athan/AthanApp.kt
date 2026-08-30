@@ -16,6 +16,7 @@ class AthanApp : Application() {
         const val CHANNEL_ATHAN = "athan"
         const val CHANNEL_ATHAN_QUIET = "athan_quiet"
         const val CHANNEL_DOWNLOAD = "athan_download"
+        const val CHANNEL_REMINDER = "athan_reminder"
 
         /**
          * Channel names and descriptions are user-visible text in the system's
@@ -69,7 +70,22 @@ class AthanApp : Application() {
                 enableVibration(false)
             }
 
-            manager.createNotificationChannels(listOf(alert, quiet, download))
+            // The heads-up while the phone is unlocked and in use. High
+            // importance so it banners at the top of the screen - that banner is
+            // the whole point of a heads-up, and the quiet channel could not
+            // produce one, which left an unlocked phone with sound and nothing
+            // to look at. Silent, because ReminderService plays the tone itself.
+            val reminder = NotificationChannel(
+                CHANNEL_REMINDER,
+                ctx.getString(R.string.channel_reminder),
+                NotificationManager.IMPORTANCE_HIGH
+            ).apply {
+                description = ctx.getString(R.string.channel_reminder_desc)
+                setSound(null, null)
+                enableVibration(false)
+            }
+
+            manager.createNotificationChannels(listOf(alert, quiet, download, reminder))
         }
     }
 }

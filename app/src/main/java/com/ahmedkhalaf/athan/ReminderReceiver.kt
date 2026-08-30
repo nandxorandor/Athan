@@ -41,15 +41,23 @@ class ReminderReceiver : BroadcastReceiver() {
             )
         }.onFailure { Log.e(TAG, "could not start reminder service", it) }
 
-        // Alarm delivery grants a brief background-activity-start window, so the
-        // popup shows even with the screen on. The full-screen intent on the
-        // service's notification covers the locked / screen-off case.
-        runCatching {
-            context.startActivity(
-                Intent(context, ReminderActivity::class.java)
-                    .putExtra(AthanScheduler.EXTRA_SLOT, slot.name)
-                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            )
+        // Only take over the screen when there is no screen to take over. If the
+        // phone is in the user's hands, a full-screen window thrown over
+        // whatever they are doing is the wrong answer to "prayer in 10 minutes"
+        // - the service's high-importance banner says the same thing without
+        // interrupting, and tapping it opens this window anyway. Locked or
+        // screen-off, the notification's full-screen intent handles it.
+        val power = context.getSystemService(android.os.PowerManager::class.java)
+        val keyguard = context.getSystemService(android.app.KeyguardManager::class.java)
+        val inUse = power.isInteractive && !keyguard.isKeyguardLocked
+        if (!inUse) {
+            runCatching {
+                context.startActivity(
+                    Intent(context, ReminderActivity::class.java)
+                        .putExtra(AthanScheduler.EXTRA_SLOT, slot.name)
+                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                )
+            }
         }
 
         // Re-arm the whole chain. The guard skips anything within a minute of

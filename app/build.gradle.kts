@@ -1,4 +1,4 @@
-plugins {
+﻿plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
 }
@@ -15,8 +15,8 @@ android {
         applicationId = "com.ahmedkhalaf.athan"
         minSdk = 26
         targetSdk = 36
-        versionCode = 9
-        versionName = "1.3.5"
+        versionCode = 13
+        versionName = "1.3.9"
     }
 
     if (hasSigningCredentials) {
@@ -76,3 +76,7 @@ dependencies {
     // Offline prayer-time astronomy. No network, no API key, widely trusted.
     implementation("com.batoulapps.adhan:adhan:1.2.1")
 }
+
+
+
+
