@@ -145,10 +145,12 @@ appears over the lock screen with a single Stop button.
 
 **Reliable scheduling.** Uses `AlarmManager.setAlarmClock`, the one tier Android's
 Doze mode never delays. Alarms are re-armed after each prayer, after a reboot,
-and after a timezone change.
+and after a timezone change or the clock being set.
 
-**Pre-prayer heads-up.** Optional reminder 5, 10, or 15 minutes before each
-prayer, with its own tone or vibration.
+**Pre-prayer heads-up.** Optional reminder anywhere from 1 to 60 minutes before
+each prayer, with its own tone or vibration and its own volume, separate from the
+athan's. It banners while you are using the phone and opens a full window when the
+screen is locked.
 
 **Qibla compass.** True-north corrected (magnetic declination is applied), with a
 Kaaba marker on the dial. Falls back to showing the bearing in degrees if your
