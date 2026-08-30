@@ -208,6 +208,10 @@
     <string name="unit_fahrenheit">فهرنهايت</string>
     <string name="temperature_summary_on">مفعّل · %1$s</string>
     <string name="temperature_summary_off">متوقف · بلا اتصال بالشبكة</string>
+    <string name="temperature_unit">وحدة الحرارة</string>
+    <string name="temperature_unit_summary">تظهر في الشاشة الرئيسية وعند الضغط عليها</string>
+    <string name="reminder_volume">مستوى صوت التنبيه</string>
+    <string name="reminder_volume_summary">مستقل عن مستوى صوت الأذان</string>
     <string name="temperature_notice_title">هل تريد إظهار درجة الحرارة؟</string>
     <string name="temperature_notice_body">يمكن للتطبيق عرض درجة الحرارة عند موقعك. ولذلك تُرسل إحداثياتك إلى Open-Meteo — وهذا هو الشيء الوحيد الذي يُرسله هذا التطبيق إلى أي جهة.
 

@@ -194,6 +194,34 @@
                 android:textSize="14sp" />
         </LinearLayout>
 
+        <!-- The unit was previously reachable only inside the temperature
+             dialog, greyed out unless the feature was on, so people who only
+             wanted to change C/F never found it. Its own row, always live. -->
+        <LinearLayout
+            android:id="@+id/temperatureUnitRow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:orientation="vertical"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/temperature_unit"
+                android:textColor="@color/text"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/temperatureUnitName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/accent"
+                android:textSize="14sp" />
+        </LinearLayout>
+
         <LinearLayout
             android:id="@+id/ramadanRow"
             android:layout_width="match_parent"

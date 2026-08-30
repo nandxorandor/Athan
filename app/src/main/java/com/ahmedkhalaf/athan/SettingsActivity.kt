@@ -47,6 +47,7 @@ class SettingsActivity : LocalizedActivity() {
         binding.madhabRow.setOnClickListener { chooseMadhab() }
         binding.adjustRow.setOnClickListener { chooseAdjustment() }
         binding.temperatureRow.setOnClickListener { chooseTemperature() }
+        binding.temperatureUnitRow.setOnClickListener { chooseTemperatureUnit() }
         binding.ramadanRow.setOnClickListener {
             startActivity(RamadanActivity.intent(this))
         }
@@ -80,7 +81,32 @@ class SettingsActivity : LocalizedActivity() {
                 )
             )
             else getString(R.string.temperature_summary_off)
+        binding.temperatureUnitName.text =
+            getString(if (prefs.fahrenheit) R.string.unit_fahrenheit else R.string.unit_celsius)
         binding.ramadanName.text = getString(R.string.ramadan_title, RamadanCalendar.upcomingHijriYear())
+    }
+
+    /**
+     * Celsius or Fahrenheit on its own, independent of whether the temperature
+     * is switched on. Tapping the reading on the home screen already toggles
+     * this; people reasonably expected to be able to set it here too, and the
+     * copy inside the temperature dialog was invisible to anyone not opening
+     * that dialog.
+     */
+    private fun chooseTemperatureUnit() {
+        val labels = arrayOf(
+            getString(R.string.unit_celsius),
+            getString(R.string.unit_fahrenheit),
+        )
+        MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.temperature_unit)
+            .setSingleChoiceItems(labels, if (prefs.fahrenheit) 1 else 0) { dialog, which ->
+                prefs.fahrenheit = which == 1
+                refresh()
+                dialog.dismiss()
+            }
+            .setNegativeButton(android.R.string.cancel, null)
+            .show()
     }
 
     /**

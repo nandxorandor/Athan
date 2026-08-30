@@ -148,6 +148,53 @@
                     android:textSize="14sp" />
             </LinearLayout>
 
+            <!-- Its own slider, not the athan's. The athan has to carry across
+                 a room; the heads-up only has to be noticed by whoever is
+                 holding the phone. One shared value suited neither. -->
+            <LinearLayout
+                android:id="@+id/volumeRow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/reminder_volume"
+                        android:textColor="@color/text"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/volumeValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/accent"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/reminder_volume_summary"
+                    android:textColor="@color/text_dim"
+                    android:textSize="13sp" />
+
+                <SeekBar
+                    android:id="@+id/volumeSlider"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:max="100" />
+            </LinearLayout>
+
             <com.google.android.material.materialswitch.MaterialSwitch
                 android:id="@+id/vibrateSwitch"
                 android:layout_width="match_parent"

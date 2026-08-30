@@ -138,6 +138,17 @@ class Prefs(context: Context) {
         set(v) = sp.edit().putBoolean(KEY_REMINDER_VIB, v).apply()
 
     /**
+     * The heads-up's own loudness, 0-100, deliberately separate from [volume].
+     * The two serve opposite purposes: the athan is meant to carry across a
+     * room, while the heads-up only has to be noticed by someone holding the
+     * phone. Sharing one slider forced a compromise that suited neither.
+     * Defaults to 70 rather than 100 for the same reason.
+     */
+    var reminderVolume: Int
+        get() = sp.getInt(KEY_REMINDER_VOL, 70)
+        set(v) = sp.edit().putInt(KEY_REMINDER_VOL, v.coerceIn(0, 100)).apply()
+
+    /**
      * Whether we have already offered to watch the Downloads folder. Asked once,
      * on the first source link tap; a refusal must not re-prompt on every tap.
      */
@@ -231,6 +242,7 @@ class Prefs(context: Context) {
         const val KEY_REMINDER_MIN = "reminder_min"
         const val KEY_REMINDER_SOUND = "reminder_sound"
         const val KEY_REMINDER_VIB = "reminder_vib"
+        const val KEY_REMINDER_VOL = "reminder_volume"
         const val KEY_FAJR_SOUND = "fajr_sound"
         const val KEY_OTHER_SOUND = "other_sound"
         val NO_LOCATION = Double.NaN

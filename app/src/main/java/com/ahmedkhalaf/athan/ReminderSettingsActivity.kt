@@ -91,6 +91,34 @@ class ReminderSettingsActivity : LocalizedActivity() {
 
         binding.toneRow.setOnClickListener { chooseSoundSource() }
 
+        binding.volumeSlider.progress = prefs.reminderVolume
+        binding.volumeSlider.progressTintList =
+            android.content.res.ColorStateList.valueOf(getColor(R.color.volume_green))
+        binding.volumeSlider.progressBackgroundTintList =
+            android.content.res.ColorStateList.valueOf(getColor(R.color.volume_green))
+        binding.volumeSlider.thumb = getDrawable(R.drawable.volume_thumb)
+        binding.volumeValue.text = getString(R.string.volume_percent, prefs.reminderVolume)
+        binding.volumeSlider.setOnSeekBarChangeListener(
+            object : android.widget.SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(
+                    bar: android.widget.SeekBar,
+                    progress: Int,
+                    fromUser: Boolean,
+                ) {
+                    if (!fromUser) return
+                    prefs.reminderVolume = progress
+                    binding.volumeValue.text = getString(R.string.volume_percent, progress)
+                }
+
+                override fun onStartTrackingTouch(bar: android.widget.SeekBar) = Unit
+
+                // Preview on release, not on every step: hearing the tone at the
+                // volume just chosen is the only way to judge it, but playing it
+                // while the finger is still moving would stutter.
+                override fun onStopTrackingTouch(bar: android.widget.SeekBar) = previewTone()
+            }
+        )
+
         // Sound and Vibrate are mutually exclusive; exactly one is on. Setting
         // the checked state fires the listener, so guard against the ping-pong.
         binding.soundSwitch.isChecked = !prefs.reminderVibrate
@@ -117,10 +145,52 @@ class ReminderSettingsActivity : LocalizedActivity() {
 
     private fun refresh() {
         binding.soundName.text = reminderSoundLabel()
-        // The tone only matters when sound is the chosen mode.
+        // The tone and its volume only matter when sound is the chosen mode.
         val soundOn = !prefs.reminderVibrate
         binding.toneRow.alpha = if (soundOn) 1f else 0.4f
         binding.toneRow.isEnabled = soundOn
+        binding.volumeRow.alpha = if (soundOn) 1f else 0.4f
+        binding.volumeSlider.isEnabled = soundOn
+    }
+
+    /**
+     * Plays the chosen tone at the chosen volume, on USAGE_ALARM - the same
+     * routing ReminderService uses, so what is heard here is what will be heard
+     * at the prayer rather than a preview down a different stream.
+     */
+    private fun previewTone() {
+        if (prefs.reminderVibrate) return
+        preview?.runCatching { stop() }
+        preview?.release()
+        val uri = prefs.reminderSound.takeIf { it.isNotEmpty() }?.let { Uri.parse(it) }
+            ?: RingtoneManager.getActualDefaultRingtoneUri(this, RingtoneManager.TYPE_NOTIFICATION)
+            ?: Settings.System.DEFAULT_NOTIFICATION_URI ?: return
+        preview = runCatching {
+            android.media.MediaPlayer().apply {
+                setAudioAttributes(
+                    android.media.AudioAttributes.Builder()
+                        .setUsage(android.media.AudioAttributes.USAGE_ALARM)
+                        .setContentType(android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                        .build()
+                )
+                setDataSource(this@ReminderSettingsActivity, uri)
+                val v = prefs.reminderVolume / 100f
+                setVolume(v, v)
+                setOnCompletionListener { it.release(); preview = null }
+                prepare()
+                start()
+            }
+        }.getOrNull()
+    }
+
+    private var preview: android.media.MediaPlayer? = null
+
+    override fun onStop() {
+        super.onStop()
+        // Never let a preview outlive the screen that started it.
+        preview?.runCatching { stop() }
+        preview?.release()
+        preview = null
     }
 
     /** Re-arm so a changed minutes/enabled value applies from the next prayer. */

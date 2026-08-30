@@ -73,14 +73,20 @@ class ReminderService : Service() {
             ?: Settings.System.DEFAULT_NOTIFICATION_URI ?: return
         try {
             player = MediaPlayer().apply {
+                // USAGE_ALARM, exactly as the athan uses. NOTIFICATION_EVENT
+                // routes to the notification stream, so a lowered ringer or any
+                // Do Not Disturb profile silenced the heads-up completely while
+                // the athan itself still played - the tone was chosen, stored
+                // and shown in settings, and simply never heard.
                 setAudioAttributes(
                     AudioAttributes.Builder()
-                        .setUsage(AudioAttributes.USAGE_NOTIFICATION_EVENT)
+                        .setUsage(AudioAttributes.USAGE_ALARM)
                         .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                         .build()
                 )
                 setDataSource(this@ReminderService, uri)
-                val v = prefs.volume / 100f
+                // The heads-up's own slider, not the athan's.
+                val v = prefs.reminderVolume / 100f
                 setVolume(v, v)
                 setOnCompletionListener { stopSelf() }
                 setOnErrorListener { _, _, _ -> stopSelf(); true }

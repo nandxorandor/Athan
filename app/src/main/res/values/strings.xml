@@ -226,6 +226,10 @@
     <string name="unit_fahrenheit">Fahrenheit</string>
     <string name="temperature_summary_on">On · %1$s</string>
     <string name="temperature_summary_off">Off · no network requests</string>
+    <string name="temperature_unit">Temperature unit</string>
+    <string name="temperature_unit_summary">Shown on the home screen and when you tap it</string>
+    <string name="reminder_volume">Heads-up volume</string>
+    <string name="reminder_volume_summary">Separate from the athan volume</string>
     <string name="temperature_notice_title">Show the temperature?</string>
     <string name="temperature_notice_body">Athan can show the current temperature where you are. To do it, your coordinates are sent to Open-Meteo — that is the one and only thing this app ever sends anywhere.
 
