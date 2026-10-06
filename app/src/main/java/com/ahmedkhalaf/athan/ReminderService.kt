@@ -64,7 +64,7 @@ class ReminderService : Service() {
         // How long the heads-up stays on screen. Android decides how long the
         // floating banner itself hovers (a few seconds, not ours to set), but
         // the notification below it lives exactly this long, so the reminder is
-        // still there to be found and dismissed a minute later.
+        // still there to be found and dismissed a couple of minutes later.
         handler.postDelayed(stopRunnable, VISIBLE_MS)
         // And the tone never outlives that, however long the file is.
         handler.postDelayed(silenceRunnable, MAX_SOUND_MS)
@@ -192,10 +192,17 @@ class ReminderService : Service() {
         const val ACTION_FINISHED = "com.ahmedkhalaf.athan.REMINDER_FINISHED"
         private const val TAG = "ReminderService"
         private const val NOTIFICATION_ID = 43
-        /** How long the heads-up notification stays up before clearing itself. */
-        private const val VISIBLE_MS = 60_000L
+        /**
+         * How long the heads-up notification stays up before clearing itself.
+         * Never shorter than MAX_SOUND_MS: ending the service ends the tone.
+         */
+        private const val VISIBLE_MS = 120_000L
 
-        /** A long recording must not keep playing for the whole visible minute. */
-        private const val MAX_SOUND_MS = 15_000L
+        /**
+         * The longest a tone may play. Generous on purpose - users pick their own
+         * recordings, and a 15 s cap cut them off mid-sentence. Close or a swipe
+         * still stops it at any time.
+         */
+        private const val MAX_SOUND_MS = 120_000L
     }
 }
