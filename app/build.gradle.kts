@@ -15,8 +15,8 @@ android {
         applicationId = "com.ahmedkhalaf.athan"
         minSdk = 26
         targetSdk = 36
-        versionCode = 9
-        versionName = "1.3.5"
+        versionCode = 10
+        versionName = "1.3.6"
     }
 
     if (hasSigningCredentials) {
@@ -51,6 +51,16 @@ android {
         // The athan recordings are already MP3; re-compressing them in the APK
         // wastes build time and saves nothing.
         noCompress += "mp3"
+    }
+
+    // The language is chosen inside the app, not taken from the phone. Play
+    // otherwise installs only the phone's own language from the bundle, so on
+    // an English phone the Arabic button flipped the layout to right-to-left
+    // and left every word in English - the Arabic strings were never installed.
+    bundle {
+        language {
+            enableSplit = false
+        }
     }
 
     buildFeatures {
