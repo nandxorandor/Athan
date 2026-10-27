@@ -13,7 +13,7 @@ import kotlin.math.sin
 
 /**
  * The ring around the next-prayer countdown: how much of the stretch since the
- * last prayer has gone. A dotted track for the whole circle, a solid arc for
+ * last prayer has gone. A dashed track for the whole circle, a solid arc for
  * the part already passed, and a dot where it ends - so the countdown reads
  * at a glance as "nearly there" or "hours yet" before a digit is read.
  *
@@ -36,13 +36,14 @@ class NextPrayerRing @JvmOverloads constructor(
         }
 
     private val density = resources.displayMetrics.density
-    private val stroke = 5f * density
+    private val stroke = 7f * density
 
     private val track = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
-        strokeWidth = 2f * density
-        color = context.getColor(R.color.icon_idle)
-        pathEffect = DashPathEffect(floatArrayOf(2f * density, 5f * density), 0f)
+        strokeWidth = 4f * density
+        strokeCap = Paint.Cap.ROUND
+        color = context.getColor(R.color.ring_track)
+        pathEffect = DashPathEffect(floatArrayOf(3f * density, 7f * density), 0f)
     }
     private val arc = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE

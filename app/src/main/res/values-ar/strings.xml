@@ -36,6 +36,11 @@
     <string name="home_layout">الشاشة الرئيسية</string>
     <string name="home_compact">الصلاة القادمة فقط</string>
     <string name="home_full">الجدول كاملًا</string>
+    <string name="nav_home">الرئيسية</string>
+    <string name="nav_times">الأوقات</string>
+    <string name="nav_calendar">التقويم</string>
+    <string name="share_times">مشاركة</string>
+    <string name="close_sheet">إغلاق</string>
     <string name="countdown_hm">%1$d س %2$02d د</string>
     <string name="countdown_ms">%1$d د %2$02d ث</string>
     <string name="time_pattern">h:mm a</string>

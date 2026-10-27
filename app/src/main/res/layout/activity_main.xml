@@ -1,421 +1,446 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Everything here has to fit one screen without scrolling. Anything that is not
-  "what time is the next prayer and how will it announce itself" belongs in
-  SettingsActivity. The ScrollView is only a safety net for short displays.
+  The home screen, after a design a user sent in: the next prayer large in a
+  ring, the day's table one tap away, a bottom bar for the other destinations.
+  The ScrollView is only a safety net for short displays; the bar stays put
+  below it.
 -->
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg"
-    android:fillViewport="true">
+    android:orientation="vertical">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingStart="24dp"
-        android:paddingTop="16dp"
-        android:paddingEnd="24dp"
-        android:paddingBottom="16dp">
-
-        <!--
-          Shown only while an athan is actually sounding. The notification and
-          the athan window both carry a Stop, but neither is guaranteed to be
-          in front of you - Android 14 lets an ongoing notification be swiped
-          away, and the window can be dismissed with Back. Without this, the
-          app you open to stop the sound looks exactly like an app with
-          nothing playing.
-        -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/stopAthanBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:textAllCaps="false"
-            android:textSize="16sp"
-            android:visibility="gone"
-            app:icon="@drawable/ic_athan"
-            app:iconGravity="textStart"
-            app:iconPadding="8dp" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
 
         <LinearLayout
-            android:id="@+id/locationRow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackground"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp">
+            android:orientation="vertical"
+            android:paddingStart="24dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="24dp"
+            android:paddingBottom="16dp">
 
-            <!-- A pin instead of the word "Change": it signals the row is the
-                 location control while leaving the full width to city names
-                 like "St. Mary's County", which the label used to truncate. -->
-            <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:layout_marginEnd="8dp"
-                android:contentDescription="@string/set_location"
-                android:src="@drawable/ic_place"
-                app:tint="@color/accent" />
+            <!--
+              Shown only while an athan is actually sounding. The notification
+              and the athan window both carry a Stop, but neither is guaranteed
+              to be in front of you - Android 14 lets an ongoing notification be
+              swiped away, and the window can be dismissed with Back. Without
+              this, the app you open to stop the sound looks exactly like an app
+              with nothing playing.
+            -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/stopAthanBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                android:visibility="gone"
+                app:icon="@drawable/ic_athan"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp" />
+
+            <!-- City at the start, temperature at the end. The pin and the
+                 arrow mark the city as the control that changes the location. -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/locationRow"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="?attr/selectableItemBackground"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="8dp"
+                        android:contentDescription="@string/set_location"
+                        android:src="@drawable/ic_place"
+                        app:tint="@color/accent" />
+
+                    <TextView
+                        android:id="@+id/cityName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxWidth="220dp"
+                        android:maxLines="1"
+                        android:text="@string/set_location"
+                        android:textColor="@color/text"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="4dp"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_expand_more"
+                        app:tint="@color/text" />
+                </LinearLayout>
+
+                <!-- Gone until a reading actually arrives, so a failed fetch
+                     leaves no empty gap. -->
+                <TextView
+                    android:id="@+id/temperature"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/bg_temperature"
+                    android:maxLines="1"
+                    android:paddingStart="10dp"
+                    android:paddingTop="6dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="6dp"
+                    android:textColor="@color/temperature_text"
+                    android:textSize="16sp"
+                    android:visibility="gone" />
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/cityName"
-                android:layout_width="0dp"
+                android:id="@+id/hijriDate"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:minWidth="0dp"
-                android:text="@string/set_location"
-                android:textColor="@color/text"
-                android:textSize="16sp" />
+                android:layout_marginTop="4dp"
+                android:includeFontPadding="false"
+                android:textColor="@color/sunrise"
+                android:textSize="15sp" />
 
-            <!-- Rides on the location row rather than taking a line of its
-                 own: it belongs to the place, and the home screen has no
-                 vertical room to spare. Gone until a reading actually
-                 arrives, so a failed fetch leaves no empty gap. -->
             <TextView
-                android:id="@+id/temperature"
-                android:layout_width="wrap_content"
+                android:id="@+id/gregorianDate"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:background="@drawable/bg_temperature"
-                android:maxLines="1"
-                android:paddingStart="7dp"
-                android:paddingTop="5dp"
-                android:paddingEnd="7dp"
-                android:paddingBottom="5dp"
-                android:textColor="@color/temperature_text"
-                android:textSize="15sp"
+                android:layout_marginTop="6dp"
+                android:includeFontPadding="false"
+                android:textColor="@color/text_dim"
+                android:textSize="14sp" />
+
+            <!-- The full-timetable layout's one-line countdown. -->
+            <TextView
+                android:id="@+id/nextPrayer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:gravity="center"
+                android:text="@string/no_location_yet"
+                android:textColor="@color/accent"
+                android:textSize="22sp" />
+
+            <!-- The next prayer and how long until it, large enough to read
+                 across a room. Tapping it opens the day's table. -->
+            <FrameLayout
+                android:id="@+id/nextCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:visibility="gone">
+
+                <com.ahmedkhalaf.athan.NextPrayerRing
+                    android:id="@+id/nextRing"
+                    android:layout_width="280dp"
+                    android:layout_height="280dp"
+                    android:layout_gravity="center" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/next_prayer_label"
+                        android:textColor="@color/text_dim"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/nextName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/accent"
+                        android:textSize="36sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/time_left"
+                        android:textColor="@color/text_dim"
+                        android:textSize="14sp" />
+
+                    <!-- Tabular digits, so the line does not twitch every
+                         second as a 1 gives way to a wider 0. -->
+                    <TextView
+                        android:id="@+id/nextCountdown"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFeatureSettings="tnum"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/text"
+                        android:textDirection="ltr"
+                        android:textSize="40sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="24dp"
+                        android:layout_height="2dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="8dp"
+                        android:background="@color/accent" />
+
+                    <TextView
+                        android:id="@+id/nextTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text"
+                        android:textSize="20sp" />
+                </LinearLayout>
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/alarmWarning"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@color/warning_bg"
+                android:padding="12dp"
+                android:text="@string/exact_alarm_blocked"
+                android:textColor="@color/warning_text"
+                android:textSize="13sp"
                 android:visibility="gone" />
-        </LinearLayout>
 
-        <TextView
-            android:id="@+id/hijriDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:includeFontPadding="false"
-            android:textColor="@color/sunrise"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/nextPrayer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:gravity="center"
-            android:text="@string/no_location_yet"
-            android:textColor="@color/accent"
-            android:textSize="22sp" />
-
-        <!--
-          The default home screen: the next prayer and how long until it, large
-          enough to read across a room, with the full table one tap away in a
-          sheet. Users asked for this over the always-visible table. The
-          one-line countdown above and the inline table below remain for anyone
-          who picks the full timetable in Settings.
-        -->
-        <FrameLayout
-            android:id="@+id/nextCard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:background="?attr/selectableItemBackground"
-            android:visibility="gone">
-
-            <com.ahmedkhalaf.athan.NextPrayerRing
-                android:id="@+id/nextRing"
-                android:layout_width="250dp"
-                android:layout_height="250dp"
-                android:layout_gravity="center" />
+            <!-- The full-timetable layout's table. -->
+            <LinearLayout
+                android:id="@+id/timesContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
+                android:id="@+id/allTimesButton"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_pill"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="20dp"
+                android:paddingEnd="16dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_list"
+                    app:tint="@color/accent" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/next_prayer_label"
-                    android:textColor="@color/text_dim"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/all_times"
+                    android:textColor="@color/accent"
+                    android:textSize="17sp" />
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_chevron_forward"
+                    app:tint="@color/text" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/qiblaButton"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_marginEnd="6dp"
+                    android:layout_weight="1"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:maxLines="1"
+                    android:text="@string/qibla"
+                    android:textAllCaps="false"
+                    android:textColor="@color/accent"
+                    android:textSize="16sp"
+                    app:cornerRadius="28dp"
+                    app:icon="@drawable/ic_explore"
+                    app:iconGravity="textStart"
+                    app:iconPadding="8dp"
+                    app:iconSize="22dp"
+                    app:iconTint="@color/accent"
+                    app:strokeColor="@color/icon_idle" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/ramadanButton"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_marginStart="6dp"
+                    android:layout_weight="1"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:maxLines="1"
+                    android:minWidth="0dp"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:text="@string/ramadan"
+                    android:textAllCaps="false"
+                    android:textColor="@color/accent"
+                    app:autoSizeMaxTextSize="16sp"
+                    app:autoSizeMinTextSize="11sp"
+                    app:autoSizeStepGranularity="1sp"
+                    app:autoSizeTextType="uniform"
+                    app:cornerRadius="28dp"
+                    app:icon="@drawable/ic_adhkar_evening"
+                    app:iconGravity="textStart"
+                    app:iconPadding="8dp"
+                    app:iconSize="22dp"
+                    app:iconTint="@color/text"
+                    app:strokeColor="@color/icon_idle" />
+            </LinearLayout>
+
+            <!-- Evening first, morning second, in the order users already know;
+                 the icons carry the time of day so neither label has to. -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/eveningAdhkarButton"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_marginEnd="6dp"
+                    android:layout_weight="1"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:maxLines="1"
+                    android:minWidth="0dp"
+                    android:paddingStart="6dp"
+                    android:paddingEnd="6dp"
+                    android:text="@string/adhkar_evening"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text"
+                    app:autoSizeMaxTextSize="15sp"
+                    app:autoSizeMinTextSize="10sp"
+                    app:autoSizeStepGranularity="1sp"
+                    app:autoSizeTextType="uniform"
+                    app:cornerRadius="28dp"
+                    app:icon="@drawable/ic_adhkar_evening"
+                    app:iconGravity="textStart"
+                    app:iconPadding="6dp"
+                    app:iconSize="20dp"
+                    app:iconTint="@color/text"
+                    app:strokeColor="@color/icon_idle" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/morningAdhkarButton"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_marginStart="6dp"
+                    android:layout_weight="1"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:maxLines="1"
+                    android:minWidth="0dp"
+                    android:paddingStart="6dp"
+                    android:paddingEnd="6dp"
+                    android:text="@string/adhkar_morning"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text"
+                    app:autoSizeMaxTextSize="15sp"
+                    app:autoSizeMinTextSize="10sp"
+                    app:autoSizeStepGranularity="1sp"
+                    app:autoSizeTextType="uniform"
+                    app:cornerRadius="28dp"
+                    app:icon="@drawable/ic_adhkar_morning"
+                    app:iconGravity="textStart"
+                    app:iconPadding="6dp"
+                    app:iconSize="20dp"
+                    app:iconTint="@color/sunrise"
+                    app:strokeColor="@color/icon_idle" />
+            </LinearLayout>
+
+            <!-- The language switch stays on the home screen rather than inside
+                 Settings: an Arabic reader who opens an English app should not
+                 have to read English to find it. -->
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/languageGroup"
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="12dp"
+                app:selectionRequired="true"
+                app:singleSelection="true">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/langEnglish"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:minWidth="0dp"
+                    android:text="@string/lang_english"
+                    android:textAllCaps="false"
                     android:textSize="14sp" />
 
-                <TextView
-                    android:id="@+id/nextName"
-                    android:layout_width="wrap_content"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/langArabic"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/accent"
-                    android:textSize="32sp"
-                    android:textStyle="bold" />
+                    android:layout_weight="1"
+                    android:minWidth="0dp"
+                    android:text="@string/lang_arabic"
+                    android:textAllCaps="false"
+                    android:textSize="14sp" />
+            </com.google.android.material.button.MaterialButtonToggleGroup>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:text="@string/time_left"
-                    android:textColor="@color/text_dim"
-                    android:textSize="13sp" />
-
-                <!-- Tabular digits, so the line does not twitch every second
-                     as a 1 gives way to a wider 0. -->
-                <TextView
-                    android:id="@+id/nextCountdown"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFeatureSettings="tnum"
-                    android:includeFontPadding="false"
-                    android:textColor="@color/text"
-                    android:textDirection="ltr"
-                    android:textSize="38sp"
-                    android:textStyle="bold" />
-
-                <View
-                    android:layout_width="24dp"
-                    android:layout_height="2dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="6dp"
-                    android:background="@color/accent" />
-
-                <TextView
-                    android:id="@+id/nextTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/text"
-                    android:textSize="18sp" />
-            </LinearLayout>
-        </FrameLayout>
-
-        <TextView
-            android:id="@+id/alarmWarning"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:background="@color/warning_bg"
-            android:padding="12dp"
-            android:text="@string/exact_alarm_blocked"
-            android:textColor="@color/warning_text"
-            android:textSize="13sp"
-            android:visibility="gone" />
-
-        <LinearLayout
-            android:id="@+id/timesContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/allTimesButton"
-            style="?attr/materialButtonOutlinedStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="@string/all_times"
-            android:textAllCaps="false"
-            android:textSize="15sp"
-            android:visibility="gone"
-            app:icon="@drawable/ic_list"
-            app:iconGravity="textStart"
-            app:iconPadding="8dp"
-            app:iconSize="20dp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:orientation="horizontal">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/qiblaButton"
-                style="?attr/materialButtonOutlinedStyle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="6dp"
-                android:layout_weight="1"
-                android:insetLeft="0dp"
-                android:insetRight="0dp"
-                android:maxLines="1"
-                android:minWidth="0dp"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
-                android:text="@string/qibla"
-                android:textAllCaps="false"
-                android:textSize="14sp"
-                app:icon="@drawable/ic_explore"
-                app:iconGravity="textStart"
-                app:iconPadding="6dp"
-                app:iconSize="20dp" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/settingsButton"
-                style="?attr/materialButtonOutlinedStyle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:layout_weight="1"
-                android:insetLeft="0dp"
-                android:insetRight="0dp"
-                android:maxLines="1"
-                android:minWidth="0dp"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
-                android:text="@string/settings"
-                android:textAllCaps="false"
-                android:textSize="14sp"
-                app:icon="@drawable/ic_settings"
-                app:iconGravity="textStart"
-                app:iconPadding="6dp"
-                app:iconSize="20dp" />
         </LinearLayout>
+    </ScrollView>
 
-        <!-- Evening on the left, morning on the right: the row reads
-             right-to-left like the Arabic on the buttons themselves, and the
-             icons carry the time of day so neither label has to. -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:orientation="horizontal">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/eveningAdhkarButton"
-                style="?attr/materialButtonOutlinedStyle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="6dp"
-                android:layout_weight="1"
-                android:insetLeft="0dp"
-                android:insetRight="0dp"
-                android:maxLines="1"
-                android:minWidth="0dp"
-                android:paddingStart="6dp"
-                android:paddingEnd="6dp"
-                android:text="@string/adhkar_evening"
-                android:textAllCaps="false"
-                app:autoSizeMaxTextSize="14sp"
-                app:autoSizeMinTextSize="10sp"
-                app:autoSizeStepGranularity="1sp"
-                app:autoSizeTextType="uniform"
-                app:icon="@drawable/ic_adhkar_evening"
-                app:iconGravity="textStart"
-                app:iconPadding="6dp"
-                app:iconSize="20dp"
-                app:iconTint="@color/text" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/morningAdhkarButton"
-                style="?attr/materialButtonOutlinedStyle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:layout_weight="1"
-                android:insetLeft="0dp"
-                android:insetRight="0dp"
-                android:maxLines="1"
-                android:minWidth="0dp"
-                android:paddingStart="6dp"
-                android:paddingEnd="6dp"
-                android:text="@string/adhkar_morning"
-                android:textAllCaps="false"
-                app:autoSizeMaxTextSize="14sp"
-                app:autoSizeMinTextSize="10sp"
-                app:autoSizeStepGranularity="1sp"
-                app:autoSizeTextType="uniform"
-                app:icon="@drawable/ic_adhkar_morning"
-                app:iconGravity="textStart"
-                app:iconPadding="6dp"
-                app:iconSize="20dp"
-                app:iconTint="@color/sunrise" />
-        </LinearLayout>
-
-        <!-- The language switch sits on the home screen rather than inside
-             Settings: an Arabic reader who opens an English app should not have
-             to read English to find it. -->
-        <!-- The language switch and the Ramadan calendar share the last row.
-             The switch stays a two-segment pill and the calendar is an
-             ordinary button, so the calendar never reads as a third language. -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-        <com.google.android.material.button.MaterialButtonToggleGroup
-            android:id="@+id/languageGroup"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.35"
-            app:selectionRequired="true"
-            app:singleSelection="true">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/langEnglish"
-                style="?attr/materialButtonOutlinedStyle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:insetLeft="0dp"
-                android:insetRight="0dp"
-                android:maxLines="1"
-                android:minWidth="0dp"
-                android:paddingStart="2dp"
-                android:paddingEnd="2dp"
-                android:text="@string/lang_english"
-                android:textAllCaps="false"
-                app:autoSizeMaxTextSize="15sp"
-                app:autoSizeMinTextSize="10sp"
-                app:autoSizeStepGranularity="1sp"
-                app:autoSizeTextType="uniform" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/langArabic"
-                style="?attr/materialButtonOutlinedStyle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:insetLeft="0dp"
-                android:insetRight="0dp"
-                android:maxLines="1"
-                android:minWidth="0dp"
-                android:paddingStart="2dp"
-                android:paddingEnd="2dp"
-                android:text="@string/lang_arabic"
-                android:textAllCaps="false"
-                app:autoSizeMaxTextSize="15sp"
-                app:autoSizeMinTextSize="10sp"
-                app:autoSizeStepGranularity="1sp"
-                app:autoSizeTextType="uniform" />
-        </com.google.android.material.button.MaterialButtonToggleGroup>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/ramadanButton"
-                style="?attr/materialButtonOutlinedStyle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_weight="1"
-                android:insetLeft="0dp"
-                android:insetRight="0dp"
-                android:maxLines="1"
-                android:minWidth="0dp"
-                android:paddingStart="4dp"
-                android:paddingEnd="4dp"
-                android:text="@string/ramadan_short"
-                android:textAllCaps="false"
-                app:autoSizeMaxTextSize="14sp"
-                app:autoSizeMinTextSize="9sp"
-                app:autoSizeStepGranularity="1sp"
-                app:autoSizeTextType="uniform" />
-        </LinearLayout>
-
-    </LinearLayout>
-</ScrollView>
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/surface"
+        app:itemActiveIndicatorStyle="@style/HomeNavIndicator"
+        app:itemIconTint="@color/home_nav_item"
+        app:itemTextColor="@color/home_nav_item"
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/home_nav" />
+</LinearLayout>

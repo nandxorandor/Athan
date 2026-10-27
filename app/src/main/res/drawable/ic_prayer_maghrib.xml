@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Maghrib: the sun going down at the horizon. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:pathData="M3,17H21M7,17a5,5 0 0,1 10,0M12,7.5V9.5M5.6,10.6L7,12M18.4,10.6L17,12M8,20.5H16"
+        android:strokeWidth="1.7"
+        android:strokeColor="@android:color/white"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+</vector>

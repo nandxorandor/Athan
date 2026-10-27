@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The rounded outline of "All times": an outlined button in look, but with
+     room for an icon at each end, which a MaterialButton cannot hold. -->
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="#334FC79A">
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="28dp" />
+            <stroke
+                android:width="1dp"
+                android:color="@color/accent" />
+        </shape>
+    </item>
+</ripple>

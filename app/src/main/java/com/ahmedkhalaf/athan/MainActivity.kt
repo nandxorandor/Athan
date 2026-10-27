@@ -51,6 +51,7 @@ class MainActivity : LocalizedActivity() {
     private val hijriDateFormat by lazy {
         DateTimeFormatter.ofPattern(getString(R.string.hijri_date_pattern), Locale.getDefault())
     }
+    private val gregorianDateFormat by lazy { SimpleDateFormat("d MMMM yyyy", Locale.getDefault()) }
     private val ticker = Handler(Looper.getMainLooper())
 
     /** Start of the stretch the ring measures; refreshed with the times. */
@@ -83,8 +84,16 @@ class MainActivity : LocalizedActivity() {
         engine = PrayerEngine(prefs)
 
         binding.locationRow.setOnClickListener { chooseLocation() }
-        binding.settingsButton.setOnClickListener {
-            startActivity(Intent(this, SettingsActivity::class.java))
+        // Home stays selected: the other three open a sheet or a screen, and
+        // returning from either lands back here. Returning false keeps the
+        // highlight where it is.
+        binding.bottomNav.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.navTimes -> showAllTimes()
+                R.id.navCalendar -> startActivity(RamadanActivity.intent(this))
+                R.id.navSettings -> startActivity(Intent(this, SettingsActivity::class.java))
+            }
+            item.itemId == R.id.navHome
         }
         binding.qiblaButton.setOnClickListener {
             startActivity(Intent(this, QiblaActivity::class.java))
@@ -308,12 +317,23 @@ class MainActivity : LocalizedActivity() {
      * by the full home screen and by the "All times" sheet alike, so the two
      * can never show different times or different choices.
      */
-    private fun fillTimes(container: android.widget.LinearLayout, times: List<Pair<Slot, Date>>) {
+    private fun fillTimes(
+        container: android.widget.LinearLayout,
+        times: List<Pair<Slot, Date>>,
+        boxNext: Boolean = false,
+    ) {
         container.removeAllViews()
         val next = engine.next()
+        val inset = (resources.displayMetrics.density * 12).toInt()
         times.forEach { (slot, time) ->
             val row = layoutInflater.inflate(R.layout.item_prayer, container, false)
             val isNext = next?.slot == slot && next.time.after(Date())
+            // In the sheet every row is inset, so the boxed one does not shift
+            // its text sideways relative to the rest.
+            if (boxNext) {
+                row.setPaddingRelative(inset, row.paddingTop, inset, row.paddingBottom)
+                if (isNext) row.setBackgroundResource(R.drawable.bg_next_row)
+            }
             // Sunrise gets its own warm colour: it is a marker, not something
             // that will call you, so it must not read as one of the five.
             val color = ContextCompat.getColor(
@@ -323,8 +343,14 @@ class MainActivity : LocalizedActivity() {
                     else -> R.color.text
                 }
             )
+            row.findViewById<ImageView>(R.id.prayerIcon).apply {
+                setImageResource(iconFor(slot))
+                imageTintList = ColorStateList.valueOf(color)
+            }
             row.findViewById<TextView>(R.id.prayerLabel).apply {
-                setText(slot.labelRes)
+                // The sunrise label carries its own sun for places with no
+                // icon beside it; here the icon is that sun.
+                text = getString(slot.labelRes).removePrefix("☀️ ")
                 setTextColor(color)
             }
             row.findViewById<TextView>(R.id.prayerTime).apply {
@@ -336,21 +362,61 @@ class MainActivity : LocalizedActivity() {
         }
     }
 
-    /** Today's full table in a sheet, for the compact home screen. */
+    private fun iconFor(slot: Slot): Int = when (slot) {
+        Slot.FAJR -> R.drawable.ic_prayer_fajr
+        Slot.SUNRISE, Slot.DHUHR -> R.drawable.ic_adhkar_morning
+        Slot.ASR -> R.drawable.ic_prayer_asr
+        Slot.MAGHRIB -> R.drawable.ic_prayer_maghrib
+        Slot.ISHA -> R.drawable.ic_adhkar_evening
+    }
+
+    /** Today's full table in a sheet, from "All times", the card or the bar. */
     private fun showAllTimes() {
         val times = engine.today()
-        if (times.isEmpty()) return
+        if (times.isEmpty()) {
+            chooseLocation()
+            return
+        }
         val sheet = com.google.android.material.bottomsheet.BottomSheetDialog(this)
         val content = layoutInflater.inflate(R.layout.sheet_times, null)
         content.findViewById<TextView>(R.id.sheetCity).text = binding.cityName.text
         content.findViewById<TextView>(R.id.sheetHijri).text = binding.hijriDate.text
-        fillTimes(content.findViewById(R.id.sheetTimes), times)
+        content.findViewById<TextView>(R.id.sheetGregorian).text = binding.gregorianDate.text
+        fillTimes(content.findViewById(R.id.sheetTimes), times, boxNext = true)
+        content.findViewById<View>(R.id.sheetClose).setOnClickListener { sheet.dismiss() }
+        content.findViewById<View>(R.id.sheetRamadan).setOnClickListener {
+            sheet.dismiss()
+            startActivity(RamadanActivity.intent(this))
+        }
+        content.findViewById<View>(R.id.sheetShare).setOnClickListener { shareToday(times) }
         sheet.setContentView(content)
         // Fully open at once: half a table, with the rest behind a drag, is
         // the one thing this sheet must not be.
         sheet.behavior.state = com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
         sheet.behavior.skipCollapsed = true
         sheet.show()
+    }
+
+    /** Today's times as plain text, for a message to family. */
+    private fun shareToday(times: List<Pair<Slot, Date>>) {
+        val text = buildString {
+            append(getString(R.string.prayer_times_title)).append(" · ").append(binding.cityName.text)
+            append('\n').append(binding.hijriDate.text)
+            append('\n').append(binding.gregorianDate.text).append('\n')
+            times.forEach { (slot, time) ->
+                append('\n').append(getString(slot.labelRes).removePrefix("☀️ "))
+                append(": ").append(timeFormat.format(time))
+            }
+            append("\n\n").append(getString(R.string.app_name))
+        }
+        runCatching {
+            startActivity(
+                Intent.createChooser(
+                    Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT, text),
+                    getString(R.string.share_times),
+                )
+            )
+        }
     }
 
     /**
@@ -433,6 +499,7 @@ class MainActivity : LocalizedActivity() {
     /** Android's built-in Hijri calendar keeps this offline and in sync with the device date. */
     private fun updateHijriDate() {
         binding.hijriDate.text = hijriDateFormat.format(HijrahDate.now())
+        binding.gregorianDate.text = gregorianDateFormat.format(Date())
     }
 
     private fun chooseLocation() {

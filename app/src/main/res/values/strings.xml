@@ -27,6 +27,11 @@
     <string name="home_layout">Home screen</string>
     <string name="home_compact">Next prayer only</string>
     <string name="home_full">Full timetable</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_times">Times</string>
+    <string name="nav_calendar">Calendar</string>
+    <string name="share_times">Share</string>
+    <string name="close_sheet">Close</string>
     <!-- The countdown's units are words, so they are translated like any other
          text rather than formatted into the string in Kotlin. -->
     <string name="countdown_hm">%1$dh %2$02dm</string>

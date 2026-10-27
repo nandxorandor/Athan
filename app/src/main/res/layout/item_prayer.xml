@@ -10,6 +10,15 @@
     <!-- maxLines guards the layout: three 34dp icons plus the time leave just
          enough for "Maghrib" and "☀️ Sunrise", and a wrap here would silently
          double the row height. -->
+    <!-- The time of day at a glance: dome, sun, outline sun, sunset, moon.
+         Tinted with the row, so the next prayer's lights up with it. -->
+    <ImageView
+        android:id="@+id/prayerIcon"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:layout_marginEnd="12dp"
+        android:importantForAccessibility="no" />
+
     <TextView
         android:id="@+id/prayerLabel"
         android:layout_width="0dp"

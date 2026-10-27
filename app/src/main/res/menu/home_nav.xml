@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Home is the only destination that stays selected: the other three open a
+     sheet or another screen, and coming back lands here again. -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navHome"
+        android:icon="@drawable/ic_home"
+        android:title="@string/nav_home" />
+    <item
+        android:id="@+id/navTimes"
+        android:icon="@drawable/ic_schedule"
+        android:title="@string/nav_times" />
+    <item
+        android:id="@+id/navCalendar"
+        android:icon="@drawable/ic_calendar"
+        android:title="@string/nav_calendar" />
+    <item
+        android:id="@+id/navSettings"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/settings" />
+</menu>

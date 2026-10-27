@@ -10,6 +10,12 @@
         <item name="colorOnSecondaryContainer">@color/accent</item>
     </style>
 
+    <!-- The bottom bar marks the current tab by colour alone, as in the design
+         it was built from, not with Material's pill behind the icon. -->
+    <style name="HomeNavIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@android:color/transparent</item>
+    </style>
+
     <style name="Theme.Athan.FullScreen">
         <item name="android:windowFullscreen">true</item>
     </style>
