@@ -282,6 +282,12 @@
     <string name="ramadan_share_pdf">PDF للطباعة</string>
     <string name="ramadan_share_image">صورة</string>
     <string name="ramadan_share_csv">جدول بيانات (CSV)</string>
+    <string name="ramadan_note_hint">اضغط على أي يوم لإضافة ملاحظة</string>
+    <string name="ramadan_note_title">ملاحظة ليوم %1$d رمضان</string>
+    <string name="ramadan_note_save">حفظ</string>
+    <string name="ramadan_note_delete">حذف</string>
+    <string name="ramadan_notes">ملاحظات</string>
+    <string name="ramadan_note_line">%1$d رمضان · %2$s</string>
     <string name="ramadan_saved">حُفِظ في مجلد التنزيلات</string>
     <string name="ramadan_save_failed">تعذّر حفظ الجدول</string>
     <string name="ramadan_col_day">#</string>

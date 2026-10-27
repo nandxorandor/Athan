@@ -35,10 +35,13 @@ class RamadanExport(
     private val days: List<RamadanDay>,
     private val hijriYear: Int,
     private val subtitle: String,
+    /** The user's notes, by day of Ramadan; listed under the table. */
+    private val notes: Map<Int, String> = emptyMap(),
 ) {
     private val timeFormat =
         SimpleDateFormat(context.getString(R.string.time_pattern), Locale.getDefault())
     private val dayFormat = SimpleDateFormat("d/M", Locale.getDefault())
+    private val longDayFormat = SimpleDateFormat("d MMMM", Locale.getDefault())
 
     /** One A4 page. Taller only if the month somehow outgrows it. */
     fun writePdf(file: File) {
@@ -110,7 +113,8 @@ class RamadanExport(
                 .get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY
             root.addView(row(
                 listOf(
-                    day.dayOfRamadan.toString(),
+                    // Marked, so the notes below can be found from the table.
+                    day.dayOfRamadan.toString() + if (notes.containsKey(day.dayOfRamadan)) "*" else "",
                     dayFormat.format(day.date),
                     timeFormat.format(day.fajr),
                     timeFormat.format(day.sunrise),
@@ -126,6 +130,19 @@ class RamadanExport(
                 },
                 color = INK, header = false,
             ))
+        }
+
+        // Under the table rather than in it: a column wide enough for a note
+        // would squeeze the six times off a phone-printed page.
+        if (notes.isNotEmpty()) {
+            root.addView(text(context.getString(R.string.ramadan_notes), 10f, INK, bold = true)
+                .apply { setPadding(0, 12, 0, 4) })
+            notes.toSortedMap().forEach { (day, note) ->
+                val date = days.firstOrNull { it.dayOfRamadan == day }?.date
+                val label = context.getString(R.string.ramadan_note_line, day,
+                    date?.let { longDayFormat.format(it) }.orEmpty())
+                root.addView(text("$label: $note", 9f, INK).apply { setPadding(0, 1, 0, 1) })
+            }
         }
 
         root.addView(text(context.getString(R.string.ramadan_footnote), 7.5f, DIM)

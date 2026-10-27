@@ -72,6 +72,7 @@ class RamadanActivity : LocalizedActivity() {
             binding.empty.visibility = View.VISIBLE
             binding.shareButton.visibility = View.GONE
             binding.subtitle.visibility = View.GONE
+            binding.noteHint.visibility = View.GONE
             return
         }
         binding.subtitle.text = getString(
@@ -87,6 +88,7 @@ class RamadanActivity : LocalizedActivity() {
     }
 
     private fun fillTable() {
+        binding.table.removeAllViews()
         days.forEach { day ->
             val row = layoutInflater.inflate(R.layout.item_ramadan, binding.table, false)
             // Today first, then Fridays, then the banding. During the month the
@@ -117,9 +119,61 @@ class RamadanActivity : LocalizedActivity() {
                     row.findViewById<TextView>(id).setTextColor(getColor(R.color.today_text))
                 }
             }
+            row.findViewById<TextView>(R.id.ramadanNote).apply {
+                val note = prefs.ramadanNote(hijriYear, day.dayOfRamadan)
+                text = note
+                visibility = if (note.isEmpty()) View.GONE else View.VISIBLE
+                if (today) setTextColor(getColor(R.color.today_text))
+            }
+            row.setOnClickListener { editNote(day) }
             binding.table.addView(row)
         }
     }
+
+    /**
+     * A day's note: who is coming for iftar, the night to be at the mosque,
+     * whatever the user wants to remember against that date. Saving an empty
+     * note removes it.
+     */
+    private fun editNote(day: RamadanDay) {
+        val pad = (resources.displayMetrics.density * 20).toInt()
+        val input = android.widget.EditText(this).apply {
+            setText(prefs.ramadanNote(hijriYear, day.dayOfRamadan))
+            setSelection(text.length)
+            minLines = 2
+            maxLines = 5
+            filters = arrayOf(android.text.InputFilter.LengthFilter(NOTE_MAX))
+            textDirection = View.TEXT_DIRECTION_FIRST_STRONG
+        }
+        val frame = android.widget.FrameLayout(this).apply {
+            setPadding(pad, pad / 2, pad, 0)
+            addView(input)
+        }
+        val dialog = com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+            .setTitle(getString(R.string.ramadan_note_title, day.dayOfRamadan))
+            .setMessage(longDayFormat.format(day.date))
+            .setView(frame)
+            .setPositiveButton(R.string.ramadan_note_save) { _, _ ->
+                prefs.setRamadanNote(hijriYear, day.dayOfRamadan, input.text.toString())
+                fillTable()
+            }
+            .setNegativeButton(android.R.string.cancel, null)
+        if (prefs.ramadanNote(hijriYear, day.dayOfRamadan).isNotEmpty()) {
+            dialog.setNeutralButton(R.string.ramadan_note_delete) { _, _ ->
+                prefs.setRamadanNote(hijriYear, day.dayOfRamadan, "")
+                fillTable()
+            }
+        }
+        dialog.show().window?.setSoftInputMode(
+            android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE
+        )
+        input.requestFocus()
+    }
+
+    /** Day of Ramadan to note, for the days that have one. */
+    private fun notes(): Map<Int, String> = days
+        .associate { it.dayOfRamadan to prefs.ramadanNote(hijriYear, it.dayOfRamadan) }
+        .filterValues { it.isNotEmpty() }
 
     private fun chooseFormat() {
         val options = arrayOf(
@@ -139,7 +193,8 @@ class RamadanActivity : LocalizedActivity() {
             .show()
     }
 
-    private fun exporter() = RamadanExport(this, days, hijriYear, binding.subtitle.text.toString())
+    private fun exporter() =
+        RamadanExport(this, days, hijriYear, binding.subtitle.text.toString(), notes())
 
     /** UTF-8 with a BOM, or Excel misreads an Arabic city name. */
     private fun csv(): String = buildString {
@@ -154,6 +209,7 @@ class RamadanActivity : LocalizedActivity() {
                 getString(R.string.asr),
                 getString(R.string.ramadan_col_iftar),
                 getString(R.string.isha),
+                getString(R.string.ramadan_notes),
             ).joinToString(",")
         )
         append('\n')
@@ -168,11 +224,16 @@ class RamadanActivity : LocalizedActivity() {
                     timeFormat.format(day.asr),
                     timeFormat.format(day.maghrib),
                     timeFormat.format(day.isha),
+                    csvField(prefs.ramadanNote(hijriYear, day.dayOfRamadan)),
                 ).joinToString(",")
             )
             append('\n')
         }
     }
+
+    /** Quoted, so a comma or a line break in a note stays inside its cell. */
+    private fun csvField(value: String): String =
+        if (value.isEmpty()) "" else "\"" + value.replace("\"", "\"\"") + "\""
 
     /**
      * Written into cacheDir and handed out through the existing FileProvider,
@@ -216,6 +277,7 @@ class RamadanActivity : LocalizedActivity() {
 
     companion object {
         private const val EXTRA_YEAR = "hijri_year"
+        private const val NOTE_MAX = 200
 
         fun intent(context: Context, hijriYear: Int = 0): Intent =
             Intent(context, RamadanActivity::class.java).putExtra(EXTRA_YEAR, hijriYear)

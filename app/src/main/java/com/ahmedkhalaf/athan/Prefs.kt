@@ -81,6 +81,21 @@ class Prefs(context: Context) {
         set(v) = sp.edit().putInt(KEY_RAMADAN_YEAR, v).apply()
 
     /**
+     * The user's own note on one day of Ramadan, kept per Hijri year so last
+     * year's "iftar at my brother's" does not turn up on this year's table.
+     */
+    fun ramadanNote(year: Int, day: Int): String =
+        sp.getString(keyRamadanNote(year, day), "") ?: ""
+
+    fun setRamadanNote(year: Int, day: Int, note: String) {
+        val key = keyRamadanNote(year, day)
+        if (note.isBlank()) sp.edit().remove(key).apply()
+        else sp.edit().putString(key, note.trim()).apply()
+    }
+
+    private fun keyRamadanNote(year: Int, day: Int) = "ramadan_note_${year}_$day"
+
+    /**
      * The du'aa said after the athan. On by default: it is the natural
      * companion to the call, and one toggle away for anyone who would rather
      * it did not play.

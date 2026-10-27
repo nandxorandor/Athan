@@ -24,6 +24,16 @@
         android:textSize="13sp" />
 
     <TextView
+        android:id="@+id/noteHint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:text="@string/ramadan_note_hint"
+        android:textAlignment="viewStart"
+        android:textColor="@color/text_dim"
+        android:textSize="12sp" />
+
+    <TextView
         android:id="@+id/empty"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
