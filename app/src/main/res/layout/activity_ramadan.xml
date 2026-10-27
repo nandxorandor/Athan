@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -23,15 +24,21 @@
         android:textDirection="locale"
         android:textSize="13sp" />
 
+    <!-- How anyone finds out the days take notes. Green with a pencil until
+         the first note of the year, then quiet grey: by then it is known. -->
     <TextView
         android:id="@+id/noteHint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="8dp"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
         android:text="@string/ramadan_note_hint"
         android:textAlignment="viewStart"
-        android:textColor="@color/text_dim"
-        android:textSize="12sp" />
+        android:textColor="@color/accent"
+        android:textSize="14sp"
+        app:drawableStartCompat="@drawable/ic_edit"
+        app:drawableTint="@color/accent" />
 
     <TextView
         android:id="@+id/empty"

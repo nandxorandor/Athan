@@ -279,7 +279,7 @@
     <string name="ramadan_title">رمضان %1$d هـ</string>
     <string name="ramadan_subtitle">%1$s · %2$s</string>
     <string name="ramadan_share">مشاركة الجدول</string>
-    <string name="ramadan_share_pdf">PDF للطباعة</string>
+    <string name="ramadan_share_pdf">ملف PDF للطباعة</string>
     <string name="ramadan_share_image">صورة</string>
     <string name="ramadan_share_csv">جدول بيانات (CSV)</string>
     <string name="ramadan_note_hint">اضغط على أي يوم لإضافة ملاحظة</string>

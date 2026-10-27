@@ -89,6 +89,13 @@ class RamadanActivity : LocalizedActivity() {
 
     private fun fillTable() {
         binding.table.removeAllViews()
+        // The hint speaks up until the user has written a note this year;
+        // after that it only needs to be there, not to be noticed.
+        val hintColor = getColor(if (notes().isEmpty()) R.color.accent else R.color.text_dim)
+        binding.noteHint.setTextColor(hintColor)
+        androidx.core.widget.TextViewCompat.setCompoundDrawableTintList(
+            binding.noteHint, android.content.res.ColorStateList.valueOf(hintColor)
+        )
         days.forEach { day ->
             val row = layoutInflater.inflate(R.layout.item_ramadan, binding.table, false)
             // Today first, then Fridays, then the banding. During the month the
@@ -181,7 +188,7 @@ class RamadanActivity : LocalizedActivity() {
             getString(R.string.ramadan_share_image),
             getString(R.string.ramadan_share_csv),
         )
-        androidx.appcompat.app.AlertDialog.Builder(this)
+        com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
             .setTitle(R.string.ramadan_share)
             .setItems(options) { _, which ->
                 when (which) {

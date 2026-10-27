@@ -28,13 +28,15 @@ object Weather {
     /**
      * A reading, and when it was taken. [code] is the WMO weather code for the
      * current conditions; [rainComing] is set when the next few hours hold rain
-     * or snow that is not already falling.
+     * or snow that is not already falling. [day] is the service's own
+     * day/night flag for the location, so a clear night is not drawn as a sun.
      */
     data class Reading(
         val celsius: Double,
         val takenAt: Long,
         val code: Int = -1,
         val rainComing: Boolean = false,
+        val day: Boolean = true,
     ) {
         /**
          * One character for the sky. WMO codes group cleanly: 0 clear,
@@ -53,6 +55,10 @@ object Weather {
                 code in 45..48 -> "🌫️"
                 rainComing -> "🌂"
                 code == 3 -> "☁️"
+                // At night there is no sun to draw: a moon for a clear sky,
+                // and plain cloud once there is enough of it to notice.
+                !day && code in 0..1 -> "🌙"
+                !day -> "☁️"
                 code in 1..2 -> "🌤️"
                 else -> "☀️"
             }
@@ -117,7 +123,7 @@ object Weather {
                 Locale.US,
                 "https://api.open-meteo.com/v1/forecast" +
                     "?latitude=%.4f&longitude=%.4f" +
-                    "&current=temperature_2m,weather_code" +
+                    "&current=temperature_2m,weather_code,is_day" +
                     // Six hours is far enough ahead to be worth knowing and
                     // near enough to still be true. One request, not two.
                     "&hourly=weather_code&forecast_hours=6",
@@ -144,6 +150,8 @@ object Weather {
                 // Only worth flagging when nothing is falling already: an
                 // umbrella beside a rain cloud tells you nothing new.
                 rainComing = !isWet(code) && rainAhead(json),
+                // Absent means an older answer shape; assume day, as before.
+                day = current.optInt("is_day", 1) == 1,
             )
         } finally {
             connection.disconnect()
