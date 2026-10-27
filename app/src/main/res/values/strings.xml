@@ -20,6 +20,13 @@
     <string name="no_fix">No recent location fix — open Maps once, or type a city</string>
     <string name="no_location_yet">Set a location to see prayer times</string>
     <string name="next_in">%1$s in %2$s</string>
+    <string name="next_prayer_label">Next prayer</string>
+    <string name="time_left">remaining</string>
+    <string name="all_times">All times</string>
+    <string name="prayer_times_title">Prayer times</string>
+    <string name="home_layout">Home screen</string>
+    <string name="home_compact">Next prayer only</string>
+    <string name="home_full">Full timetable</string>
     <!-- The countdown's units are words, so they are translated like any other
          text rather than formatted into the string in Kotlin. -->
     <string name="countdown_hm">%1$dh %2$02dm</string>

@@ -47,6 +47,7 @@ class SettingsActivity : LocalizedActivity() {
         binding.madhabRow.setOnClickListener { chooseMadhab() }
         binding.adjustRow.setOnClickListener { chooseAdjustment() }
         binding.temperatureRow.setOnClickListener { chooseTemperature() }
+        binding.homeLayoutRow.setOnClickListener { chooseHomeLayout() }
         binding.temperatureUnitRow.setOnClickListener { chooseTemperatureUnit() }
         binding.ramadanRow.setOnClickListener {
             startActivity(RamadanActivity.intent(this))
@@ -83,6 +84,8 @@ class SettingsActivity : LocalizedActivity() {
             else getString(R.string.temperature_summary_off)
         binding.temperatureUnitName.text =
             getString(if (prefs.fahrenheit) R.string.unit_fahrenheit else R.string.unit_celsius)
+        binding.homeLayoutName.text =
+            getString(if (prefs.homeCompact) R.string.home_compact else R.string.home_full)
         binding.ramadanName.text = getString(R.string.ramadan_title, RamadanCalendar.upcomingHijriYear())
     }
 
@@ -144,6 +147,19 @@ class SettingsActivity : LocalizedActivity() {
                 prefs.weatherNoticeSeen = true
                 if (!enabled.isChecked) Weather.forget()
                 refresh()
+            }
+            .setNegativeButton(android.R.string.cancel, null)
+            .show()
+    }
+
+    private fun chooseHomeLayout() {
+        val labels = arrayOf(getString(R.string.home_compact), getString(R.string.home_full))
+        MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.home_layout)
+            .setSingleChoiceItems(labels, if (prefs.homeCompact) 0 else 1) { dialog, which ->
+                prefs.homeCompact = which == 0
+                refresh()
+                dialog.dismiss()
             }
             .setNegativeButton(android.R.string.cancel, null)
             .show()

@@ -40,6 +40,15 @@ class Prefs(context: Context) {
         set(v) = sp.edit().putBoolean(KEY_WEATHER, v).apply()
 
     /**
+     * The home screen shows only the next prayer, with the full table one tap
+     * away; off brings back the table on the screen itself. On by default -
+     * users asked for the simpler screen - and the old one stays a choice.
+     */
+    var homeCompact: Boolean
+        get() = sp.getBoolean(KEY_HOME_COMPACT, true)
+        set(v) = sp.edit().putBoolean(KEY_HOME_COMPACT, v).apply()
+
+    /**
      * Whether the first-run notice about the temperature has been shown. It is
      * asked once, before any coordinates leave the device.
      */
@@ -228,6 +237,7 @@ class Prefs(context: Context) {
         private const val KEY_CITY = "city"
         private const val KEY_LANGUAGE = "language"
         private const val KEY_WEATHER = "weather_enabled"
+        private const val KEY_HOME_COMPACT = "home_compact"
         private const val KEY_WEATHER_NOTICE = "weather_notice_seen"
         private const val KEY_FAHRENHEIT = "fahrenheit"
         private const val KEY_RAMADAN_PROMPT = "ramadan_prompt"

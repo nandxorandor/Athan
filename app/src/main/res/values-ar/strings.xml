@@ -29,6 +29,13 @@
     <string name="no_fix">لا يوجد تحديد حديث للموقع — افتح الخرائط مرة واحدة، أو اكتب اسم المدينة</string>
     <string name="no_location_yet">عيّن موقعك لعرض أوقات الصلاة</string>
     <string name="next_in">%1$s بعد %2$s</string>
+    <string name="next_prayer_label">الصلاة القادمة</string>
+    <string name="time_left">متبقٍّ</string>
+    <string name="all_times">جميع الأوقات</string>
+    <string name="prayer_times_title">أوقات الصلاة</string>
+    <string name="home_layout">الشاشة الرئيسية</string>
+    <string name="home_compact">الصلاة القادمة فقط</string>
+    <string name="home_full">الجدول كاملًا</string>
     <string name="countdown_hm">%1$d س %2$02d د</string>
     <string name="countdown_ms">%1$d د %2$02d ث</string>
     <string name="time_pattern">h:mm a</string>

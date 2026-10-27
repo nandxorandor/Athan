@@ -53,6 +53,9 @@ class MainActivity : LocalizedActivity() {
     }
     private val ticker = Handler(Looper.getMainLooper())
 
+    /** Start of the stretch the ring measures; refreshed with the times. */
+    private var previousTime: Date? = null
+
     private val tick = object : Runnable {
         override fun run() {
             updateCountdown()
@@ -103,6 +106,8 @@ class MainActivity : LocalizedActivity() {
         binding.ramadanButton.setOnClickListener {
             startActivity(RamadanActivity.intent(this))
         }
+        binding.allTimesButton.setOnClickListener { showAllTimes() }
+        binding.nextCard.setOnClickListener { showAllTimes() }
         binding.stopAthanBar.setText(R.string.stop_athan_now)
         binding.stopAthanBar.setOnClickListener {
             startService(
@@ -282,13 +287,32 @@ class MainActivity : LocalizedActivity() {
 
         val times = engine.today()
         binding.timesContainer.removeAllViews()
+        val compact = prefs.homeCompact && times.isNotEmpty()
+        // Compact: the card and "All times". Full: the one-line countdown and
+        // the table, exactly as the screen was before the card existed.
+        binding.nextCard.visibility = if (compact) View.VISIBLE else View.GONE
+        binding.allTimesButton.visibility = if (compact) View.VISIBLE else View.GONE
+        binding.nextPrayer.visibility = if (compact) View.GONE else View.VISIBLE
+        binding.timesContainer.visibility = if (compact) View.GONE else View.VISIBLE
         if (times.isEmpty()) {
             binding.nextPrayer.setText(R.string.no_location_yet)
             return
         }
+        previousTime = previousPrayerTime()
+        if (!compact) fillTimes(binding.timesContainer, times)
+        updateCountdown()
+    }
+
+    /**
+     * The table rows, with each prayer's Sound / Vibrate / Silent icons. Used
+     * by the full home screen and by the "All times" sheet alike, so the two
+     * can never show different times or different choices.
+     */
+    private fun fillTimes(container: android.widget.LinearLayout, times: List<Pair<Slot, Date>>) {
+        container.removeAllViews()
         val next = engine.next()
         times.forEach { (slot, time) ->
-            val row = layoutInflater.inflate(R.layout.item_prayer, binding.timesContainer, false)
+            val row = layoutInflater.inflate(R.layout.item_prayer, container, false)
             val isNext = next?.slot == slot && next.time.after(Date())
             // Sunrise gets its own warm colour: it is a marker, not something
             // that will call you, so it must not read as one of the five.
@@ -308,9 +332,40 @@ class MainActivity : LocalizedActivity() {
                 setTextColor(color)
             }
             bindModeIcons(row, slot)
-            binding.timesContainer.addView(row)
+            container.addView(row)
         }
-        updateCountdown()
+    }
+
+    /** Today's full table in a sheet, for the compact home screen. */
+    private fun showAllTimes() {
+        val times = engine.today()
+        if (times.isEmpty()) return
+        val sheet = com.google.android.material.bottomsheet.BottomSheetDialog(this)
+        val content = layoutInflater.inflate(R.layout.sheet_times, null)
+        content.findViewById<TextView>(R.id.sheetCity).text = binding.cityName.text
+        content.findViewById<TextView>(R.id.sheetHijri).text = binding.hijriDate.text
+        fillTimes(content.findViewById(R.id.sheetTimes), times)
+        sheet.setContentView(content)
+        // Fully open at once: half a table, with the rest behind a drag, is
+        // the one thing this sheet must not be.
+        sheet.behavior.state = com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
+        sheet.behavior.skipCollapsed = true
+        sheet.show()
+    }
+
+    /**
+     * When the stretch the ring measures began: the latest prayer (or sunrise)
+     * at or before now, looking back into yesterday for the hours before Fajr.
+     */
+    private fun previousPrayerTime(now: Date = Date()): Date? {
+        val yesterday = java.util.Calendar.getInstance().apply {
+            time = now
+            add(java.util.Calendar.DAY_OF_YEAR, -1)
+        }.time
+        return (engine.on(yesterday) + engine.on(now))
+            .map { it.second }
+            .filter { !it.after(now) }
+            .maxOrNull()
     }
 
     /**
@@ -364,6 +419,15 @@ class MainActivity : LocalizedActivity() {
         else getString(R.string.countdown_ms, minutes, seconds)
         binding.nextPrayer.text =
             getString(R.string.next_in, getString(next.slot.labelRes), left)
+
+        binding.nextName.setText(next.slot.labelRes)
+        binding.nextCountdown.text =
+            String.format(Locale.US, "%02d:%02d:%02d", hours, minutes, seconds)
+        binding.nextTime.text = timeFormat.format(next.time)
+        binding.nextRing.progress = previousTime?.let { prev ->
+            val span = next.time.time - prev.time
+            if (span <= 0) 0f else 1f - remaining.toFloat() / span
+        } ?: 0f
     }
 
     /** Android's built-in Hijri calendar keeps this offline and in sync with the device date. */
