@@ -176,6 +176,19 @@
                 android:text="@string/reminder_vibrate"
                 android:textColor="@color/text"
                 android:textSize="17sp" />
+
+            <!-- Hear the heads-up exactly as it will arrive, instead of waiting
+                 for the next prayer to find out. -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/testButton"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/test_heads_up"
+                android:textAllCaps="false"
+                android:textSize="15sp"
+                app:cornerRadius="28dp" />
         </LinearLayout>
 
     </LinearLayout>

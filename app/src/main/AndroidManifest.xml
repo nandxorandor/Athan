@@ -96,6 +96,12 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name=".ReadinessActivity"
+            android:exported="false"
+            android:parentActivityName=".SettingsActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".ReminderSettingsActivity"
             android:exported="false"
             android:parentActivityName=".SettingsActivity"

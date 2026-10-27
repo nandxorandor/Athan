@@ -32,6 +32,41 @@
     <string name="nav_calendar">Calendar</string>
     <string name="share_times">Share</string>
     <string name="close_sheet">Close</string>
+    <!-- Readiness: is everything on the phone set for the athan to arrive. -->
+    <string name="readiness">Check and test</string>
+    <string name="readiness_all_good">Everything is ready</string>
+    <plurals name="readiness_problems">
+        <item quantity="one">%d thing needs attention</item>
+        <item quantity="other">%d things need attention</item>
+    </plurals>
+    <string name="readiness_summary_ok">Everything is ready · test the heads-up and the athan</string>
+    <string name="check_fix">Tap to fix</string>
+    <string name="check_change">Tap to change</string>
+    <string name="check_location">Location</string>
+    <string name="check_location_ok">Set. Prayer times are worked out for it.</string>
+    <string name="check_location_bad">Not set, so there are no prayer times to announce.</string>
+    <string name="check_notifications">Notifications</string>
+    <string name="check_notifications_ok">Allowed for the athan and the heads-up.</string>
+    <string name="check_notifications_bad">Turned off for this app, or for the athan or heads-up. The athan window and Stop button need them.</string>
+    <string name="check_exact">Alarms on time</string>
+    <string name="check_exact_ok">Allowed. The athan fires at the exact minute.</string>
+    <string name="check_exact_bad">Not allowed. Without it the athan can arrive late or not at all.</string>
+    <string name="check_fullscreen">Over the lock screen</string>
+    <string name="check_fullscreen_ok">Allowed. The athan window appears even when the phone is locked.</string>
+    <string name="check_fullscreen_bad">Not allowed. With the phone locked you would hear the athan but not see its window.</string>
+    <string name="check_background">Battery restriction</string>
+    <string name="check_background_ok">Not restricted.</string>
+    <string name="check_background_bad">Set to Restricted, which stops the athan. Change battery use to Optimized or Unrestricted.</string>
+    <string name="check_volume">Alarm volume</string>
+    <string name="check_volume_ok">On. The athan and the heads-up play at the alarm volume.</string>
+    <string name="check_volume_bad">Muted. The athan plays at the alarm volume, so it would be silent.</string>
+    <string name="check_battery">Battery optimisation</string>
+    <string name="check_battery_ok">Unrestricted.</string>
+    <string name="check_battery_advice">On, which is fine on most phones. If an athan is ever missed (some Xiaomi, Huawei, Samsung and other phones close apps to save power), set battery use to Unrestricted.</string>
+    <string name="test_title">Hear it now</string>
+    <string name="test_body">Plays the next prayer\'s heads-up or athan straight away, exactly as it is set.</string>
+    <string name="test_heads_up">Test the heads-up</string>
+    <string name="test_athan">Test the athan</string>
     <!-- The countdown's units are words, so they are translated like any other
          text rather than formatted into the string in Kotlin. -->
     <string name="countdown_hm">%1$dh %2$02dm</string>

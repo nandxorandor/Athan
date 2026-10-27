@@ -24,11 +24,38 @@
             android:textColor="@color/text_dim"
             android:textSize="13sp" />
 
+        <!-- First, because it answers the question every new user has: will
+             the athan actually arrive? -->
+        <LinearLayout
+            android:id="@+id/readinessRow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="?attr/selectableItemBackground"
+            android:orientation="vertical"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/readiness"
+                android:textColor="@color/text"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/readinessName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/accent"
+                android:textSize="14sp" />
+        </LinearLayout>
+
         <LinearLayout
             android:id="@+id/audioOptionsRow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:background="?attr/selectableItemBackground"
             android:orientation="vertical"
             android:paddingTop="14dp"

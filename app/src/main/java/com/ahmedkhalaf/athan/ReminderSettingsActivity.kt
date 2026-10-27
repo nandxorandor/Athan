@@ -140,6 +140,8 @@ class ReminderSettingsActivity : LocalizedActivity() {
         binding.soundSwitch.setOnCheckedChangeListener { _, on -> setVibrate(!on) }
         binding.vibrateSwitch.setOnCheckedChangeListener { _, on -> setVibrate(on) }
 
+        binding.testButton.setOnClickListener { ReadinessActivity.testHeadsUp(this) }
+
         updateEnabledState()
         refresh()
     }

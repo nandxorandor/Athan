@@ -40,6 +40,9 @@ class SettingsActivity : LocalizedActivity() {
             startActivity(Intent(this, AthanAudioOptionsActivity::class.java))
         }
         binding.appVolumeRow.setOnClickListener { chooseVolume() }
+        binding.readinessRow.setOnClickListener {
+            startActivity(Intent(this, ReadinessActivity::class.java))
+        }
         binding.reminderRow.setOnClickListener {
             startActivity(Intent(this, ReminderSettingsActivity::class.java))
         }
@@ -66,6 +69,13 @@ class SettingsActivity : LocalizedActivity() {
     }
 
     private fun refresh() {
+        val problems = Readiness.problems(this)
+        binding.readinessName.text =
+            if (problems == 0) getString(R.string.readiness_summary_ok)
+            else resources.getQuantityString(R.plurals.readiness_problems, problems, problems)
+        binding.readinessName.setTextColor(
+            getColor(if (problems == 0) R.color.accent else R.color.warning_text)
+        )
         binding.methodName.text = methodLabel(prefs.method)
         binding.madhabName.text =
             getString(if (prefs.madhab == "HANAFI") R.string.madhab_hanafi else R.string.madhab_shafi)
