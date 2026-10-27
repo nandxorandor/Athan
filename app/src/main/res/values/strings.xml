@@ -248,6 +248,9 @@ You can change this any time in Settings.</string>
     <string name="ramadan_title">Ramadan %1$d AH</string>
     <string name="ramadan_subtitle">%1$s · %2$s</string>
     <string name="ramadan_share">Share the timetable</string>
+    <string name="ramadan_share_pdf">PDF, for printing</string>
+    <string name="ramadan_share_image">Image</string>
+    <string name="ramadan_share_csv">Spreadsheet (CSV)</string>
     <string name="ramadan_saved">Saved to your Downloads</string>
     <string name="ramadan_save_failed">Couldn\'t save the timetable</string>
     <string name="ramadan_col_day">#</string>

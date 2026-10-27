@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Only the one cache folder the Ramadan CSV is written into. Nothing else in
+  Only the one cache folder the Ramadan timetable (PDF, image or CSV) is
+  written into. Nothing else in
   the app is ever shared out, so nothing else is exposed here.
 -->
 <paths>

@@ -15,11 +15,9 @@ import java.util.Date
 import java.util.Locale
 
 /**
- * The month's timetable. The Windows app writes this to a one-page Word
- * document to be printed and stuck on a fridge; a phone has no printer, so here
- * the screen itself is the artefact and sharing hands out a CSV — which opens
- * in any spreadsheet, and is what someone forwarding it to family can actually
- * use.
+ * The month's timetable. Sharing offers it three ways: a one-page PDF to
+ * print (what the Windows app's Word document is for), an image to send in a
+ * chat, or a CSV for anyone who wants the numbers in a spreadsheet.
  */
 class RamadanActivity : LocalizedActivity() {
 
@@ -67,7 +65,7 @@ class RamadanActivity : LocalizedActivity() {
             .takeIf { it > 0 } ?: RamadanCalendar.upcomingHijriYear()
 
         binding.title.text = getString(R.string.ramadan_title, hijriYear)
-        binding.shareButton.setOnClickListener { share() }
+        binding.shareButton.setOnClickListener { chooseFormat() }
 
         days = RamadanCalendar.build(hijriYear, prefs)
         if (days.isEmpty()) {
@@ -78,7 +76,11 @@ class RamadanActivity : LocalizedActivity() {
         }
         binding.subtitle.text = getString(
             R.string.ramadan_subtitle,
-            prefs.cityName.ifBlank { getString(R.string.location_set) },
+            // Isolated: an English city name in an Arabic line (or the reverse)
+            // otherwise pulls the neighbouring "8" of the date into its own
+            // direction, and the line reads "8 · Antakya فبراير – 8 مارس".
+            androidx.core.text.BidiFormatter.getInstance()
+                .unicodeWrap(prefs.cityName.ifBlank { getString(R.string.location_set) }),
             "${longDayFormat.format(days.first().date)} – ${longDayFormat.format(days.last().date)}"
         )
         fillTable()
@@ -119,58 +121,80 @@ class RamadanActivity : LocalizedActivity() {
         }
     }
 
-    /**
-     * Written into cacheDir and handed out through the existing FileProvider,
-     * so nothing is dropped into shared storage and no storage permission is
-     * involved. UTF-8 with a BOM, or Excel misreads an Arabic city name.
-     */
-    private fun share() {
-        val csv = buildString {
-            append('﻿')
+    private fun chooseFormat() {
+        val options = arrayOf(
+            getString(R.string.ramadan_share_pdf),
+            getString(R.string.ramadan_share_image),
+            getString(R.string.ramadan_share_csv),
+        )
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle(R.string.ramadan_share)
+            .setItems(options) { _, which ->
+                when (which) {
+                    0 -> share("pdf", "application/pdf") { exporter().writePdf(it) }
+                    1 -> share("png", "image/png") { exporter().writePng(it) }
+                    else -> share("csv", "text/csv") { it.writeText(csv()) }
+                }
+            }
+            .show()
+    }
+
+    private fun exporter() = RamadanExport(this, days, hijriYear, binding.subtitle.text.toString())
+
+    /** UTF-8 with a BOM, or Excel misreads an Arabic city name. */
+    private fun csv(): String = buildString {
+        append('﻿')
+        append(
+            listOf(
+                getString(R.string.ramadan_col_day),
+                getString(R.string.ramadan_col_date),
+                getString(R.string.ramadan_col_suhoor),
+                getString(R.string.sunrise).removePrefix("☀️ "),
+                getString(R.string.dhuhr),
+                getString(R.string.asr),
+                getString(R.string.ramadan_col_iftar),
+                getString(R.string.isha),
+            ).joinToString(",")
+        )
+        append('\n')
+        days.forEach { day ->
             append(
                 listOf(
-                    getString(R.string.ramadan_col_day),
-                    getString(R.string.ramadan_col_date),
-                    getString(R.string.ramadan_col_suhoor),
-                    getString(R.string.sunrise).removePrefix("☀️ "),
-                    getString(R.string.dhuhr),
-                    getString(R.string.asr),
-                    getString(R.string.ramadan_col_iftar),
-                    getString(R.string.isha),
+                    day.dayOfRamadan.toString(),
+                    dayFormat.format(day.date),
+                    timeFormat.format(day.fajr),
+                    timeFormat.format(day.sunrise),
+                    timeFormat.format(day.dhuhr),
+                    timeFormat.format(day.asr),
+                    timeFormat.format(day.maghrib),
+                    timeFormat.format(day.isha),
                 ).joinToString(",")
             )
             append('\n')
-            days.forEach { day ->
-                append(
-                    listOf(
-                        day.dayOfRamadan.toString(),
-                        dayFormat.format(day.date),
-                        timeFormat.format(day.fajr),
-                        timeFormat.format(day.sunrise),
-                        timeFormat.format(day.dhuhr),
-                        timeFormat.format(day.asr),
-                        timeFormat.format(day.maghrib),
-                        timeFormat.format(day.isha),
-                    ).joinToString(",")
-                )
-                append('\n')
-            }
         }
+    }
 
+    /**
+     * Written into cacheDir and handed out through the existing FileProvider,
+     * so nothing is dropped into shared storage and no storage permission is
+     * involved.
+     */
+    private fun share(extension: String, mime: String, write: (File) -> Unit) {
         val shared = runCatching {
             val dir = File(cacheDir, "shared").apply { mkdirs() }
-            val file = File(dir, "ramadan-$hijriYear.csv")
-            file.writeText(csv)
+            val file = File(dir, "ramadan-$hijriYear.$extension")
+            write(file)
             androidx.core.content.FileProvider.getUriForFile(
                 this, "$packageName.fileprovider", file
             )
         }.getOrElse {
+            android.util.Log.e("RamadanActivity", "could not write the $extension timetable", it)
             toast(R.string.ramadan_save_failed)
             return
         }
 
         val intent = Intent(Intent.ACTION_SEND).apply {
-            type = "text/csv"
+            type = mime
             putExtra(Intent.EXTRA_STREAM, shared)
             putExtra(Intent.EXTRA_SUBJECT, getString(R.string.ramadan_title, hijriYear))
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
