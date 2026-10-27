@@ -14,12 +14,14 @@
     android:orientation="vertical">
 
     <ScrollView
+        android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:fillViewport="true">
 
         <LinearLayout
+            android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -56,44 +58,61 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <LinearLayout
+                <!-- A packed chain: the arrow follows the name however long it
+                     is, and the name takes all the room the temperature leaves
+                     before it ellipsizes, instead of stopping at a fixed width. -->
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/locationRow"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="?attr/selectableItemBackground"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp">
 
                     <ImageView
+                        android:id="@+id/cityPin"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:layout_marginEnd="8dp"
                         android:contentDescription="@string/set_location"
                         android:src="@drawable/ic_place"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/cityName"
+                        app:layout_constraintHorizontal_bias="0"
+                        app:layout_constraintHorizontal_chainStyle="packed"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
                         app:tint="@color/accent" />
 
                     <TextView
                         android:id="@+id/cityName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
                         android:ellipsize="end"
-                        android:maxWidth="220dp"
                         android:maxLines="1"
                         android:text="@string/set_location"
                         android:textColor="@color/text"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        app:layout_constrainedWidth="true"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/cityChevron"
+                        app:layout_constraintStart_toEndOf="@id/cityPin"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
+                        android:id="@+id/cityChevron"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_marginStart="4dp"
                         android:importantForAccessibility="no"
                         android:src="@drawable/ic_expand_more"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/cityName"
+                        app:layout_constraintTop_toTopOf="parent"
                         app:tint="@color/text" />
-                </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <!-- Gone until a reading actually arrives, so a failed fetch
                      leaves no empty gap. -->
@@ -143,7 +162,11 @@
                 android:textSize="22sp" />
 
             <!-- The next prayer and how long until it, large enough to read
-                 across a room. Tapping it opens the day's table. -->
+                 across a room. Tapping it opens the day's table. The ring's
+                 size here is only a starting point: MainActivity fits it to
+                 the room the screen actually has, and shrinks the text inside
+                 to fit the ring, so a small screen or a large font setting
+                 still shows the buttons below. -->
             <FrameLayout
                 android:id="@+id/nextCard"
                 android:layout_width="match_parent"
@@ -158,6 +181,7 @@
                     android:layout_gravity="center" />
 
                 <LinearLayout
+                    android:id="@+id/nextInner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -400,7 +424,7 @@
                  have to read English to find it. -->
             <com.google.android.material.button.MaterialButtonToggleGroup
                 android:id="@+id/languageGroup"
-                android:layout_width="220dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="12dp"
@@ -410,10 +434,9 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/langEnglish"
                     style="?attr/materialButtonOutlinedStyle"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:minWidth="0dp"
+                    android:minWidth="110dp"
                     android:text="@string/lang_english"
                     android:textAllCaps="false"
                     android:textSize="14sp" />
@@ -421,10 +444,9 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/langArabic"
                     style="?attr/materialButtonOutlinedStyle"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:minWidth="0dp"
+                    android:minWidth="110dp"
                     android:text="@string/lang_arabic"
                     android:textAllCaps="false"
                     android:textSize="14sp" />

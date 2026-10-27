@@ -258,12 +258,85 @@ class MainActivity : LocalizedActivity() {
     }
 
     private fun applyInsets() {
+        // No bottom padding here: the bottom bar pads itself for the system
+        // navigation, and doing it twice left a band of empty bar beneath the
+        // labels.
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
             val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            view.updatePadding(bars.left, bars.top, bars.right, bars.bottom)
+            view.updatePadding(bars.left, bars.top, bars.right, 0)
             insets
         }
+        // Re-fitted on every layout, so a warning appearing, a longer city
+        // name or the Stop bar all give the ring back the room they take.
+        binding.scroll.viewTreeObserver.addOnGlobalLayoutListener { fitRing() }
     }
+
+    /**
+     * The ring takes whatever height the rest of the screen leaves, between a
+     * floor where its text would get too small and a ceiling where it would
+     * just be big. The text inside is then scaled to sit within it. Fixed
+     * sizes looked right on one phone and pushed the buttons off the screen
+     * on another with larger text and display zoom.
+     */
+    private fun fitRing() {
+        if (binding.nextCard.visibility != View.VISIBLE) return
+        val density = resources.displayMetrics.density
+        val viewport = binding.scroll.height
+        val card = binding.nextCard.height
+        if (viewport == 0 || card == 0) return
+        val others = binding.content.height - card
+        val ceiling = minOf(binding.nextCard.width, (300 * density).toInt())
+        val floor = minOf((190 * density).toInt(), ceiling)
+        val size = (viewport - others).coerceIn(floor, ceiling)
+
+        // The card is sized with the ring: otherwise the text block, which is
+        // measured before it is scaled, would hold the card open at its full
+        // height and the space would never come back.
+        listOf(binding.nextRing, binding.nextCard).forEach { view ->
+            val params = view.layoutParams
+            val width = if (view === binding.nextRing) size else params.width
+            if (kotlin.math.abs(params.height - size) > 2 || params.width != width) {
+                params.height = size
+                params.width = width
+                view.layoutParams = params
+            }
+        }
+
+        // The text inside, at the size that fits. Measured unconstrained - in
+        // the card it is capped at the card's height, which would hide how
+        // much too big it is - and divided by the scale already applied, to
+        // get its natural size. The font sizes themselves change, not a
+        // drawing scale, so what is measured is what is drawn.
+        val inner = binding.nextInner
+        val unbounded = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+        inner.measure(unbounded, unbounded)
+        if (inner.measuredWidth == 0 || inner.measuredHeight == 0) return
+        val naturalWidth = inner.measuredWidth / ringTextScale
+        val naturalHeight = inner.measuredHeight / ringTextScale
+        // Clear of the arc and its end dot. The widest line, the countdown,
+        // sits mid-circle where there is the most width, so width and height
+        // are checked separately rather than as one diagonal.
+        val room = size - 2 * 22 * density
+        val scale = minOf(1f, room / naturalHeight, room * 0.92f / naturalWidth)
+        if (kotlin.math.abs(scale - ringTextScale) < 0.02f) return
+        ringTextScale = scale
+        ringTexts().forEach { (view, base) ->
+            view.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, base * scale)
+        }
+    }
+
+    /** Current shrink applied to the ring's text; 1 is the layout's own sizes. */
+    private var ringTextScale = 1f
+
+    /** The ring's text views with their layout sizes, captured once. */
+    private val ringTextBase by lazy {
+        (0 until binding.nextInner.childCount)
+            .map { binding.nextInner.getChildAt(it) }
+            .filterIsInstance<TextView>()
+            .map { it to it.textSize }
+    }
+
+    private fun ringTexts() = ringTextBase
 
     override fun onResume() {
         super.onResume()
