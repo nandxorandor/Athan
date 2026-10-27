@@ -284,7 +284,21 @@ class MainActivity : LocalizedActivity() {
         val viewport = binding.scroll.height
         val card = binding.nextCard.height
         if (viewport == 0 || card == 0) return
-        val others = binding.content.height - card
+        // Added up item by item, not read off the content's height: the
+        // ScrollView stretches the content to fill the screen, so its height
+        // already includes the free space the ring could grow into, and the
+        // ring could shrink but never grow back.
+        val content = binding.content
+        var others = content.paddingTop + content.paddingBottom
+        for (i in 0 until content.childCount) {
+            val child = content.getChildAt(i)
+            if (child === binding.nextCard || child.visibility == View.GONE) continue
+            val margins = child.layoutParams as android.view.ViewGroup.MarginLayoutParams
+            others += child.height + margins.topMargin + margins.bottomMargin
+        }
+        others += (binding.nextCard.layoutParams as android.view.ViewGroup.MarginLayoutParams).let {
+            it.topMargin + it.bottomMargin
+        }
         val ceiling = minOf(binding.nextCard.width, (300 * density).toInt())
         val floor = minOf((190 * density).toInt(), ceiling)
         val size = (viewport - others).coerceIn(floor, ceiling)
