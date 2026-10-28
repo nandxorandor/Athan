@@ -56,6 +56,15 @@ class NextPrayerRing @JvmOverloads constructor(
     }
     private val bounds = RectF()
 
+    /** Green for a prayer, blue while counting to an iqama. */
+    fun setColors(arcColor: Int, trackColor: Int) {
+        if (arc.color == arcColor && track.color == trackColor) return
+        arc.color = arcColor
+        dot.color = arcColor
+        track.color = trackColor
+        invalidate()
+    }
+
     override fun onDraw(canvas: Canvas) {
         val radius = min(width, height) / 2f - stroke * 1.5f
         val cx = width / 2f

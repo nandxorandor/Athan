@@ -675,6 +675,14 @@ class MainActivity : LocalizedActivity() {
         // register, and it cannot get stuck showing after the athan has ended.
         binding.stopAthanBar.visibility =
             if (AthanService.isPlaying) View.VISIBLE else View.GONE
+        // Between a prayer's athan and its iqama the ring counts to the
+        // iqama instead, then moves on. The minutes people wait in the
+        // mosque are exactly when "how long until the iqama" is wanted.
+        iqamaWindow()?.let { window ->
+            showIqama(window)
+            return
+        }
+        styleCard(iqama = false)
         val next = engine.next() ?: return
         val remaining = next.time.time - System.currentTimeMillis()
         if (remaining <= 0) {
@@ -703,6 +711,62 @@ class MainActivity : LocalizedActivity() {
             val span = next.time.time - prev.time
             if (span <= 0) 0f else 1f - remaining.toFloat() / span
         } ?: 0f
+    }
+
+    private class IqamaWindow(val slot: Slot, val athan: Date, val iqama: Date)
+
+    /**
+     * The prayer whose athan has gone and whose iqama has not, if any - only
+     * for prayers with an iqama set. Yesterday is included for an Isha whose
+     * iqama falls after midnight.
+     */
+    private fun iqamaWindow(now: Date = Date()): IqamaWindow? {
+        val yesterday = java.util.Calendar.getInstance().apply {
+            time = now
+            add(java.util.Calendar.DAY_OF_YEAR, -1)
+        }.time
+        return (engine.on(yesterday) + engine.on(now))
+            .filter { (slot, _) -> slot.notifies && prefs.iqamaFor(slot) > 0 }
+            .map { (slot, athan) -> IqamaWindow(slot, athan, plusMinutes(athan, prefs.iqamaFor(slot))) }
+            .firstOrNull { !now.before(it.athan) && now.before(it.iqama) }
+    }
+
+    /**
+     * The ring in its iqama colours: the prayer's name small on top, the word
+     * "Iqama" large where the prayer's name usually is, the countdown to it,
+     * and its time.
+     */
+    private fun showIqama(window: IqamaWindow) {
+        styleCard(iqama = true)
+        val remaining = (window.iqama.time - System.currentTimeMillis()).coerceAtLeast(0)
+        val hours = TimeUnit.MILLISECONDS.toHours(remaining)
+        val minutes = TimeUnit.MILLISECONDS.toMinutes(remaining) % 60
+        val seconds = TimeUnit.MILLISECONDS.toSeconds(remaining) % 60
+        binding.nextLabel.text = getString(window.slot.labelRes)
+        binding.nextName.setText(R.string.iqama)
+        binding.nextCountdown.text =
+            String.format(Locale.US, "%02d:%02d:%02d", hours, minutes, seconds)
+        binding.nextTime.text = timeFormat.format(window.iqama)
+        binding.nextIqama.visibility = View.GONE
+        binding.nextPrayer.text = getString(
+            R.string.next_in, getString(R.string.iqama),
+            if (hours > 0) getString(R.string.countdown_hm, hours, minutes)
+            else getString(R.string.countdown_ms, minutes, seconds),
+        )
+        val span = window.iqama.time - window.athan.time
+        binding.nextRing.progress = if (span <= 0) 1f else 1f - remaining.toFloat() / span
+    }
+
+    /** Swaps the card between its prayer colours and its iqama colours. */
+    private fun styleCard(iqama: Boolean) {
+        val main = getColor(if (iqama) R.color.iqama else R.color.accent)
+        binding.nextName.setTextColor(main)
+        binding.nextDivider.setBackgroundColor(main)
+        binding.nextLabel.setTextColor(getColor(if (iqama) R.color.iqama else R.color.sunrise))
+        if (!iqama) binding.nextLabel.setText(R.string.next_prayer_label)
+        binding.nextRing.setColors(
+            main, getColor(if (iqama) R.color.ring_track_iqama else R.color.ring_track)
+        )
     }
 
     /** Android's built-in Hijri calendar keeps this offline and in sync with the device date. */

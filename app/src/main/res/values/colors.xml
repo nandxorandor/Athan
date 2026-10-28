@@ -23,6 +23,8 @@
     <!-- The iqama on the home screen: bright, and apart from the green of the
          athan's own time and the yellow of the label above it. -->
     <color name="iqama">#6CC8FF</color>
+    <!-- The ring's quiet track while it counts to an iqama. -->
+    <color name="ring_track_iqama">#1D3A4A</color>
     <color name="ring_track">#2A5444</color>
     <color name="today_row">#2E6B4F</color>
     <color name="today_text">#EAFBF3</color>
