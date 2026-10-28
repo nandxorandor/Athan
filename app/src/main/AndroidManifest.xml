@@ -78,7 +78,7 @@
         </provider>
 
         <activity
-            android:name=".RamadanActivity"
+            android:name=".MonthActivity"
             android:exported="false"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait" />

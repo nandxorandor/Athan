@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One day: its cells are added from code, matching the headings. Under them,
+     the start of a Hijri month when one begins that day, and the user's note;
+     tapping the day adds or edits the note. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="?attr/selectableItemBackground"
+    android:orientation="vertical"
+    android:paddingStart="4dp"
+    android:paddingTop="7dp"
+    android:paddingEnd="4dp"
+    android:paddingBottom="7dp">
+
+    <LinearLayout
+        android:id="@+id/cells"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" />
+
+    <TextView
+        android:id="@+id/monthStart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:textAlignment="viewStart"
+        android:textColor="@color/accent"
+        android:textSize="12sp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/note"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:textAlignment="viewStart"
+        android:textColor="@color/sunrise"
+        android:textSize="12sp"
+        android:visibility="gone" />
+</LinearLayout>

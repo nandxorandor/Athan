@@ -207,7 +207,7 @@
     <string name="credit_source_unknown">المصدر: islamweb.net (اسم المؤذن غير مذكور في التسجيل)</string>
     <string name="credit_own_recording">تسجيل من إعداد المطوّر</string>
     <string name="credits_software">البرمجيات</string>
-    <string name="credits_software_detail">تُحسب أوقات الصلاة بمكتبة «adhan» مفتوحة المصدر من Batoul Apps. وكل ما يعرضه التطبيق — مواقيت الصلاة والقبلة والأذكار وتقويم رمضان — يُحسب على هاتفك. ودرجة الحرارة هي الاستثناء الوحيد، ويمكن إيقافها.</string>
+    <string name="credits_software_detail">تُحسب أوقات الصلاة بمكتبة «adhan» مفتوحة المصدر من Batoul Apps. وكل ما يعرضه التطبيق — مواقيت الصلاة والقبلة والأذكار وجدول المواقيت الشهري — يُحسب على هاتفك. ودرجة الحرارة هي الاستثناء الوحيد، ويمكن إيقافها.</string>
 
     <string name="about">عن التطبيق</string>
     <string name="about_version">الإصدار %1$s</string>
@@ -283,7 +283,7 @@
     <string name="temperature_notice_title">هل تريد إظهار درجة الحرارة؟</string>
     <string name="temperature_notice_body">يمكن للتطبيق عرض درجة الحرارة عند موقعك. ولذلك تُرسل إحداثياتك إلى Open-Meteo — وهذا هو الشيء الوحيد الذي يُرسله هذا التطبيق إلى أي جهة.
 
-أمّا كل ما عدا ذلك — مواقيت الصلاة، والقبلة، والأذكار، وتقويم رمضان — فيُحسب على هذا الهاتف ويعمل دون أي اتصال.
+أمّا كل ما عدا ذلك — مواقيت الصلاة، والقبلة، والأذكار، وجدول المواقيت الشهري — فيُحسب على هذا الهاتف ويعمل دون أي اتصال.
 
 ويمكنك تغيير ذلك متى شئت من الإعدادات.</string>
     <string name="temperature_notice_yes">أظهرها</string>
@@ -291,30 +291,29 @@
     <string name="credits_weather">الطقس</string>
     <string name="credits_weather_detail">بيانات درجة الحرارة من Open-Meteo.com، مستخدمة بموجب رخصة CC BY 4.0. ولا تُطلب إلا عند تفعيل درجة الحرارة.</string>
 
-    <string name="ramadan">تقويم رمضان</string>
-    <string name="ramadan_short">تقويم رمضان</string>
-    <string name="ramadan_title">رمضان %1$d هـ</string>
-    <string name="ramadan_subtitle">%1$s · %2$s</string>
-    <string name="ramadan_share">مشاركة الجدول</string>
-    <string name="ramadan_share_pdf">ملف PDF للطباعة</string>
-    <string name="ramadan_share_image">صورة</string>
-    <string name="ramadan_share_csv">جدول بيانات (CSV)</string>
-    <string name="ramadan_note_hint">اضغط على أي يوم لإضافة ملاحظة</string>
-    <string name="ramadan_note_title">ملاحظة ليوم %1$d رمضان</string>
-    <string name="ramadan_note_save">حفظ</string>
-    <string name="ramadan_note_delete">حذف</string>
-    <string name="ramadan_notes">ملاحظات</string>
-    <string name="ramadan_note_line">%1$d رمضان · %2$s</string>
-    <string name="ramadan_saved">حُفِظ في مجلد التنزيلات</string>
-    <string name="ramadan_save_failed">تعذّر حفظ الجدول</string>
-    <string name="ramadan_col_day">#</string>
-    <string name="ramadan_col_date">التاريخ</string>
-    <string name="ramadan_col_suhoor">السحور</string>
-    <string name="ramadan_col_iftar">الإفطار</string>
-    <string name="ramadan_footnote">التواريخ وفق تقويم أم القرى، وهو محسوب لا مبنيّ على الرؤية، فقد يبدأ مسجدك الشهر أو يختمه قبل ذلك بيوم أو بعده. فراجع هذه المواقيت مع جدول مسجدك قبل الاعتماد عليها.</string>
-    <string name="ramadan_no_location">عيّن موقعك لإنشاء الجدول</string>
+    <string name="month_subtitle">%1$s · %2$s</string>
+    <string name="month_previous">الشهر السابق</string>
+    <string name="month_next">الشهر التالي</string>
+    <string name="month_gregorian">ميلادي</string>
+    <string name="month_hijri">هجري</string>
+    <string name="month_today">هذا الشهر</string>
+    <string name="month_col_day">اليوم</string>
+    <string name="month_col_weekday">اليوم</string>
+    <string name="month_col_hijri">هجري</string>
+    <string name="month_col_date">ميلادي</string>
+    <string name="month_share">مشاركة الجدول</string>
+    <string name="month_share_pdf">ملف PDF للطباعة</string>
+    <string name="month_share_image">صورة</string>
+    <string name="month_share_csv">جدول بيانات (CSV)</string>
+    <string name="month_note_hint">اضغط على أي يوم لإضافة ملاحظة</string>
+    <string name="month_note_save">حفظ</string>
+    <string name="month_note_delete">حذف</string>
+    <string name="month_notes">ملاحظات</string>
+    <string name="month_save_failed">تعذّر حفظ الجدول</string>
+    <string name="month_footnote">التواريخ الهجرية وفق تقويم أم القرى، وهو محسوب لا مبنيّ على الرؤية، فقد يبدأ مسجدك الشهر أو يختمه قبل ذلك بيوم أو بعده. فراجع هذه المواقيت مع جدول مسجدك قبل الاعتماد عليها.</string>
+    <string name="month_no_location">عيّن موقعك لإنشاء الجدول</string>
     <string name="ramadan_prompt_title">رمضان على الأبواب</string>
-    <string name="ramadan_prompt_body">هل تريد جدول الشهر كاملاً — السحور والإفطار وكل الصلوات، لـ %1$d يومًا؟</string>
+    <string name="ramadan_prompt_body">هل تريد مواقيت الصلاة للشهر كاملاً، لـ %1$d يومًا؟</string>
     <string name="ramadan_prompt_yes">أرِني</string>
     <string name="ramadan_prompt_no">ليس هذا العام</string>
     <string name="ramadan_auto_offer">اعرضه تلقائيًا كل رمضان</string>

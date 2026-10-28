@@ -51,9 +51,6 @@ class SettingsActivity : LocalizedActivity() {
         binding.temperatureRow.setOnClickListener { chooseTemperature() }
         binding.homeLayoutRow.setOnClickListener { chooseHomeLayout() }
         binding.temperatureUnitRow.setOnClickListener { chooseTemperatureUnit() }
-        binding.ramadanRow.setOnClickListener {
-            startActivity(RamadanActivity.intent(this))
-        }
         binding.creditsRow.setOnClickListener {
             startActivity(Intent(this, CreditsActivity::class.java))
         }
@@ -95,7 +92,6 @@ class SettingsActivity : LocalizedActivity() {
             getString(if (prefs.fahrenheit) R.string.unit_fahrenheit else R.string.unit_celsius)
         binding.homeLayoutName.text =
             getString(if (prefs.homeCompact) R.string.home_compact else R.string.home_full)
-        binding.ramadanName.text = getString(R.string.ramadan_title, RamadanCalendar.upcomingHijriYear())
     }
 
     /**

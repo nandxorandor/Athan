@@ -312,7 +312,6 @@
                     style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="0dp"
                     android:layout_height="56dp"
-                    android:layout_marginEnd="6dp"
                     android:layout_weight="1"
                     android:insetTop="0dp"
                     android:insetBottom="0dp"
@@ -329,33 +328,6 @@
                     app:iconTint="@color/accent"
                     app:strokeColor="@color/icon_idle" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/ramadanButton"
-                    style="?attr/materialButtonOutlinedStyle"
-                    android:layout_width="0dp"
-                    android:layout_height="56dp"
-                    android:layout_marginStart="6dp"
-                    android:layout_weight="1"
-                    android:insetTop="0dp"
-                    android:insetBottom="0dp"
-                    android:maxLines="1"
-                    android:minWidth="0dp"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp"
-                    android:text="@string/ramadan"
-                    android:textAllCaps="false"
-                    android:textColor="@color/accent"
-                    app:autoSizeMaxTextSize="16sp"
-                    app:autoSizeMinTextSize="11sp"
-                    app:autoSizeStepGranularity="1sp"
-                    app:autoSizeTextType="uniform"
-                    app:cornerRadius="28dp"
-                    app:icon="@drawable/ic_adhkar_evening"
-                    app:iconGravity="textStart"
-                    app:iconPadding="8dp"
-                    app:iconSize="22dp"
-                    app:iconTint="@color/text"
-                    app:strokeColor="@color/icon_idle" />
             </LinearLayout>
 
             <!-- Evening first, morning second, in the order users already know;

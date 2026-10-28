@@ -81,19 +81,46 @@ class Prefs(context: Context) {
         set(v) = sp.edit().putInt(KEY_RAMADAN_YEAR, v).apply()
 
     /**
-     * The user's own note on one day of Ramadan, kept per Hijri year so last
-     * year's "iftar at my brother's" does not turn up on this year's table.
+     * The user's own note on one day of the timetable, kept by its date, so
+     * last year's "iftar at my brother's" does not turn up on this year's.
      */
-    fun ramadanNote(year: Int, day: Int): String =
-        sp.getString(keyRamadanNote(year, day), "") ?: ""
+    fun note(date: java.util.Date): String = sp.getString(keyNote(date), "") ?: ""
 
-    fun setRamadanNote(year: Int, day: Int, note: String) {
-        val key = keyRamadanNote(year, day)
+    fun setNote(date: java.util.Date, note: String) {
+        val key = keyNote(date)
         if (note.isBlank()) sp.edit().remove(key).apply()
         else sp.edit().putString(key, note.trim()).apply()
     }
 
-    private fun keyRamadanNote(year: Int, day: Int) = "ramadan_note_${year}_$day"
+    /** Whether the user has written any note at all, on any month. */
+    fun hasNotes(): Boolean = sp.all.keys.any { it.startsWith("note_") }
+
+    private fun keyNote(date: java.util.Date) =
+        "note_" + java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US).format(date)
+
+    /**
+     * Notes from when the timetable was Ramadan's alone, kept by Hijri year
+     * and day of Ramadan, moved onto their dates. Runs once; nothing to do
+     * after that.
+     */
+    fun moveRamadanNotes() {
+        val old = Regex("""ramadan_note_(\d+)_(\d+)""")
+        val edit = sp.edit()
+        sp.all.forEach { (key, value) ->
+            val match = old.matchEntire(key) ?: return@forEach
+            val (year, day) = match.destructured
+            val first = RamadanCalendar.firstDay(year.toInt())
+            if (first != null && value is String && value.isNotBlank()) {
+                val date = java.util.Calendar.getInstance().apply {
+                    time = first
+                    add(java.util.Calendar.DAY_OF_YEAR, day.toInt() - 1)
+                }.time
+                if (note(date).isEmpty()) edit.putString(keyNote(date), value)
+            }
+            edit.remove(key)
+        }
+        edit.apply()
+    }
 
     /**
      * The du'aa said after the athan. On by default: it is the natural

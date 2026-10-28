@@ -109,7 +109,6 @@
             style="?attr/materialButtonOutlinedStyle"
             android:layout_width="0dp"
             android:layout_height="52dp"
-            android:layout_marginEnd="6dp"
             android:layout_weight="1"
             android:insetTop="0dp"
             android:insetBottom="0dp"
@@ -123,30 +122,5 @@
             app:iconTint="@color/accent"
             app:strokeColor="@color/accent" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/sheetRamadan"
-            style="?attr/materialButtonOutlinedStyle"
-            android:layout_width="0dp"
-            android:layout_height="52dp"
-            android:layout_marginStart="6dp"
-            android:layout_weight="1"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
-            android:maxLines="1"
-            android:minWidth="0dp"
-            android:paddingStart="6dp"
-            android:paddingEnd="6dp"
-            android:text="@string/ramadan"
-            android:textAllCaps="false"
-            android:textColor="@color/accent"
-            app:autoSizeMaxTextSize="15sp"
-            app:autoSizeMinTextSize="10sp"
-            app:autoSizeStepGranularity="1sp"
-            app:autoSizeTextType="uniform"
-            app:cornerRadius="26dp"
-            app:icon="@drawable/ic_calendar"
-            app:iconGravity="textStart"
-            app:iconTint="@color/accent"
-            app:strokeColor="@color/accent" />
     </LinearLayout>
 </LinearLayout>

@@ -90,7 +90,7 @@ class MainActivity : LocalizedActivity() {
         binding.bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navTimes -> showAllTimes()
-                R.id.navCalendar -> startActivity(RamadanActivity.intent(this))
+                R.id.navCalendar -> startActivity(MonthActivity.intent(this))
                 R.id.navSettings -> startActivity(Intent(this, SettingsActivity::class.java))
             }
             item.itemId == R.id.navHome
@@ -111,9 +111,6 @@ class MainActivity : LocalizedActivity() {
             prefs.fahrenheit = !prefs.fahrenheit
             showTemperature(Weather.current())
             pulseTemperature()
-        }
-        binding.ramadanButton.setOnClickListener {
-            startActivity(RamadanActivity.intent(this))
         }
         binding.allTimesButton.setOnClickListener { showAllTimes() }
         binding.nextCard.setOnClickListener { showAllTimes() }
@@ -251,7 +248,7 @@ class MainActivity : LocalizedActivity() {
             .setTitle(R.string.ramadan_prompt_title)
             .setMessage(getString(R.string.ramadan_prompt_body, RamadanCalendar.daysIn(year)))
             .setPositiveButton(R.string.ramadan_prompt_yes) { _, _ ->
-                startActivity(RamadanActivity.intent(this, year))
+                startActivity(MonthActivity.ramadan(this, year))
             }
             .setNegativeButton(R.string.ramadan_prompt_no, null)
             .show()
@@ -587,10 +584,6 @@ class MainActivity : LocalizedActivity() {
         content.findViewById<TextView>(R.id.sheetGregorian).text = binding.gregorianDate.text
         fillTimes(content.findViewById(R.id.sheetTimes), times, boxNext = true)
         content.findViewById<View>(R.id.sheetClose).setOnClickListener { sheet.dismiss() }
-        content.findViewById<View>(R.id.sheetRamadan).setOnClickListener {
-            sheet.dismiss()
-            startActivity(RamadanActivity.intent(this))
-        }
         content.findViewById<View>(R.id.sheetShare).setOnClickListener { shareToday(times) }
         sheet.setContentView(content)
         // Fully open at once: half a table, with the rest behind a drag, is
