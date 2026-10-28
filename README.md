@@ -47,7 +47,12 @@
 
 <p align="center">
   <img src="docs/screenshots/ar-home.jpg" width="220" alt="الشاشة الرئيسية: الصلاة القادمة والوقت المتبقي">
-  <img src="docs/screenshots/ar-times-sheet.jpg" width="220" alt="أوقات الصلاة لليوم">
+  <img src="docs/screenshots/ar-times-sheet.jpg" width="220" alt="أوقات الصلاة لليوم مع الإقامة">
+  <img src="docs/screenshots/ar-iqama-countdown.jpg" width="220" alt="عدّاد تنازلي للإقامة بعد الأذان">
+</p>
+<p align="center">
+  <img src="docs/screenshots/ar-prayer-adjust.jpg" width="220" alt="تعديل وقت صلاة وضبط إقامتها">
+  <img src="docs/screenshots/ar-methods.jpg" width="220" alt="طرق الحساب، ومنها المغرب والجزائر وتونس وتركيا">
   <img src="docs/screenshots/ar-check-and-test.jpg" width="220" alt="الفحص والتجربة">
 </p>
 <p align="center">
@@ -95,7 +100,12 @@ with the ringer down), and points to the qibla. Package
 
 <p align="center">
   <img src="docs/screenshots/home.jpg" width="220" alt="Home: the next prayer and the time left, in a ring that fills as it approaches">
-  <img src="docs/screenshots/times-sheet.jpg" width="220" alt="All times: today's table, with a per-prayer sound / vibrate / silent control">
+  <img src="docs/screenshots/times-sheet.jpg" width="220" alt="All times: today's table, with each prayer's iqama and sound / vibrate / silent control">
+  <img src="docs/screenshots/iqama-countdown.jpg" width="220" alt="Between the athan and the iqama, the ring counts down to the iqama">
+</p>
+<p align="center">
+  <img src="docs/screenshots/prayer-adjust.jpg" width="220" alt="Tap a prayer to adjust its time or set its iqama">
+  <img src="docs/screenshots/calculation-method.jpg" width="220" alt="Calculation methods, including Morocco, Algeria, Tunisia and Turkey">
   <img src="docs/screenshots/check-and-test.jpg" width="220" alt="Check and test: everything the athan needs, and buttons to hear it now">
 </p>
 <p align="center">
@@ -105,21 +115,20 @@ with the ringer down), and points to the qibla. Package
 </p>
 <p align="center">
   <img src="docs/screenshots/settings.jpg" width="220" alt="Settings">
-  <img src="docs/screenshots/calculation-method.jpg" width="220" alt="Calculation method picker">
   <img src="docs/screenshots/qibla.jpg" width="220" alt="Qibla compass with a Kaaba marker on the dial">
+  <img src="docs/screenshots/qibla-accuracy.jpg" width="220" alt="Prompt to recalibrate the compass away from metal and magnets">
 </p>
 <p align="center">
-  <img src="docs/screenshots/qibla-accuracy.jpg" width="220" alt="Prompt to recalibrate the compass away from metal and magnets">
   <img src="docs/screenshots/athan-sound.jpg" width="220" alt="Separate sound choice for Fajr and for the other prayers">
   <img src="docs/screenshots/sound-picker-other.jpg" width="220" alt="Sound picker: bundled recordings, a file from the device, or a ringtone">
+  <img src="docs/screenshots/sound-picker-fajr.jpg" width="220" alt="Fajr sound picker">
 </p>
 <p align="center">
-  <img src="docs/screenshots/sound-picker-fajr.jpg" width="220" alt="Fajr sound picker">
   <img src="docs/screenshots/more-athans.jpg" width="220" alt="Links out to athan libraries in the browser">
   <img src="docs/screenshots/downloaded-athans.jpg" width="220" alt="Athans you downloaded yourself appear here">
 </p>
 
-<p align="center"><sub>The newer screenshots are set to Mecca; in the older ones location details are blacked out. The app keeps your location on the device only.</sub></p>
+<p align="center"><sub>The newer screenshots are set to Mecca or Tunis; in the older ones location details are blacked out. The app keeps your location on the device only.</sub></p>
 
 ---
 
