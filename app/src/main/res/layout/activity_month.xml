@@ -169,15 +169,6 @@
             android:orientation="vertical" />
     </ScrollView>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:lineSpacingExtra="2dp"
-        android:text="@string/month_footnote"
-        android:textColor="@color/text_dim"
-        android:textSize="10sp" />
-
     <com.google.android.material.button.MaterialButton
         android:id="@+id/shareButton"
         style="?attr/materialButtonOutlinedStyle"
