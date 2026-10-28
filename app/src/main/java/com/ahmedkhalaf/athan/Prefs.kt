@@ -121,6 +121,39 @@ class Prefs(context: Context) {
         set(v) = sp.edit().putString(KEY_METHOD, v).apply()
 
     /**
+     * True once the user has picked a method themselves. Until then the method
+     * follows the country of whatever location is set; after, it is theirs and
+     * a new location never overrides it.
+     */
+    var methodChosen: Boolean
+        get() = sp.getBoolean(KEY_METHOD_CHOSEN, false)
+        set(v) = sp.edit().putBoolean(KEY_METHOD_CHOSEN, v).apply()
+
+    /**
+     * Installs from before the method followed the country kept the old
+     * default (North America) wherever they were. Set once the country of the
+     * stored location has been looked up and the method matched to it.
+     */
+    var methodCountryChecked: Boolean
+        get() = sp.getBoolean(KEY_METHOD_COUNTRY_CHECKED, false)
+        set(v) = sp.edit().putBoolean(KEY_METHOD_COUNTRY_CHECKED, v).apply()
+
+    /**
+     * Minutes added to (or taken from) one prayer, for a mosque whose
+     * timetable differs on that prayer only. On top of the overall adjustment.
+     */
+    fun offsetFor(slot: Slot): Int = sp.getInt("${KEY_OFFSET}_${slot.name}", 0)
+
+    fun setOffset(slot: Slot, minutes: Int) =
+        sp.edit().putInt("${KEY_OFFSET}_${slot.name}", minutes).apply()
+
+    /** Minutes from the athan to the iqama; 0 means not shown. */
+    fun iqamaFor(slot: Slot): Int = sp.getInt("${KEY_IQAMA}_${slot.name}", 0)
+
+    fun setIqama(slot: Slot, minutes: Int) =
+        sp.edit().putInt("${KEY_IQAMA}_${slot.name}", minutes).apply()
+
+    /**
      * Manual shift applied to every computed time, in minutes. Some countries
      * move the clock seasonally without the astronomy changing, and local
      * timetables are often rounded or deliberately offset from the calculation.
@@ -259,6 +292,10 @@ class Prefs(context: Context) {
         private const val KEY_RAMADAN_YEAR = "ramadan_prompt_year"
         private const val KEY_AFTER_DUA = "after_athan_dua"
         private const val KEY_METHOD = "method"
+        private const val KEY_METHOD_CHOSEN = "method_chosen"
+        private const val KEY_METHOD_COUNTRY_CHECKED = "method_country_checked"
+        private const val KEY_OFFSET = "offset"
+        private const val KEY_IQAMA = "iqama"
         private const val KEY_MADHAB = "madhab"
         private const val KEY_QIBLA_NOTICE = "qibla_notice_seen"
         private const val KEY_WATCH_ASKED = "download_watch_asked"

@@ -32,6 +32,20 @@
     <string name="nav_calendar">Calendar</string>
     <string name="share_times">Share</string>
     <string name="close_sheet">Close</string>
+    <!-- One prayer's own adjustment and iqama, from tapping it in the times. -->
+    <string name="times_edit_hint">Tap a prayer to adjust its time or set the iqama</string>
+    <string name="prayer_adjust">Adjust this prayer\'s time</string>
+    <string name="prayer_adjust_base">Calculated time: %1$s</string>
+    <string name="adjust_none_short">No change</string>
+    <string name="adjust_minutes">%1$s min</string>
+    <string name="iqama">Iqama</string>
+    <string name="iqama_off">Not shown</string>
+    <string name="iqama_after">%1$d min after the athan</string>
+    <string name="iqama_at">Iqama %1$s</string>
+    <string name="minus_minute">One minute less</string>
+    <string name="plus_minute">One minute more</string>
+    <string name="prayer_save">Save</string>
+    <string name="prayer_reset">Reset</string>
     <!-- Readiness: is everything on the phone set for the athan to arrive. -->
     <string name="readiness">Check and test</string>
     <string name="readiness_all_good">Everything is ready</string>
@@ -151,7 +165,11 @@
     <string name="method_kuwait">Kuwait</string>
     <string name="method_qatar">Qatar</string>
     <string name="method_singapore">Singapore</string>
-    <string name="method_turkey">Turkey</string>
+    <string name="method_morocco">Morocco (Ministry of Habous)</string>
+    <string name="method_algeria">Algeria (Ministry of Religious Affairs)</string>
+    <string name="method_tunisia">Tunisia</string>
+    <string name="method_auto_set">Calculation method set to %1$s for your country. You can change it in Settings.</string>
+    <string name="method_turkey">Turkey (Diyanet)</string>
     <string name="method_tehran">Tehran</string>
     <string name="method_other">Other</string>
 

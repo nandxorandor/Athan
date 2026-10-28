@@ -13,7 +13,6 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import com.ahmedkhalaf.athan.databinding.ActivitySettingsBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.batoulapps.adhan.CalculationMethod
 
 /**
  * Everything that is configured once and then forgotten. Kept off the main
@@ -182,16 +181,18 @@ class SettingsActivity : LocalizedActivity() {
     }
 
     /**
-     * Built from CalculationMethod.values() rather than a hardcoded list, so the
-     * picker cannot drift out of sync with whatever the library actually ships.
+     * The library's methods plus the regional ones (see [Methods]), so the
+     * picker cannot drift out of sync with what the engine can compute. A pick
+     * here is final: a later change of location no longer moves the method.
      */
     private fun chooseMethod() {
-        val methods = CalculationMethod.values()
-        val labels = methods.map { methodLabel(it.name) }.toTypedArray()
+        val methods = Methods.all
+        val labels = methods.map { methodLabel(it) }.toTypedArray()
         AlertDialog.Builder(this)
             .setTitle(R.string.calculation_method)
-            .setSingleChoiceItems(labels, methods.indexOfFirst { it.name == prefs.method }) { d, which ->
-                prefs.method = methods[which].name
+            .setSingleChoiceItems(labels, methods.indexOf(prefs.method)) { d, which ->
+                prefs.method = methods[which]
+                prefs.methodChosen = true
                 d.dismiss()
                 applied()
             }
@@ -285,24 +286,7 @@ class SettingsActivity : LocalizedActivity() {
         else -> getString(R.string.adjust_minus, -minutes)
     }
 
-    private fun methodLabel(name: String): String = when (name) {
-        "NORTH_AMERICA" -> getString(R.string.method_north_america)
-        "MUSLIM_WORLD_LEAGUE" -> getString(R.string.method_mwl)
-        "EGYPTIAN" -> getString(R.string.method_egyptian)
-        "KARACHI" -> getString(R.string.method_karachi)
-        "UMM_AL_QURA" -> getString(R.string.method_umm_al_qura)
-        "DUBAI" -> getString(R.string.method_dubai)
-        "MOON_SIGHTING_COMMITTEE" -> getString(R.string.method_moonsighting)
-        "KUWAIT" -> getString(R.string.method_kuwait)
-        "QATAR" -> getString(R.string.method_qatar)
-        "SINGAPORE" -> getString(R.string.method_singapore)
-        "TURKEY" -> getString(R.string.method_turkey)
-        "TEHRAN" -> getString(R.string.method_tehran)
-        "OTHER" -> getString(R.string.method_other)
-        // A method the library added since this list was written: better a
-        // readable English name than a raw SCREAMING_CASE constant.
-        else -> name.lowercase().replace('_', ' ').replaceFirstChar { it.uppercase() }
-    }
+    private fun methodLabel(name: String): String = Methods.label(this, name)
 
     private companion object {
         /** ±2 hours covers a seasonal clock change plus local rounding. */

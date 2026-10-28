@@ -362,6 +362,7 @@ class MainActivity : LocalizedActivity() {
         ticker.post(tick)
         AthanScheduler.scheduleNext(this)
         warnIfExactAlarmsBlocked()
+        checkMethodForStoredLocation()
         // Order matters: the temperature notice is asked once and answered
         // before anything is fetched, and only after that can Ramadan have the
         // screen. Two dialogs at once on a first launch is nobody's welcome.
@@ -445,9 +446,94 @@ class MainActivity : LocalizedActivity() {
                 setTextColor(color)
             }
             bindModeIcons(row, slot)
+            row.findViewById<TextView>(R.id.prayerExtra).apply {
+                val parts = listOfNotNull(
+                    prefs.offsetFor(slot).takeIf { it != 0 }
+                        ?.let { getString(R.string.adjust_minutes, signed(it)) },
+                    prefs.iqamaFor(slot).takeIf { it > 0 && slot.notifies }
+                        ?.let { getString(R.string.iqama_at, timeFormat.format(plusMinutes(time, it))) },
+                )
+                text = parts.joinToString(" · ")
+                visibility = if (parts.isEmpty()) View.GONE else View.VISIBLE
+                if (isNext) setTextColor(color)
+            }
+            row.setOnClickListener {
+                editPrayer(slot) { fillTimes(container, engine.today(), boxNext) }
+            }
             container.addView(row)
         }
     }
+
+    /**
+     * One prayer's own minutes and its iqama. Both apply at once - the times,
+     * the alarms and the home screen - so what the user sets here is what the
+     * athan will do.
+     */
+    private fun editPrayer(slot: Slot, onSaved: () -> Unit) {
+        val view = layoutInflater.inflate(R.layout.dialog_prayer, null)
+        val saved = prefs.offsetFor(slot)
+        var offset = saved
+        var iqama = prefs.iqamaFor(slot)
+        // Today's time without this prayer's own minutes, to preview against.
+        val base = engine.today().firstOrNull { it.first == slot }?.second
+            ?.let { plusMinutes(it, -saved) }
+
+        val baseView = view.findViewById<TextView>(R.id.adjustBase)
+        val adjustValue = view.findViewById<TextView>(R.id.adjustValue)
+        val iqamaValue = view.findViewById<TextView>(R.id.iqamaValue)
+        baseView.text = base?.let { getString(R.string.prayer_adjust_base, timeFormat.format(it)) }.orEmpty()
+
+        fun render() {
+            val change = if (offset == 0) getString(R.string.adjust_none_short)
+            else getString(R.string.adjust_minutes, signed(offset))
+            adjustValue.text = base?.let { "$change · ${timeFormat.format(plusMinutes(it, offset))}" } ?: change
+            iqamaValue.text = if (iqama == 0) getString(R.string.iqama_off) else {
+                val after = getString(R.string.iqama_after, iqama)
+                base?.let { "$after\n${timeFormat.format(plusMinutes(it, offset + iqama))}" } ?: after
+            }
+        }
+        view.findViewById<View>(R.id.adjustMinus).setOnClickListener {
+            offset = (offset - 1).coerceAtLeast(-MAX_PRAYER_OFFSET); render()
+        }
+        view.findViewById<View>(R.id.adjustPlus).setOnClickListener {
+            offset = (offset + 1).coerceAtMost(MAX_PRAYER_OFFSET); render()
+        }
+        view.findViewById<View>(R.id.iqamaMinus).setOnClickListener {
+            iqama = (iqama - 1).coerceAtLeast(0); render()
+        }
+        view.findViewById<View>(R.id.iqamaPlus).setOnClickListener {
+            iqama = (iqama + 1).coerceAtMost(MAX_IQAMA); render()
+        }
+        // Sunrise is a marker, not a prayer: it moves, but it has no iqama.
+        view.findViewById<View>(R.id.iqamaGroup).visibility =
+            if (slot.notifies) View.VISIBLE else View.GONE
+        render()
+
+        fun apply(newOffset: Int, newIqama: Int) {
+            prefs.setOffset(slot, newOffset)
+            prefs.setIqama(slot, newIqama)
+            AthanScheduler.scheduleNext(this)
+            refresh()
+            onSaved()
+        }
+        MaterialAlertDialogBuilder(this)
+            .setTitle(getString(slot.labelRes).removePrefix("☀️ "))
+            .setView(view)
+            .setPositiveButton(R.string.prayer_save) { _, _ -> apply(offset, iqama) }
+            .setNegativeButton(android.R.string.cancel, null)
+            .setNeutralButton(R.string.prayer_reset) { _, _ -> apply(0, 0) }
+            .show()
+    }
+
+    private fun plusMinutes(time: Date, minutes: Int) = Date(time.time + minutes * 60_000L)
+
+    /**
+     * "+2" or "-3", isolated so the sign stays in front of the number in an
+     * Arabic line instead of drifting to the other side of it.
+     */
+    private fun signed(minutes: Int): String =
+        androidx.core.text.BidiFormatter.getInstance()
+            .unicodeWrap(String.format(Locale.US, "%+d", minutes))
 
     private fun iconFor(slot: Slot): Int = when (slot) {
         Slot.FAJR -> R.drawable.ic_prayer_fajr
@@ -577,6 +663,12 @@ class MainActivity : LocalizedActivity() {
         binding.nextCountdown.text =
             String.format(Locale.US, "%02d:%02d:%02d", hours, minutes, seconds)
         binding.nextTime.text = timeFormat.format(next.time)
+        val iqama = prefs.iqamaFor(next.slot)
+        binding.nextIqama.visibility = if (iqama > 0) View.VISIBLE else View.GONE
+        if (iqama > 0) {
+            binding.nextIqama.text =
+                getString(R.string.iqama_at, timeFormat.format(plusMinutes(next.time, iqama)))
+        }
         binding.nextRing.progress = previousTime?.let { prev ->
             val span = next.time.time - prev.time
             if (span <= 0) 0f else 1f - remaining.toFloat() / span
@@ -654,18 +746,55 @@ class MainActivity : LocalizedActivity() {
         }
         prefs.latitude = fix.latitude
         prefs.longitude = fix.longitude
-        prefs.cityName = reverseGeocode(fix.latitude, fix.longitude)
+        val place = placeAt(fix.latitude, fix.longitude)
+        prefs.cityName = place
+            ?.let { it.locality ?: it.subAdminArea ?: it.adminArea ?: it.countryName }
+            .orEmpty()
+        matchMethodToCountry(place?.countryCode)
         refresh()
         AthanScheduler.scheduleNext(this)
     }
 
     @Suppress("DEPRECATION")
-    private fun reverseGeocode(lat: Double, lng: Double): String = runCatching {
-        Geocoder(this, Locale.getDefault()).getFromLocation(lat, lng, 1)
-            ?.firstOrNull()
-            ?.let { it.locality ?: it.subAdminArea ?: it.adminArea ?: it.countryName }
-            .orEmpty()
-    }.getOrDefault("")
+    private fun placeAt(lat: Double, lng: Double): android.location.Address? = runCatching {
+        Geocoder(this, Locale.getDefault()).getFromLocation(lat, lng, 1)?.firstOrNull()
+    }.getOrNull()
+
+    /**
+     * The calculation method follows the country, until the user picks one in
+     * Settings. Every new install used to start on North America wherever it
+     * was, so someone in Cairo or Casablanca got the wrong Fajr and Isha until
+     * they found the setting.
+     */
+    private fun matchMethodToCountry(countryCode: String?) {
+        if (prefs.methodChosen || countryCode.isNullOrEmpty()) return
+        prefs.methodCountryChecked = true
+        val method = Methods.forCountry(countryCode)
+        if (method == prefs.method) return
+        prefs.method = method
+        AthanScheduler.scheduleNext(this)
+        refresh()
+        android.widget.Toast.makeText(
+            this, getString(R.string.method_auto_set, Methods.label(this, method)),
+            android.widget.Toast.LENGTH_LONG,
+        ).show()
+    }
+
+    /**
+     * Once, for installs that set their location before the method followed
+     * the country: look up the stored location's country off the main thread
+     * and match the method to it. Tried again next time if the lookup fails,
+     * which it does without a network.
+     */
+    private fun checkMethodForStoredLocation() {
+        if (prefs.methodChosen || prefs.methodCountryChecked || !prefs.hasLocation) return
+        val lat = prefs.latitude
+        val lng = prefs.longitude
+        Thread {
+            val country = placeAt(lat, lng)?.countryCode
+            if (country != null) runOnUiThread { matchMethodToCountry(country) }
+        }.start()
+    }
 
     @Suppress("DEPRECATION")
     private fun lookUpCity(query: String) {
@@ -682,6 +811,7 @@ class MainActivity : LocalizedActivity() {
                 prefs.latitude = match.latitude
                 prefs.longitude = match.longitude
                 prefs.cityName = match.locality ?: match.adminArea ?: query
+                matchMethodToCountry(match.countryCode)
                 refresh()
                 AthanScheduler.scheduleNext(this)
             }
@@ -704,4 +834,12 @@ class MainActivity : LocalizedActivity() {
 
     private fun toast(resId: Int) =
         android.widget.Toast.makeText(this, resId, android.widget.Toast.LENGTH_SHORT).show()
+
+    private companion object {
+        /** Half an hour either way: beyond that it is a different method, not a tweak. */
+        const val MAX_PRAYER_OFFSET = 30
+
+        /** Iqama up to an hour after the athan. */
+        const val MAX_IQAMA = 60
+    }
 }

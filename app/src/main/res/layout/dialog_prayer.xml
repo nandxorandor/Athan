@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One prayer's own settings: minutes added or taken, and the iqama. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingStart="24dp"
+    android:paddingTop="8dp"
+    android:paddingEnd="24dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/prayer_adjust"
+        android:textColor="@color/text"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/adjustBase"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:textColor="@color/text_dim"
+        android:textSize="13sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/adjustMinus"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:contentDescription="@string/minus_minute"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:padding="0dp"
+            android:text="−"
+            android:textSize="22sp"
+            app:cornerRadius="26dp" />
+
+        <TextView
+            android:id="@+id/adjustValue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/accent"
+            android:textSize="18sp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/adjustPlus"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:contentDescription="@string/plus_minute"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:padding="0dp"
+            android:text="+"
+            android:textSize="22sp"
+            app:cornerRadius="26dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/iqamaGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/iqama"
+            android:textColor="@color/text"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/iqamaMinus"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:contentDescription="@string/minus_minute"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:padding="0dp"
+                android:text="−"
+                android:textSize="22sp"
+                app:cornerRadius="26dp" />
+
+            <TextView
+                android:id="@+id/iqamaValue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/accent"
+                android:textSize="18sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/iqamaPlus"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:contentDescription="@string/plus_minute"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:padding="0dp"
+                android:text="+"
+                android:textSize="22sp"
+                app:cornerRadius="26dp" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

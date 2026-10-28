@@ -78,6 +78,19 @@
         android:textColor="@color/text_dim"
         android:textSize="14sp" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
+        android:text="@string/times_edit_hint"
+        android:textAlignment="viewStart"
+        android:textColor="@color/text_dim"
+        android:textSize="13sp"
+        app:drawableStartCompat="@drawable/ic_edit"
+        app:drawableTint="@color/text_dim" />
+
     <LinearLayout
         android:id="@+id/sheetTimes"
         android:layout_width="match_parent"

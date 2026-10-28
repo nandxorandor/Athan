@@ -1,6 +1,5 @@
 package com.ahmedkhalaf.athan
 
-import com.batoulapps.adhan.CalculationMethod
 import com.batoulapps.adhan.CalculationParameters
 import com.batoulapps.adhan.Coordinates
 import com.batoulapps.adhan.Madhab
@@ -37,13 +36,20 @@ data class Upcoming(val slot: Slot, val time: Date)
  */
 class PrayerEngine(private val prefs: Prefs) {
 
-    private fun params(): CalculationParameters {
-        val method = runCatching { CalculationMethod.valueOf(prefs.method) }
-            .getOrDefault(CalculationMethod.MUSLIM_WORLD_LEAGUE)
-        return method.parameters.apply {
+    private fun params(): CalculationParameters =
+        Methods.parameters(prefs.method).apply {
             madhab = runCatching { Madhab.valueOf(prefs.madhab) }.getOrDefault(Madhab.SHAFI)
+            // Each prayer's own minutes. The library adds these after the
+            // method's, so a Moroccan Maghrib +5 and a user's +2 make +7.
+            adjustments = com.batoulapps.adhan.PrayerAdjustments(
+                prefs.offsetFor(Slot.FAJR),
+                prefs.offsetFor(Slot.SUNRISE),
+                prefs.offsetFor(Slot.DHUHR),
+                prefs.offsetFor(Slot.ASR),
+                prefs.offsetFor(Slot.MAGHRIB),
+                prefs.offsetFor(Slot.ISHA),
+            )
         }
-    }
 
     fun timesOn(date: Date): PrayerTimes? {
         if (!prefs.hasLocation) return null

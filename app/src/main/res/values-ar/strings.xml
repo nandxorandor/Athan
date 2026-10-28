@@ -41,6 +41,19 @@
     <string name="nav_calendar">التقويم</string>
     <string name="share_times">مشاركة</string>
     <string name="close_sheet">إغلاق</string>
+    <string name="times_edit_hint">اضغط على أي صلاة لتعديل وقتها أو ضبط الإقامة</string>
+    <string name="prayer_adjust">تعديل وقت هذه الصلاة</string>
+    <string name="prayer_adjust_base">الوقت المحسوب: %1$s</string>
+    <string name="adjust_none_short">بلا تعديل</string>
+    <string name="adjust_minutes">%1$s دقيقة</string>
+    <string name="iqama">الإقامة</string>
+    <string name="iqama_off">لا تُعرض</string>
+    <string name="iqama_after">بعد الأذان بـ %1$d دقيقة</string>
+    <string name="iqama_at">الإقامة %1$s</string>
+    <string name="minus_minute">دقيقة أقل</string>
+    <string name="plus_minute">دقيقة أكثر</string>
+    <string name="prayer_save">حفظ</string>
+    <string name="prayer_reset">إعادة الضبط</string>
     <!-- الجاهزية -->
     <string name="readiness">الفحص والتجربة</string>
     <string name="readiness_all_good">كل شيء جاهز</string>
@@ -232,7 +245,11 @@
     <string name="method_kuwait">الكويت</string>
     <string name="method_qatar">قطر</string>
     <string name="method_singapore">سنغافورة</string>
-    <string name="method_turkey">تركيا</string>
+    <string name="method_morocco">المغرب (وزارة الأوقاف)</string>
+    <string name="method_algeria">الجزائر (وزارة الشؤون الدينية)</string>
+    <string name="method_tunisia">تونس</string>
+    <string name="method_auto_set">ضُبطت طريقة الحساب على «%1$s» بحسب بلدك، ويمكنك تغييرها من الإعدادات.</string>
+    <string name="method_turkey">تركيا (رئاسة الشؤون الدينية)</string>
     <string name="method_tehran">طهران</string>
     <string name="method_other">أخرى</string>
 
