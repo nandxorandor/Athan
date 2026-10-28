@@ -11,7 +11,7 @@
 
 <p align="center">
   <a href="https://play.google.com/store/apps/details?id=com.ahmedkhalaf.athan"><img src="https://img.shields.io/badge/Google%20Play-get%20it-2FD968?style=flat-square" alt="Get it on Google Play"></a>
-  <a href="../../releases/latest"><img src="https://img.shields.io/badge/download-APK%20v1.3.7-2FD968?style=flat-square" alt="Download APK"></a>
+  <a href="../../releases/latest"><img src="https://img.shields.io/badge/download-APK%20v1.3.8-2FD968?style=flat-square" alt="Download APK"></a>
   <img src="https://img.shields.io/badge/Android-8.0%2B-4FC79A?style=flat-square" alt="Android 8.0+">
   <img src="https://img.shields.io/badge/size-35%20MB-4FC79A?style=flat-square" alt="35 MB">
   <img src="https://img.shields.io/badge/code-MIT-4FC79A?style=flat-square" alt="MIT licence for the code">
@@ -32,7 +32,8 @@
 ### ما الذي يقدّمه
 
 - **شاشة رئيسية واضحة** — الصلاة القادمة والوقت المتبقي لها داخل حلقة تمتلئ كلما اقترب الوقت، وجدول اليوم كاملًا بلمسة على «جميع الأوقات». وتتكيّف الشاشة مع حجم الهاتف ومع تكبير الخط.
-- **مواقيت الصلاة دون إنترنت** — تُحسب على الجهاز نفسه من إحداثيات موقعك، مع اختيار طريقة الحساب والمذهب، وتعديل يدوي حتى 120 دقيقة إن اختلف توقيت مسجدك.
+- **مواقيت الصلاة دون إنترنت** — تُحسب على الجهاز نفسه من إحداثيات موقعك. ويختار التطبيق طريقة الحساب المعتمدة في بلدك تلقائيًا (ومنها المغرب والجزائر وتونس وتركيا)، ورابطة العالم الإسلامي حيث لا توجد طريقة خاصة، ويمكنك تغييرها متى شئت. مع تعديل عام حتى 120 دقيقة.
+- **تعديل كل صلاة على حدة، ووقت الإقامة** — اضغط على أي صلاة لتقديمها أو تأخيرها دقائق، ولضبط الإقامة بعد الأذان. وبين الأذان والإقامة تتحوّل الحلقة في الشاشة الرئيسية إلى عدّاد تنازلي للإقامة.
 - **الأذان في وقته** — لكل صلاة وضع مستقل: **صوت** أو **اهتزاز** أو **صامت**. ويُشغَّل الأذان بصوت المنبّه فيُسمع حتى لو خفّضتَ جرس الهاتف، وتظهر نافذته فوق شاشة القفل بزرّ إيقاف واحد.
 - **تنبيه قبل الصلاة** — اختياري، من دقيقة إلى 60 دقيقة قبل دخول الوقت، بنغمة ومستوى صوت مستقلَّين عن الأذان، ويمكنك أن تختار تسجيلًا من هاتفك.
 - **الفحص والتجربة** — شاشة في الإعدادات تبيّن هل كل شيء في هاتفك جاهز ليُرفع الأذان (الإشعارات، المنبّهات الدقيقة، الظهور فوق شاشة القفل، قيود البطارية، صوت المنبّه)، مع إصلاح أي خلل بلمسة، وزرّين لتسمع التنبيه والأذان الآن.
@@ -71,7 +72,7 @@
 
 الأسهل من [**Google Play**](https://play.google.com/store/apps/details?id=com.ahmedkhalaf.athan)، وتصلك التحديثات تلقائيًا.
 
-أو نزّل ملف `athan-v1.3.7.apk` من صفحة [الإصدارات](../../releases). عند فتحه سيطلب منك أندرويد السماح بالتثبيت من مصدر غير معروف، وهي رسالة معتادة لأي تطبيق يُثبَّت خارج المتجر. يتطلّب أندرويد 8.0 فأحدث، وحجمه نحو 35 ميجابايت.
+أو نزّل ملف `athan-v1.3.8.apk` من صفحة [الإصدارات](../../releases). عند فتحه سيطلب منك أندرويد السماح بالتثبيت من مصدر غير معروف، وهي رسالة معتادة لأي تطبيق يُثبَّت خارج المتجر. يتطلّب أندرويد 8.0 فأحدث، وحجمه نحو 35 ميجابايت.
 
 ملاحظة: نسخة Google Play ونسخة GitHub موقَّعتان بمفتاحين مختلفين، فلا تُثبَّت إحداهما فوق الأخرى. للانتقال من نسخة GitHub إلى المتجر احذفها أولًا ثم ثبّت من المتجر.
 
@@ -130,7 +131,7 @@ GitHub instead.
 
 **1. Download the APK**
 
-Go to the [**Releases**](../../releases) page and download `athan-v1.3.7.apk` from
+Go to the [**Releases**](../../releases) page and download `athan-v1.3.8.apk` from
 the latest release. You can do this straight from your phone's browser.
 
 **2. Allow the install**
@@ -187,8 +188,15 @@ Home screen -> Full timetable.
 
 **Prayer times, fully offline.** Computed with the
 [adhan](https://github.com/batoulapps/adhan-java) library from your coordinates.
-Calculation method and madhab are selectable (default ISNA / Shafi), and there is
-a ±120-minute manual adjustment if you follow a local mosque's timetable.
+The calculation method follows your country when you set your location
+(Umm al-Qura in Saudi Arabia, the Egyptian authority in Egypt, Morocco, Algeria,
+Tunisia, Turkey and others; Muslim World League elsewhere) until you pick one
+yourself. Madhab is selectable, and there is a ±120-minute overall adjustment.
+
+**Per-prayer adjustment and iqama.** Tap a prayer to move it on its own, for a
+mosque that differs on one prayer, and to set its iqama in minutes after the
+athan. Between the athan and the iqama the home screen's ring turns blue and
+counts down to the iqama.
 
 **The athan actually plays.** Each prayer is set to **Sound**, **Vibrate**, or
 **Silent** independently — tap the row to change it. Sound plays on the alarm
