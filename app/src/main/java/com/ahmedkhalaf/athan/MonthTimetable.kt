@@ -19,8 +19,32 @@ data class TimetableDay(
     val date: Date,
     val dayOfMonth: Int,
     val hijriDay: Int,
+    /** 0-based: Muharram is 0, Ramadan 8, Dhu al-Hijjah 11. */
+    val hijriMonth: Int,
     val times: Map<Slot, Date>,
-)
+) {
+    /**
+     * The day's occasions, as string resources. Only the ones Muslims broadly
+     * agree on, by the Umm al-Qura date - which, like the Eids themselves,
+     * may differ by a day from local sighting.
+     */
+    val occasions: List<Int>
+        get() = buildList {
+            when (hijriMonth to hijriDay) {
+                0 to 1 -> add(R.string.occasion_new_year)
+                0 to 10 -> add(R.string.occasion_ashura)
+                8 to 1 -> add(R.string.occasion_ramadan)
+                9 to 1 -> add(R.string.occasion_eid_fitr)
+                11 to 9 -> add(R.string.occasion_arafah)
+                11 to 10 -> add(R.string.occasion_eid_adha)
+            }
+            // The 11th-13th of Dhu al-Hijjah are days of eating, not fasting,
+            // so its 13th is Tashreeq rather than a white day. Ramadan's white
+            // days are fasted anyway; marking them says nothing.
+            if (hijriMonth == 11 && hijriDay in 11..13) add(R.string.occasion_tashreeq)
+            else if (hijriMonth != 8 && hijriDay in 13..15) add(R.string.occasion_white_days)
+        }
+}
 
 /**
  * Any month's prayer times in one table, to look at as a month and to print.
@@ -51,6 +75,9 @@ object MonthTimetable {
 
     fun firstDay(month: Month): Date = start(month).time
 
+    /** The month's name alone, "Ramadan" or "October", for the month picker. */
+    fun monthName(month: Month): String = format(firstDay(month), month.hijri, "MMMM")
+
     fun length(month: Month): Int = start(month).getActualMaximum(IcuCalendar.DAY_OF_MONTH)
 
     /** The middle of the month: where it lands when switched to the other calendar. */
@@ -80,7 +107,9 @@ object MonthTimetable {
             val times = engine.on(date).toMap()
             if (times.size < Slot.entries.size) return@mapNotNull null
             hijri.time = date
-            TimetableDay(date, n, hijri.get(IcuCalendar.DAY_OF_MONTH), times)
+            TimetableDay(
+                date, n, hijri.get(IcuCalendar.DAY_OF_MONTH), hijri.get(IcuCalendar.MONTH), times
+            )
         }
     }
 }

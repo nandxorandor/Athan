@@ -66,7 +66,7 @@ class MonthActivity : LocalizedActivity() {
 
         binding.previousMonth.setOnClickListener { show(MonthTimetable.shift(month, -1)) }
         binding.nextMonth.setOnClickListener { show(MonthTimetable.shift(month, 1)) }
-        binding.title.setOnClickListener { pickDate() }
+        binding.title.setOnClickListener { pickMonth() }
         binding.todayButton.setOnClickListener {
             show(MonthTimetable.containing(Date(), month.hijri))
         }
@@ -188,10 +188,17 @@ class MonthActivity : LocalizedActivity() {
             Slot.entries.forEachIndexed { i, slot ->
                 cells.addView(cell(timeFormat.format(day.times.getValue(slot)), i + 2, 12f, color(R.color.text)))
             }
-            // In the Gregorian month, the day a Hijri month begins says so.
+            // Under the day: in a Gregorian month the start of a Hijri one,
+            // and in either the day's occasions.
             row.findViewById<TextView>(R.id.monthStart).apply {
-                if (!month.hijri && day.hijriDay == 1) {
-                    text = MonthTimetable.format(day.date, true, "d MMMM y G")
+                val marks = buildList {
+                    if (!month.hijri && day.hijriDay == 1) {
+                        add(MonthTimetable.format(day.date, true, "d MMMM y G"))
+                    }
+                    day.occasions.forEach { add(getString(it)) }
+                }
+                if (marks.isNotEmpty()) {
+                    text = marks.joinToString(" · ")
                     visibility = View.VISIBLE
                     setTextColor(color(R.color.accent))
                 }
@@ -207,25 +214,47 @@ class MonthActivity : LocalizedActivity() {
         }
     }
 
-    /** Any date, to show the month it falls in. */
-    private fun pickDate() {
-        val start = java.util.Calendar.getInstance().apply {
-            time = if (MonthTimetable.containing(Date(), month.hijri) == month) Date()
-            else MonthTimetable.middle(month)
+    /**
+     * Any month, in the calendar being shown. Android's own date picker only
+     * knows the Gregorian calendar - in the Hijri view it offered October, not
+     * Jumada - and its large date heading was more than choosing a month needs.
+     */
+    private fun pickMonth() {
+        val hijri = month.hijri
+        val thisYear = MonthTimetable.containing(Date(), hijri).year
+        val monthPicker = android.widget.NumberPicker(this).apply {
+            minValue = 0
+            maxValue = 11
+            displayedValues = Array(12) { MonthTimetable.monthName(Month(hijri, month.year, it)) }
+            value = month.month
+            wrapSelectorWheel = true
+            descendantFocusability = android.view.ViewGroup.FOCUS_BLOCK_DESCENDANTS
         }
-        android.app.DatePickerDialog(
-            this,
-            { _, year, monthOfYear, dayOfMonth ->
-                val picked = java.util.Calendar.getInstance().apply {
-                    clear()
-                    set(year, monthOfYear, dayOfMonth)
-                }.time
-                show(MonthTimetable.containing(picked, month.hijri))
-            },
-            start.get(java.util.Calendar.YEAR),
-            start.get(java.util.Calendar.MONTH),
-            start.get(java.util.Calendar.DAY_OF_MONTH),
-        ).show()
+        val yearPicker = android.widget.NumberPicker(this).apply {
+            minValue = thisYear - YEARS_AROUND
+            maxValue = thisYear + YEARS_AROUND
+            value = month.year.coerceIn(minValue, maxValue)
+            wrapSelectorWheel = false
+            descendantFocusability = android.view.ViewGroup.FOCUS_BLOCK_DESCENDANTS
+        }
+        val gap = (resources.displayMetrics.density * 24).toInt()
+        val pickers = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = android.view.Gravity.CENTER
+            setPadding(0, gap / 2, 0, 0)
+            addView(monthPicker, LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply { marginEnd = gap })
+            addView(yearPicker)
+        }
+        com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.month_pick)
+            .setView(pickers)
+            .setPositiveButton(android.R.string.ok) { _, _ ->
+                show(Month(hijri, yearPicker.value, monthPicker.value))
+            }
+            .setNegativeButton(android.R.string.cancel, null)
+            .show()
     }
 
     /**
@@ -378,6 +407,8 @@ class MonthActivity : LocalizedActivity() {
         private const val KEY_YEAR = "year"
         private const val KEY_MONTH = "month"
         private const val NOTE_MAX = 200
+        /** How far the month picker reaches either side of this year. */
+        private const val YEARS_AROUND = 50
 
         /** Day narrow, the other calendar's day a little wider, the six times equal. */
         private val WEIGHTS = floatArrayOf(0.75f, 1.05f, 1.3f, 1.3f, 1.3f, 1.3f, 1.3f, 1.3f)

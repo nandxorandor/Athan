@@ -329,6 +329,16 @@ You can change this any time in Settings.</string>
     <string name="month_note_save">Save</string>
     <string name="month_note_delete">Delete</string>
     <string name="month_notes">Notes</string>
+    <string name="month_pick">Choose a month</string>
+    <string name="month_occasions">Occasions</string>
+    <string name="occasion_new_year">Islamic New Year</string>
+    <string name="occasion_ashura">Ashura</string>
+    <string name="occasion_ramadan">First day of Ramadan</string>
+    <string name="occasion_eid_fitr">Eid al-Fitr</string>
+    <string name="occasion_arafah">Day of Arafah</string>
+    <string name="occasion_eid_adha">Eid al-Adha</string>
+    <string name="occasion_tashreeq">Days of Tashreeq</string>
+    <string name="occasion_white_days">White days</string>
     <string name="month_save_failed">Couldn\'t save the timetable</string>
     <string name="month_footnote">Hijri dates follow the Umm al-Qura calendar, which is calculated rather than sighted, so your local mosque may begin or end a month a day either side. Check these times against your mosque\'s timetable before relying on them.</string>
     <string name="month_no_location">Set your location to build the timetable</string>

@@ -313,6 +313,16 @@
     <string name="month_note_save">حفظ</string>
     <string name="month_note_delete">حذف</string>
     <string name="month_notes">ملاحظات</string>
+    <string name="month_pick">اختر الشهر</string>
+    <string name="month_occasions">المناسبات</string>
+    <string name="occasion_new_year">رأس السنة الهجرية</string>
+    <string name="occasion_ashura">يوم عاشوراء</string>
+    <string name="occasion_ramadan">أول أيام رمضان</string>
+    <string name="occasion_eid_fitr">عيد الفطر</string>
+    <string name="occasion_arafah">يوم عرفة</string>
+    <string name="occasion_eid_adha">عيد الأضحى</string>
+    <string name="occasion_tashreeq">أيام التشريق</string>
+    <string name="occasion_white_days">الأيام البيض</string>
     <string name="month_save_failed">تعذّر حفظ الجدول</string>
     <string name="month_footnote">التواريخ الهجرية وفق تقويم أم القرى، وهو محسوب لا مبنيّ على الرؤية، فقد يبدأ مسجدك الشهر أو يختمه قبل ذلك بيوم أو بعده. فراجع هذه المواقيت مع جدول مسجدك قبل الاعتماد عليها.</string>
     <string name="month_no_location">عيّن موقعك لإنشاء الجدول</string>

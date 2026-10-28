@@ -129,6 +129,18 @@ class MonthExport(
             ))
         }
 
+        // Listed under the table, like the notes: there is no room in a row.
+        val occasions = days.filter { it.occasions.isNotEmpty() }
+        if (occasions.isNotEmpty()) {
+            root.addView(text(context.getString(R.string.month_occasions), 10f, INK, bold = true)
+                .apply { setPadding(0, 12, 0, 4) })
+            occasions.forEach { day ->
+                val names = day.occasions.joinToString(" · ") { context.getString(it) }
+                root.addView(text("${longDayFormat.format(day.date)}: $names", 9f, INK)
+                    .apply { setPadding(0, 1, 0, 1) })
+            }
+        }
+
         // Under the table rather than in it: a column wide enough for a note
         // would squeeze the six times off a phone-printed page.
         if (notes.isNotEmpty()) {
