@@ -198,6 +198,11 @@ class Prefs(context: Context) {
         get() = sp.getInt(KEY_VOLUME, 100)
         set(v) = sp.edit().putInt(KEY_VOLUME, v.coerceIn(0, 100)).apply()
 
+    /** The one-time explanation of the lock-screen permission has been shown. */
+    var fullScreenPromptSeen: Boolean
+        get() = sp.getBoolean(KEY_FULL_SCREEN_PROMPT, false)
+        set(v) = sp.edit().putBoolean(KEY_FULL_SCREEN_PROMPT, v).apply()
+
     /** A "get ready" popup this many minutes before each prayer. */
     var reminderEnabled: Boolean
         get() = sp.getBoolean(KEY_REMINDER_ON, false)
@@ -317,6 +322,7 @@ class Prefs(context: Context) {
         private const val KEY_FAHRENHEIT = "fahrenheit"
         private const val KEY_RAMADAN_PROMPT = "ramadan_prompt"
         private const val KEY_RAMADAN_YEAR = "ramadan_prompt_year"
+        private const val KEY_FULL_SCREEN_PROMPT = "full_screen_prompt_seen"
         private const val KEY_AFTER_DUA = "after_athan_dua"
         private const val KEY_METHOD = "method"
         private const val KEY_METHOD_CHOSEN = "method_chosen"

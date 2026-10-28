@@ -78,6 +78,10 @@
     <string name="check_exact_ok">مسموح بها، فيُرفع الأذان في دقيقته.</string>
     <string name="check_exact_bad">غير مسموح بها، فقد يتأخر الأذان أو لا يُرفع أصلًا.</string>
     <string name="check_fullscreen">فوق شاشة القفل</string>
+    <string name="full_screen_prompt_title">إظهار الأذان فوق شاشة القفل؟</string>
+    <string name="full_screen_prompt_body">هاتفك لا يسمح بعدُ لهذا التطبيق بإظهار نافذته فوق شاشة القفل. فإذا كان الهاتف مقفلًا ستسمع الأذان والتنبيه، لكن سيظهر لك إشعار صغير فقط بدل النافذة الكاملة وزرّ الإيقاف.\n\nاضغط «سماح» ثم فعّل المفتاح في الصفحة التي تُفتح.\n\nويمكنك فعل ذلك لاحقًا من الإعدادات ← الفحص والتجربة.</string>
+    <string name="full_screen_prompt_allow">سماح</string>
+    <string name="full_screen_prompt_later">ليس الآن</string>
     <string name="check_fullscreen_ok">مسموح بها، فتظهر نافذة الأذان والهاتف مقفل.</string>
     <string name="check_fullscreen_bad">غير مسموح بها، فإن كان الهاتف مقفلًا سمعت الأذان ولم ترَ نافذته.</string>
     <string name="check_background">تقييد البطارية</string>

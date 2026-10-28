@@ -66,6 +66,10 @@
     <string name="check_exact_ok">Allowed. The athan fires at the exact minute.</string>
     <string name="check_exact_bad">Not allowed. Without it the athan can arrive late or not at all.</string>
     <string name="check_fullscreen">Over the lock screen</string>
+    <string name="full_screen_prompt_title">Show the athan over the lock screen?</string>
+    <string name="full_screen_prompt_body">Your phone doesn\'t let this app show its window over the lock screen yet. When the phone is locked you will still hear the athan and the heads-up, but you will only see a small notification instead of the full window with its Stop button.\n\nTap Allow, then turn on the switch on the page that opens.\n\nYou can also do this later from Settings → Check and test.</string>
+    <string name="full_screen_prompt_allow">Allow</string>
+    <string name="full_screen_prompt_later">Not now</string>
     <string name="check_fullscreen_ok">Allowed. The athan window appears even when the phone is locked.</string>
     <string name="check_fullscreen_bad">Not allowed. With the phone locked you would hear the athan but not see its window.</string>
     <string name="check_background">Battery restriction</string>

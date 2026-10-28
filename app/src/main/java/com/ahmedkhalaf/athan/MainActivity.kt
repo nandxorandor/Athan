@@ -232,6 +232,45 @@ class MainActivity : LocalizedActivity() {
     }
 
     /**
+     * Android 14 lets the phone withhold the permission to show a window over
+     * the lock screen, and many phones do for an app like this one. Nothing
+     * breaks visibly: the athan is still heard, but a locked phone shows a
+     * small notification instead of the athan's window, and nobody would
+     * think to look for the reason in a settings screen. So it is explained
+     * once, with the switch one tap away. True if the question was shown.
+     */
+    private fun askForFullScreen(): Boolean {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE) return false
+        if (prefs.fullScreenPromptSeen || !prefs.hasLocation) return false
+        if (getSystemService(android.app.NotificationManager::class.java).canUseFullScreenIntent()) {
+            return false
+        }
+        // Only for someone the window is for: an athan that sounds or
+        // vibrates, or the heads-up.
+        val alerts = prefs.reminderEnabled ||
+            Slot.entries.any { it.notifies && prefs.modeFor(it) != AthanMode.SILENT }
+        if (!alerts) return false
+
+        prefs.fullScreenPromptSeen = true
+        MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.full_screen_prompt_title)
+            .setMessage(R.string.full_screen_prompt_body)
+            .setPositiveButton(R.string.full_screen_prompt_allow) { _, _ ->
+                runCatching {
+                    startActivity(
+                        Intent(
+                            Settings.ACTION_MANAGE_APP_USE_FULL_SCREEN_INTENT,
+                            android.net.Uri.parse("package:$packageName"),
+                        )
+                    )
+                }
+            }
+            .setNegativeButton(R.string.full_screen_prompt_later, null)
+            .show()
+        return true
+    }
+
+    /**
      * The month's timetable, offered once in the fortnight before the first
      * fast. The dismissal is stored as a Hijri year rather than a flag so
      * "not this year" lapses on its own next Ramadan instead of silently
@@ -391,9 +430,9 @@ class MainActivity : LocalizedActivity() {
         warnIfExactAlarmsBlocked()
         checkMethodForStoredLocation()
         // Order matters: the temperature notice is asked once and answered
-        // before anything is fetched, and only after that can Ramadan have the
-        // screen. Two dialogs at once on a first launch is nobody's welcome.
-        if (!askAboutTemperature()) offerRamadanIfDue()
+        // before anything is fetched, and only after that can the others have
+        // the screen, one at a time. Two dialogs at once is nobody's welcome.
+        if (!askAboutTemperature() && !askForFullScreen()) offerRamadanIfDue()
     }
 
     override fun onPause() {
