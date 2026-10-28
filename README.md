@@ -75,6 +75,10 @@
 
 ملاحظة: نسخة Google Play ونسخة GitHub موقَّعتان بمفتاحين مختلفين، فلا تُثبَّت إحداهما فوق الأخرى. للانتقال من نسخة GitHub إلى المتجر احذفها أولًا ثم ثبّت من المتجر.
 
+### هل تنوي نشر تطبيقك على Google Play؟
+
+كتبتُ من هذه التجربة [دليلًا عمليًا خطوة بخطوة](https://nandxorandor.github.io/Athan/google-play-guide.html) (بالإنجليزية): فتح حساب المطوّر، وتجهيز ملف ‎.aab وتوقيعه، والنماذج المطلوبة، وصفحة المتجر، والاختبار المغلق مع ١٢ مختبِرًا لمدة ١٤ يومًا، ثم النشر والتحديثات، مع الأخطاء التي وقعتُ فيها لتتجنّبها.
+
 </div>
 
 ---
@@ -321,6 +325,18 @@ adding recordings of your own.
   the files.
 
 **Launcher artwork:** © 2026 Ahmed Khalaf, all rights reserved.
+
+## Publishing your own app?
+
+<p align="center">
+  <a href="https://nandxorandor.github.io/Athan/google-play-guide.html"><img src="docs/google-play-guide.png" width="560" alt="Your first app on Google Play: a step-by-step guide"></a>
+</p>
+
+[**Your first app on Google Play**](https://nandxorandor.github.io/Athan/google-play-guide.html) is a click-by-click guide written from
+publishing this app: opening a developer account, building and signing the
+`.aab`, every App content form, the store listing, the 12-tester / 14-day closed
+test, the production release and updates, plus the traps we fell into along the
+way.
 
 ## Contact
 

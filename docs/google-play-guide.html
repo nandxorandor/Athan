@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="A click-by-click walkthrough of publishing a first Android app on Google Play in 2026.">
+<style>*{box-sizing:border-box} body{margin:0} img{max-width:100%}</style>
+<title>First App on Google Play</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: a single reading column of numbered stages; each step is a row with its
+   click path set as console "breadcrumb" chips, so the eye can follow the UI. */
+:root{
+  --bg:#f6f8f7; --surface:#ffffff; --fg:#17201d; --muted:#5b6b66; --rule:#dbe3e0;
+  --accent:#0f7a5a; --accent-soft:#e3f2ec; --path-bg:#eef2f1; --warn:#9a5b00; --warn-soft:#fff3df;
+  --display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --body:"Source Sans 3",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1513; --surface:#161e1b; --fg:#e4ece9; --muted:#97a8a2; --rule:#2a3532;
+  --accent:#4fc79a; --accent-soft:#16302a; --path-bg:#1d2724; --warn:#f0b357; --warn-soft:#2c2214; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1513; --surface:#161e1b; --fg:#e4ece9; --muted:#97a8a2; --rule:#2a3532;
+  --accent:#4fc79a; --accent-soft:#16302a; --path-bg:#1d2724; --warn:#f0b357; --warn-soft:#2c2214; color-scheme:dark}
+
+body{background:var(--bg);color:var(--fg);font:17px/1.6 var(--body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:46rem;margin:0 auto;padding-block:48px 80px}
+h1,h2,h3{font-family:var(--display);line-height:1.15;text-wrap:balance}
+h1{font-size:clamp(2rem,5vw,2.9rem);font-weight:800;margin:.2em 0 .3em;letter-spacing:-.01em}
+h2{font-size:1.55rem;font-weight:800;margin:0}
+h3{font-size:1.08rem;font-weight:600;margin:1.6em 0 .4em}
+p{margin:.6em 0}
+a{color:var(--accent)}
+.eyebrow{font:600 .78rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.lede{font-size:1.15rem;color:var(--muted);max-width:38rem}
+.meta{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:18px;font-size:.92rem;color:var(--muted)}
+.meta b{color:var(--fg)}
+
+nav.toc{margin:32px 0 8px;padding:18px 20px;background:var(--surface);border:1px solid var(--rule);border-radius:10px}
+nav.toc ol{margin:0;padding-left:1.4em;columns:2;column-gap:28px}
+nav.toc li{break-inside:avoid;margin:2px 0}
+nav.toc li.toc-traps{list-style-type:"!   "}
+@media (max-width:560px){nav.toc ol{columns:1}}
+
+section.stage{margin-top:56px;padding-top:28px;border-top:1px solid var(--rule)}
+.stage-head{display:flex;align-items:baseline;gap:14px}
+.stage-num{font:800 1.9rem/1 var(--display);color:var(--accent);min-width:1.4em}
+.stage-sub{color:var(--muted);margin:.4em 0 0 calc(1.4em * 1.9 / 1.08 + 14px)}
+@media (max-width:560px){.stage-sub{margin-left:0}}
+
+ol.steps{list-style:none;counter-reset:s;padding:0;margin:18px 0 0}
+ol.steps>li{counter-increment:s;position:relative;padding:12px 0 12px 44px;border-bottom:1px dashed var(--rule)}
+ol.steps>li:last-child{border-bottom:0}
+ol.steps>li::before{content:counter(s);position:absolute;left:0;top:13px;width:28px;height:28px;border-radius:50%;
+  background:var(--accent-soft);color:var(--accent);font:600 .85rem/28px var(--mono);text-align:center}
+ol.steps ul{margin:.3em 0;padding-left:1.1em}
+
+.path{display:inline-flex;flex-wrap:wrap;align-items:center;gap:4px;font:600 .82rem/1.3 var(--mono);vertical-align:baseline}
+.path span{background:var(--path-bg);border:1px solid var(--rule);border-radius:5px;padding:2px 7px;color:var(--fg)}
+.path i{font-style:normal;color:var(--muted)}
+kbd,code{font-family:var(--mono);font-size:.86em;background:var(--path-bg);border:1px solid var(--rule);border-radius:4px;padding:1px 5px}
+pre{font:.84rem/1.5 var(--mono);background:var(--path-bg);border:1px solid var(--rule);border-radius:8px;padding:12px 14px;overflow-x:auto}
+
+.note{margin:16px 0;padding:12px 16px;border-radius:8px;background:var(--accent-soft);font-size:.95rem}
+.trap{margin:16px 0;padding:12px 16px;border-radius:8px;background:var(--warn-soft);font-size:.95rem}
+.trap b:first-child,.note b:first-child{display:block;font-family:var(--display);font-size:1rem;margin-bottom:2px}
+.trap b:first-child{color:var(--warn)}
+.note b:first-child{color:var(--accent)}
+
+.tablebox{overflow-x:auto;margin:14px 0}
+table{border-collapse:collapse;width:100%;font-size:.93rem;font-variant-numeric:tabular-nums;background:var(--surface)}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font:600 .78rem/1.3 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+td:first-child{font-weight:600;white-space:nowrap}
+
+ul.check{list-style:none;padding:0}
+ul.check li{padding-left:28px;position:relative;margin:6px 0}
+ul.check li::before{content:"";position:absolute;left:2px;top:.45em;width:13px;height:13px;border:2px solid var(--accent);border-radius:3px}
+footer{margin-top:64px;padding-top:20px;border-top:1px solid var(--rule);color:var(--muted);font-size:.9rem}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">Google Play Console · step by step</div>
+  <h1>Your first app on Google Play</h1>
+  <p class="lede">Every screen and button, from opening a developer account to your app showing up in the Play Store. Written from publishing a real app in 2026, including the places where the Console is confusing.</p>
+  <div class="meta">
+    <span><b>Cost:</b> US$25 once, per account</span>
+    <span><b>Time:</b> about 3 weeks for a new personal account</span>
+    <span><b>Checked:</b> October 2026</span>
+  </div>
+
+  <nav class="toc" aria-label="Contents">
+    <ol start="0">
+      <li><a href="#before">Before you start</a></li>
+      <li><a href="#account">Open a developer account</a></li>
+      <li><a href="#bundle">Build a signed .aab</a></li>
+      <li><a href="#create">Create the app in the Console</a></li>
+      <li><a href="#content">App content forms</a></li>
+      <li><a href="#listing">Store listing</a></li>
+      <li><a href="#closed">Closed test: 12 testers, 14 days</a></li>
+      <li><a href="#apply">Apply for production access</a></li>
+      <li><a href="#production">Release to production</a></li>
+      <li><a href="#updates">Publishing updates</a></li>
+      <li class="toc-traps"><a href="#traps">Traps we fell into</a></li>
+    </ol>
+  </nav>
+
+  <div class="note"><b>Button names change</b>Google renames and moves things in the Console every few months. If a label below doesn't match exactly, look for the closest one in the same menu. The left sidebar groups are the stable part: <span class="path"><span>Dashboard</span></span>, <span class="path"><span>Test and release</span></span>, <span class="path"><span>Monitor and improve</span></span>, <span class="path"><span>Grow users</span></span>.</div>
+
+  <!-- 0 -->
+  <section class="stage" id="before">
+    <div class="stage-head"><span class="stage-num">0</span><h2>Before you start</h2></div>
+    <ul class="check">
+      <li>A Google account you'll keep. The developer account is tied to it for good.</li>
+      <li>A credit or debit card in your legal name. Prepaid cards are refused.</li>
+      <li>A government ID (passport or national ID). Google checks it against the name you register.</li>
+      <li>An Android phone. New accounts are asked to sign in to the <b>Play Console</b> app on a real device.</li>
+      <li>Your app, building in Android Studio, targeting a recent Android version. Google's minimum moves up every year (see <i>Target API level requirements</i> in Play Console Help). The Console refuses an upload below it.</li>
+      <li>A <b>privacy policy</b> at a public web address. A page on GitHub Pages or your own site is enough. It's required even if your app collects nothing.</li>
+      <li>At least 12 people who can test the app for two weeks (more in <a href="#closed">stage 6</a>).</li>
+    </ul>
+    <h3>Personal or organization account?</h3>
+    <p><b>Personal</b> is the usual choice for one developer. Since November 2023, new personal accounts must run a closed test with at least 12 testers for 14 days, separately for each app, before it can go public. <b>Organization</b> accounts skip that rule, but need a D-U-N-S number for a registered business, which takes days or weeks to get.</p>
+  </section>
+
+  <!-- 1 -->
+  <section class="stage" id="account">
+    <div class="stage-head"><span class="stage-num">1</span><h2>Open a developer account</h2></div>
+    <ol class="steps">
+      <li>Go to <code>play.google.com/console/signup</code> and sign in with the Google account you chose.</li>
+      <li>Choose <span class="path"><span>Yourself</span></span> for a personal account, or <span class="path"><span>An organization</span></span>.</li>
+      <li><b>Developer name:</b> shown publicly under your app in the store. It can be your name or a brand.</li>
+      <li><b>Contact details:</b> a contact email and phone number. Google sends a code to each; enter both to verify.</li>
+      <li><b>Legal name and address:</b> exactly as on your ID.</li>
+      <li>Answer the short questions about your experience and how many apps you plan to publish. Any honest answer is fine.</li>
+      <li>Accept the Developer Distribution Agreement and pay the <b>US$25</b> registration fee. It's charged once for the account, no matter how many apps you publish later.</li>
+      <li><b>Identity verification:</b> upload a photo of your ID when asked. Approval usually takes from a few hours to a few days; you get an email.</li>
+      <li><b>Device verification:</b> install the <b>Google Play Console</b> app on your Android phone, sign in with the same account and follow the prompt.</li>
+    </ol>
+    <div class="note"><b>Check what you paid</b>The fee appears in your Google payments history at <code>payments.google.com</code> → <span class="path"><span>Activity</span></span> as "Developer Registration Fee". If you see it twice, you opened two accounts.</div>
+  </section>
+
+  <!-- 2 -->
+  <section class="stage" id="bundle">
+    <div class="stage-head"><span class="stage-num">2</span><h2>Build a signed .aab</h2></div>
+    <p class="stage-sub">Google Play only accepts an Android App Bundle (<code>.aab</code>), not an <code>.apk</code>.</p>
+    <ol class="steps">
+      <li>In <code>app/build.gradle(.kts)</code>, set a unique <code>applicationId</code> (for example <code>com.yourname.appname</code>). <b>It can never be changed once uploaded.</b> Set <code>versionCode = 1</code> and <code>versionName = "1.0"</code>.</li>
+      <li>In Android Studio: <span class="path"><span>Build</span><i>›</i><span>Generate Signed App Bundle or APK…</span></span></li>
+      <li>Choose <span class="path"><span>Android App Bundle</span></span> → <span class="path"><span>Next</span></span>.</li>
+      <li>Under <i>Key store path</i>, click <span class="path"><span>Create new…</span></span>. Pick where to save the file (<code>.jks</code>), set a password, an alias (e.g. <code>upload</code>), a key password, validity of 25+ years, and your name in the certificate fields. Click <span class="path"><span>OK</span></span>.</li>
+      <li>Click <span class="path"><span>Next</span></span>, choose the <span class="path"><span>release</span></span> build variant, click <span class="path"><span>Create</span></span>. The file appears in <code>app/release/app-release.aab</code>.</li>
+    </ol>
+    <div class="trap"><b>Back up the key file and its passwords now</b>Every future update must be signed with this same key. Copy the <code>.jks</code> file and its passwords somewhere off this computer (not on GitHub). If you lose it, Google can reset your upload key, but only through support, and it takes days.</div>
+    <div class="note"><b>Play App Signing</b>On your first upload, Google keeps the real app-signing key and your key becomes the "upload key". This is automatic. It means a copy installed from Play and an <code>.apk</code> you sign yourself have different signatures: one can't be installed over the other.</div>
+  </section>
+
+  <!-- 3 -->
+  <section class="stage" id="create">
+    <div class="stage-head"><span class="stage-num">3</span><h2>Create the app in the Console</h2></div>
+    <ol class="steps">
+      <li>Open <code>play.google.com/console</code>. On <span class="path"><span>Home</span></span>, click <span class="path"><span>Create app</span></span> (top right).</li>
+      <li><b>App name</b> (up to 30 characters), <b>Default language</b>, <b>App or game</b>, <b>Free or paid</b>. A free app can never be changed to paid later.</li>
+      <li>Tick the declarations (Developer Program Policies, US export laws) and click <span class="path"><span>Create app</span></span>.</li>
+      <li>You land on the app's <span class="path"><span>Dashboard</span></span>. It holds a checklist of setup tasks; each one links to the right page. Stages 4 and 5 below are that checklist.</li>
+    </ol>
+  </section>
+
+  <!-- 4 -->
+  <section class="stage" id="content">
+    <div class="stage-head"><span class="stage-num">4</span><h2>App content forms</h2></div>
+    <p class="stage-sub">All under <span class="path"><span>Monitor and improve</span><i>›</i><span>Policy and programs</span><i>›</i><span>App content</span></span>. Each one: open it, answer, <span class="path"><span>Save</span></span>.</p>
+    <ol class="steps">
+      <li><b>Privacy policy:</b> paste your policy's URL → <span class="path"><span>Save</span></span>.</li>
+      <li><b>App access:</b> if everything works without logging in, choose <i>All functionality is available without special access</i>. Otherwise give Google test login details.</li>
+      <li><b>Ads:</b> does the app show ads? Yes or no.</li>
+      <li><b>Content rating:</b> <span class="path"><span>Start questionnaire</span></span> → enter an email → pick the category (e.g. <i>Reference, News, or Educational</i> or <i>Utility</i>) → answer the questions about violence, language etc. → <span class="path"><span>Save</span></span> → <span class="path"><span>Next</span></span> → <span class="path"><span>Submit</span></span>. The ratings (ESRB, PEGI…) are calculated from your answers.</li>
+      <li><b>Target audience and content:</b> pick the age groups. Choosing any group under 13 brings in the extra Families policy; pick 13+ or 18+ unless the app really is for children.</li>
+      <li><b>Data safety:</b> the longest form. Declare what data the app collects or shares (location, contacts, crash logs…), why, whether it's encrypted in transit, and whether users can request deletion. If your app sends anything off the phone (even coordinates to a weather service) it counts. Review the preview → <span class="path"><span>Submit</span></span>.</li>
+      <li><b>Advertising ID:</b> say whether the app uses it. If you have no ads and no analytics SDK, usually no.</li>
+      <li><b>Government apps, Financial features, Health, News:</b> answer no unless they apply.</li>
+      <li><b>Permission declarations:</b> some permissions only show up as a task after you upload a bundle, for example exact alarms, foreground services, full-screen notifications, background location or "all files" access. Each asks why the app needs it, sometimes with a short video. Answer them before releasing.</li>
+    </ol>
+  </section>
+
+  <!-- 5 -->
+  <section class="stage" id="listing">
+    <div class="stage-head"><span class="stage-num">5</span><h2>Store listing</h2></div>
+    <ol class="steps">
+      <li><span class="path"><span>Grow users</span><i>›</i><span>Store presence</span><i>›</i><span>Store settings</span></span>: choose the <b>category</b> (e.g. Lifestyle, Tools), add tags, and the contact <b>email</b> users will see (website and phone are optional). <span class="path"><span>Save</span></span>.</li>
+      <li><span class="path"><span>Grow users</span><i>›</i><span>Store presence</span><i>›</i><span>Store listings</span></span> → click <span class="path"><span>Default store listing</span></span>.</li>
+      <li>Fill the text, then upload the graphics (sizes below), then <span class="path"><span>Save</span></span> at the bottom.</li>
+      <li>To change an image later: hover over it → trash icon → upload the new one → <span class="path"><span>Save</span></span>.</li>
+      <li>Optional: <span class="path"><span>Add translations</span></span> for a listing in another language (e.g. Arabic).</li>
+    </ol>
+    <div class="tablebox"><table>
+      <thead><tr><th>Item</th><th>Requirement</th></tr></thead>
+      <tbody>
+        <tr><td>App name</td><td>Up to 30 characters</td></tr>
+        <tr><td>Short description</td><td>Up to 80 characters; shown first in the store</td></tr>
+        <tr><td>Full description</td><td>Up to 4,000 characters</td></tr>
+        <tr><td>App icon</td><td>512 × 512 px PNG, up to 1 MB</td></tr>
+        <tr><td>Feature graphic</td><td>1024 × 500 px, JPG or PNG without transparency</td></tr>
+        <tr><td>Phone screenshots</td><td>2 to 8; each side 320–3840 px, long side no more than twice the short side. At least 4 at 1080 px or more helps you get featured.</td></tr>
+        <tr><td>Tablet screenshots</td><td>Optional, but recommended if the app runs on tablets</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <!-- 6 -->
+  <section class="stage" id="closed">
+    <div class="stage-head"><span class="stage-num">6</span><h2>Closed test: 12 testers, 14 days</h2></div>
+    <p class="stage-sub">Required for new personal accounts, for each app. Internal testing does not count toward it.</p>
+    <h3>Set up the track</h3>
+    <ol class="steps">
+      <li><span class="path"><span>Test and release</span><i>›</i><span>Testing</span><i>›</i><span>Closed testing</span></span>. Open the default track (usually <i>Alpha</i>) or click <span class="path"><span>Create track</span></span>.</li>
+      <li><span class="path"><span>Countries / regions</span></span> tab → <span class="path"><span>Add countries / regions</span></span> → tick where your testers are (or all) → <span class="path"><span>Save</span></span>.</li>
+      <li><span class="path"><span>Testers</span></span> tab → <span class="path"><span>Create email list</span></span> → name it → type each tester's Gmail address and <b>press <kbd>Enter</kbd></b> after each one → <span class="path"><span>Save changes</span></span>.</li>
+      <li>Back on the Testers tab, <b>tick the checkbox</b> next to your list, add a feedback email or URL, and click <span class="path"><span>Save</span></span>.</li>
+    </ol>
+    <div class="trap"><b>"Save changes" stays grey</b>The address in the box isn't added until you press Enter. It has to move down into the "Email addresses added" box first.</div>
+    <h3>Create the release</h3>
+    <ol class="steps">
+      <li><span class="path"><span>Releases</span></span> tab → <span class="path"><span>Create new release</span></span>.</li>
+      <li>Under App bundles click <span class="path"><span>Upload</span></span> and choose your <code>.aab</code>. The release name fills in by itself (e.g. <code>1 (1.0)</code>).</li>
+      <li><b>Release notes:</b> type between the language tags, for example:
+        <pre>&lt;en-US&gt;
+First release.
+&lt;/en-US&gt;</pre>
+        The whole box is limited to 500 characters, tags included.</li>
+      <li><span class="path"><span>Next</span></span> → read any errors (must fix) and warnings (can ignore) → <span class="path"><span>Save</span></span>.</li>
+      <li>Go to <span class="path"><span>Publishing overview</span></span> and click <span class="path"><span>Send changes for review</span></span> if it's offered. Google runs quick checks and then reviews; the first review can take a few days.</li>
+    </ol>
+    <h3>Get the testers in</h3>
+    <ol class="steps">
+      <li>When the release is live on the track, go to the <span class="path"><span>Testers</span></span> tab and copy the <b>Join on Android</b> link (or Join on the web).</li>
+      <li>Send it to each tester. They open it <b>signed in with the same Gmail you listed</b>, tap <span class="path"><span>Become a tester</span></span>, then install the app from the Play Store page it links to.</li>
+      <li>They must stay opted in for <b>14 days in a row</b>. If the number drops below 12, the count can restart. The <span class="path"><span>Dashboard</span></span> shows your progress.</li>
+      <li>Ask testers to actually open the app a few times and send feedback. Google later asks you what you learned from the test.</li>
+    </ol>
+    <div class="note"><b>Where to find 12 testers</b>Friends and family with Gmail accounts, a developer community (members testing each other's apps), or a paid tester service. Paid services cost roughly US$15–25 per app and run the 14 days for you.</div>
+  </section>
+
+  <!-- 7 -->
+  <section class="stage" id="apply">
+    <div class="stage-head"><span class="stage-num">7</span><h2>Apply for production access</h2></div>
+    <ol class="steps">
+      <li>Once you have 12 testers and 14 days, the <span class="path"><span>Dashboard</span></span> shows <span class="path"><span>Apply for production</span></span>. Click it.</li>
+      <li>Answer the questions about the closed test (how you found testers, how hard it was, what feedback you got and what you changed), about the app (who it's for, what it does) and whether it's ready. Be specific; short vague answers are a common reason for rejection.</li>
+      <li><span class="path"><span>Submit</span></span>. Google says the review usually takes up to 7 days. If it's refused, the email says why; fix that, keep testing, apply again.</li>
+    </ol>
+  </section>
+
+  <!-- 8 -->
+  <section class="stage" id="production">
+    <div class="stage-head"><span class="stage-num">8</span><h2>Release to production</h2></div>
+    <ol class="steps">
+      <li><span class="path"><span>Test and release</span><i>›</i><span>Production</span></span> → <span class="path"><span>Countries / regions</span></span> tab → <span class="path"><span>Add countries / regions</span></span> → select all, or the ones you want → <span class="path"><span>Save</span></span>.</li>
+      <li><span class="path"><span>Releases</span></span> tab → <span class="path"><span>Create new release</span></span>.</li>
+      <li>Click <span class="path"><span>Add from library</span></span> and pick the bundle your testers used, then <span class="path"><span>Add to release</span></span>. No need to upload it again.</li>
+      <li>Paste the release notes → <span class="path"><span>Next</span></span> → <span class="path"><span>Save</span></span>.</li>
+      <li><span class="path"><span>Publishing overview</span></span> → <span class="path"><span>Send changes for review</span></span>. Google runs quick checks (about 15 minutes) and then the full review: from a few hours to several days for a first production release.</li>
+      <li>If <b>Managed publishing</b> is on (toggle at the top of Publishing overview), approval doesn't publish anything: you have to click <span class="path"><span>Publish</span></span> yourself. If it's off, the app goes live as soon as it's approved.</li>
+      <li>Check <span class="path"><span>Publishing overview</span><i>›</i><span>Submission activity</span></span>. When your submission says <b>Published</b>, open it to confirm it contains your <b>Production release</b>, not just settings. Your store page is <code>play.google.com/store/apps/details?id=YOUR.APPLICATION.ID</code>. Search results can take a few more hours.</li>
+    </ol>
+  </section>
+
+  <!-- 9 -->
+  <section class="stage" id="updates">
+    <div class="stage-head"><span class="stage-num">9</span><h2>Publishing updates</h2></div>
+    <ol class="steps">
+      <li>Raise <code>versionCode</code> by at least 1 (and <code>versionName</code> as you like). Play refuses a bundle with a version code it has seen before.</li>
+      <li>Build a new signed <code>.aab</code> with <b>the same key</b>.</li>
+      <li>Optional but wise: put it on <span class="path"><span>Testing</span><i>›</i><span>Internal testing</span></span> first. That track has no long review and reaches up to 100 testers, so you can install exactly what Play will deliver.</li>
+      <li><span class="path"><span>Production</span><i>›</i><span>Create new release</span></span> → upload, or <span class="path"><span>Add from library</span></span> if you already uploaded it to internal testing → notes → <span class="path"><span>Next</span></span> → <span class="path"><span>Save</span></span> → <span class="path"><span>Send changes for review</span></span>.</li>
+      <li>Updates are usually reviewed within hours. You can also release to a percentage of users first (a staged rollout) and raise it later.</li>
+    </ol>
+  </section>
+
+  <!-- traps -->
+  <section class="stage" id="traps">
+    <div class="stage-head"><span class="stage-num">!</span><h2>Traps we fell into</h2></div>
+    <div class="trap"><b>"Published", but nothing in the store</b>A submission marked Published can contain only <i>settings</i>, such as a countries list. Open it in <span class="path"><span>Submission activity</span></span> and check it lists a release under <b>Production</b>. Until a production release exists, the store link shows "URL not found" and the Dashboard says <i>Production: Inactive</i>.</div>
+    <div class="trap"><b>Released to the wrong track</b>Open testing, Closed testing and Production all have a "Create new release" button that looks the same. Check the page title before you upload.</div>
+    <div class="trap"><b>In-app language switch stops working</b>From an <code>.aab</code>, Play installs only the languages set on the phone. If your app lets users pick a language themselves, the other language's text is missing. Fix it in <code>app/build.gradle.kts</code>:
+<pre>android {
+    bundle {
+        language { enableSplit = false }
+    }
+}</pre></div>
+    <div class="trap"><b>Play copy vs. your own APK</b>Because Google re-signs the Play copy, users who installed your <code>.apk</code> from GitHub or a website can't update it from Play. They have to uninstall it first, which clears its settings. Tell them in your release notes.</div>
+    <div class="trap"><b>Release notes too long</b>The 500-character limit covers the whole box, so English and Arabic notes together must fit in 500.</div>
+  </section>
+
+  <section class="stage" id="timeline">
+    <div class="stage-head"><span class="stage-num">⏱</span><h2>Time and money at a glance</h2></div>
+    <div class="tablebox"><table>
+      <thead><tr><th>Step</th><th>Time</th><th>Cost</th></tr></thead>
+      <tbody>
+        <tr><td>Account and identity check</td><td>Hours to a few days</td><td>US$25 once</td></tr>
+        <tr><td>Store listing and forms</td><td>An afternoon</td><td>—</td></tr>
+        <tr><td>First closed-test review</td><td>Hours to a few days</td><td>—</td></tr>
+        <tr><td>Closed test</td><td>14 days minimum</td><td>Free with your own testers; ~US$15–25 for a service</td></tr>
+        <tr><td>Production access review</td><td>Up to about 7 days</td><td>—</td></tr>
+        <tr><td>First production review</td><td>Hours to several days</td><td>—</td></tr>
+        <tr><td>Each later update</td><td>Usually hours</td><td>—</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <footer>Written from publishing the Athan prayer-times app (<code>com.ahmedkhalaf.athan</code>) on a personal developer account in 2026. Requirements change; Play Console Help is the final word.</footer>
+</div>
+</body>
+</html>
