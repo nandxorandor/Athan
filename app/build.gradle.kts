@@ -15,8 +15,8 @@ android {
         applicationId = "com.ahmedkhalaf.athan"
         minSdk = 26
         targetSdk = 36
-        versionCode = 12
-        versionName = "1.3.8"
+        versionCode = 13
+        versionName = "1.3.9"
     }
 
     if (hasSigningCredentials) {
