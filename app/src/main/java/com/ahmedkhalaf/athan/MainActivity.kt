@@ -300,7 +300,7 @@ class MainActivity : LocalizedActivity() {
             it.topMargin + it.bottomMargin
         }
         val ceiling = minOf(binding.nextCard.width, (300 * density).toInt())
-        val floor = minOf((190 * density).toInt(), ceiling)
+        val floor = minOf((220 * density).toInt(), ceiling)
         val size = (viewport - others).coerceIn(floor, ceiling)
 
         // The card is sized with the ring: otherwise the text block, which is
@@ -316,25 +316,52 @@ class MainActivity : LocalizedActivity() {
             }
         }
 
-        // The text inside, at the size that fits. Measured unconstrained - in
-        // the card it is capped at the card's height, which would hide how
-        // much too big it is - and divided by the scale already applied, to
-        // get its natural size. The font sizes themselves change, not a
-        // drawing scale, so what is measured is what is drawn.
+        // The text inside, at the largest size that fits the circle. Each
+        // line is checked against the circle's own width at its height: the
+        // short top and bottom lines sit where the circle narrows, the wide
+        // countdown in the middle where it is widest. Treating the block as
+        // one rectangle wasted that, and left the text needlessly small.
+        // Measured unconstrained - in the card it is capped at the card's
+        // height - and divided by the scale already applied, to get the
+        // layout's own sizes. The font sizes themselves change, not a drawing
+        // scale, so what is measured is what is drawn.
         val inner = binding.nextInner
         val unbounded = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
         inner.measure(unbounded, unbounded)
         if (inner.measuredWidth == 0 || inner.measuredHeight == 0) return
-        val naturalWidth = inner.measuredWidth / ringTextScale
-        val naturalHeight = inner.measuredHeight / ringTextScale
-        // Clear of the arc and its end dot. The widest line, the countdown,
-        // sits mid-circle where there is the most width, so width and height
-        // are checked separately rather than as one diagonal.
-        val room = size - 2 * 22 * density
-        // Height gets less of it than width: the first and last lines sit
-        // where the circle is narrowing, and at full height "Next prayer" and
-        // the iqama touched the arc and its end dot.
-        val scale = minOf(1f, room * 0.80f / naturalHeight, room * 0.92f / naturalWidth)
+        val lines = mutableListOf<FloatArray>() // top, bottom, width
+        var y = inner.paddingTop.toFloat()
+        for (i in 0 until inner.childCount) {
+            val child = inner.getChildAt(i)
+            if (child.visibility == View.GONE) continue
+            val margins = child.layoutParams as android.view.ViewGroup.MarginLayoutParams
+            val top = y + margins.topMargin
+            val bottom = top + child.measuredHeight
+            lines += floatArrayOf(top, bottom, child.measuredWidth.toFloat())
+            y = bottom + margins.bottomMargin
+        }
+        val centre = (y + inner.paddingBottom) / 2f
+        val natural = lines.map { (top, bottom, width) ->
+            floatArrayOf((top - centre) / ringTextScale, (bottom - centre) / ringTextScale, width / ringTextScale)
+        }
+        // Inside the arc, its end dot, and a little air.
+        val radius = size / 2f - 18 * density
+        fun fits(scale: Float) = natural.all { (top, bottom, width) ->
+            listOf(top * scale, bottom * scale).all { edge ->
+                kotlin.math.abs(edge) < radius &&
+                    kotlin.math.sqrt(radius * radius - edge * edge) >= width * scale / 2f
+            }
+        }
+        var scale = 1f
+        if (!fits(1f)) {
+            var low = 0.3f
+            var high = 1f
+            repeat(14) {
+                val middle = (low + high) / 2f
+                if (fits(middle)) low = middle else high = middle
+            }
+            scale = low
+        }
         if (kotlin.math.abs(scale - ringTextScale) < 0.02f) return
         ringTextScale = scale
         ringTexts().forEach { (view, base) ->

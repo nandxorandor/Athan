@@ -203,13 +203,6 @@
                         android:textSize="36sp"
                         android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/time_left"
-                        android:textColor="@color/text_dim"
-                        android:textSize="14sp" />
-
                     <!-- Tabular digits, so the line does not twitch every
                          second as a 1 gives way to a wider 0. -->
                     <TextView
