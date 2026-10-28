@@ -11,7 +11,7 @@
 
 <p align="center">
   <a href="https://play.google.com/store/apps/details?id=com.ahmedkhalaf.athan"><img src="https://img.shields.io/badge/Google%20Play-get%20it-2FD968?style=flat-square" alt="Get it on Google Play"></a>
-  <a href="../../releases/latest"><img src="https://img.shields.io/badge/download-APK%20v1.3.10-2FD968?style=flat-square" alt="Download APK"></a>
+  <a href="../../releases/latest"><img src="https://img.shields.io/badge/download-APK%20v1.3.11-2FD968?style=flat-square" alt="Download APK"></a>
   <img src="https://img.shields.io/badge/Android-8.0%2B-4FC79A?style=flat-square" alt="Android 8.0+">
   <img src="https://img.shields.io/badge/size-35%20MB-4FC79A?style=flat-square" alt="35 MB">
   <img src="https://img.shields.io/badge/code-MIT-4FC79A?style=flat-square" alt="MIT licence for the code">
@@ -77,7 +77,7 @@
 
 الأسهل من [**Google Play**](https://play.google.com/store/apps/details?id=com.ahmedkhalaf.athan)، وتصلك التحديثات تلقائيًا.
 
-أو نزّل ملف `athan-v1.3.10.apk` من صفحة [الإصدارات](../../releases). عند فتحه سيطلب منك أندرويد السماح بالتثبيت من مصدر غير معروف، وهي رسالة معتادة لأي تطبيق يُثبَّت خارج المتجر. يتطلّب أندرويد 8.0 فأحدث، وحجمه نحو 35 ميجابايت.
+أو نزّل ملف `athan-v1.3.11.apk` من صفحة [الإصدارات](../../releases). عند فتحه سيطلب منك أندرويد السماح بالتثبيت من مصدر غير معروف، وهي رسالة معتادة لأي تطبيق يُثبَّت خارج المتجر. يتطلّب أندرويد 8.0 فأحدث، وحجمه نحو 35 ميجابايت.
 
 ملاحظة: نسخة Google Play ونسخة GitHub موقَّعتان بمفتاحين مختلفين، فلا تُثبَّت إحداهما فوق الأخرى. للانتقال من نسخة GitHub إلى المتجر احذفها أولًا ثم ثبّت من المتجر.
 
@@ -140,7 +140,7 @@ GitHub instead.
 
 **1. Download the APK**
 
-Go to the [**Releases**](../../releases) page and download `athan-v1.3.10.apk` from
+Go to the [**Releases**](../../releases) page and download `athan-v1.3.11.apk` from
 the latest release. You can do this straight from your phone's browser.
 
 **2. Allow the install**
