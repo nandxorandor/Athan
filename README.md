@@ -11,7 +11,7 @@
 
 <p align="center">
   <a href="https://play.google.com/store/apps/details?id=com.ahmedkhalaf.athan"><img src="https://img.shields.io/badge/Google%20Play-get%20it-2FD968?style=flat-square" alt="Get it on Google Play"></a>
-  <a href="../../releases/latest"><img src="https://img.shields.io/badge/download-APK%20v1.3.9-2FD968?style=flat-square" alt="Download APK"></a>
+  <a href="../../releases/latest"><img src="https://img.shields.io/badge/download-APK%20v1.3.10-2FD968?style=flat-square" alt="Download APK"></a>
   <img src="https://img.shields.io/badge/Android-8.0%2B-4FC79A?style=flat-square" alt="Android 8.0+">
   <img src="https://img.shields.io/badge/size-35%20MB-4FC79A?style=flat-square" alt="35 MB">
   <img src="https://img.shields.io/badge/code-MIT-4FC79A?style=flat-square" alt="MIT licence for the code">
@@ -37,7 +37,7 @@
 - **الأذان في وقته** — لكل صلاة وضع مستقل: **صوت** أو **اهتزاز** أو **صامت**. ويُشغَّل الأذان بصوت المنبّه فيُسمع حتى لو خفّضتَ جرس الهاتف، وتظهر نافذته فوق شاشة القفل بزرّ إيقاف واحد.
 - **تنبيه قبل الصلاة** — اختياري، من دقيقة إلى 60 دقيقة قبل دخول الوقت، بنغمة ومستوى صوت مستقلَّين عن الأذان، ويمكنك أن تختار تسجيلًا من هاتفك.
 - **الفحص والتجربة** — شاشة في الإعدادات تبيّن هل كل شيء في هاتفك جاهز ليُرفع الأذان (الإشعارات، المنبّهات الدقيقة، الظهور فوق شاشة القفل، قيود البطارية، صوت المنبّه)، مع إصلاح أي خلل بلمسة، وزرّين لتسمع التنبيه والأذان الآن.
-- **التقويم** — مواقيت أي شهر في جدول واحد، بالتقويم الميلادي أو الهجري (ورمضان منها)، تبدأ بالشهر الحالي ويمكنك اختيار أي تاريخ. يُشارَك ملفَّ PDF جاهزًا للطباعة أو صورةً أو جدولَ بيانات، ويمكنك إضافة ملاحظة على أي يوم.
+- **التقويم** — مواقيت أي شهر في جدول واحد، بالتقويم الميلادي أو الهجري (ورمضان منها)، تبدأ بالشهر الحالي ويمكنك اختيار أي شهر، وتظهر فيه المناسبات كالعيدين ويوم عرفة والأيام البيض. يُشارَك ملفَّ PDF جاهزًا للطباعة أو صورةً أو جدولَ بيانات، ويمكنك إضافة ملاحظة على أي يوم.
 - **أذكار الصباح والمساء** — مع عدد المرات لكل ذكر ومن رواه.
 - **اتجاه القبلة** — بوصلة مصحَّحة إلى الشمال الحقيقي مع مراعاة الانحراف المغناطيسي، وعلامة الكعبة على القرص.
 - **عربي وإنجليزي** — تُبدَّل اللغة من الشاشة الرئيسية مباشرة.
@@ -77,7 +77,7 @@
 
 الأسهل من [**Google Play**](https://play.google.com/store/apps/details?id=com.ahmedkhalaf.athan)، وتصلك التحديثات تلقائيًا.
 
-أو نزّل ملف `athan-v1.3.9.apk` من صفحة [الإصدارات](../../releases). عند فتحه سيطلب منك أندرويد السماح بالتثبيت من مصدر غير معروف، وهي رسالة معتادة لأي تطبيق يُثبَّت خارج المتجر. يتطلّب أندرويد 8.0 فأحدث، وحجمه نحو 35 ميجابايت.
+أو نزّل ملف `athan-v1.3.10.apk` من صفحة [الإصدارات](../../releases). عند فتحه سيطلب منك أندرويد السماح بالتثبيت من مصدر غير معروف، وهي رسالة معتادة لأي تطبيق يُثبَّت خارج المتجر. يتطلّب أندرويد 8.0 فأحدث، وحجمه نحو 35 ميجابايت.
 
 ملاحظة: نسخة Google Play ونسخة GitHub موقَّعتان بمفتاحين مختلفين، فلا تُثبَّت إحداهما فوق الأخرى. للانتقال من نسخة GitHub إلى المتجر احذفها أولًا ثم ثبّت من المتجر.
 
@@ -140,7 +140,7 @@ GitHub instead.
 
 **1. Download the APK**
 
-Go to the [**Releases**](../../releases) page and download `athan-v1.3.9.apk` from
+Go to the [**Releases**](../../releases) page and download `athan-v1.3.10.apk` from
 the latest release. You can do this straight from your phone's browser.
 
 **2. Allow the install**
@@ -230,7 +230,8 @@ set.
 
 **Monthly calendar.** Any month's prayer times in one table, in the Gregorian
 or the Hijri calendar (Ramadan included). It opens on this month; the arrows
-or a date picker go anywhere else. Share it as a one-page PDF ready to print,
+or a month picker go anywhere else. Occasions are marked on their days: both
+Eids, Arafah, Ashura, the Islamic New Year and the white days. Share it as a one-page PDF ready to print,
 an image, or a spreadsheet. Tap any day to add a note; notes go out with the
 timetable.
 
