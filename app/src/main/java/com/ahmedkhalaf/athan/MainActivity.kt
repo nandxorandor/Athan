@@ -331,7 +331,10 @@ class MainActivity : LocalizedActivity() {
         // sits mid-circle where there is the most width, so width and height
         // are checked separately rather than as one diagonal.
         val room = size - 2 * 22 * density
-        val scale = minOf(1f, room / naturalHeight, room * 0.92f / naturalWidth)
+        // Height gets less of it than width: the first and last lines sit
+        // where the circle is narrowing, and at full height "Next prayer" and
+        // the iqama touched the arc and its end dot.
+        val scale = minOf(1f, room * 0.80f / naturalHeight, room * 0.92f / naturalWidth)
         if (kotlin.math.abs(scale - ringTextScale) < 0.02f) return
         ringTextScale = scale
         ringTexts().forEach { (view, base) ->
