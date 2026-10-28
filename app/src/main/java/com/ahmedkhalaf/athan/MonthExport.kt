@@ -14,6 +14,7 @@ import android.widget.TextView
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 
 /**
@@ -119,6 +120,8 @@ class MonthExport(
                     if (hijri) dateFormat.format(day.date) else day.hijriDay.toString(),
                 ) + Slot.entries.map { timeFormat.format(day.times.getValue(it)) },
                 background = when {
+                    // An occasion outranks Friday: it is the rarer of the two.
+                    day.occasions.isNotEmpty() -> OCCASION_BG
                     friday -> FRIDAY_BG
                     day.dayOfMonth % 2 == 0 -> BAND_BG
                     else -> Color.WHITE
@@ -129,15 +132,23 @@ class MonthExport(
             ))
         }
 
-        // Listed under the table, like the notes: there is no room in a row.
-        val occasions = days.filter { it.occasions.isNotEmpty() }
+        // Named under the table, like the notes: there is no room in a row.
+        // The heading carries the rows' colour, so it reads as the key.
+        val occasions = occasionSpans()
         if (occasions.isNotEmpty()) {
-            root.addView(text(context.getString(R.string.month_occasions), 10f, INK, bold = true)
-                .apply { setPadding(0, 12, 0, 4) })
-            occasions.forEach { day ->
-                val names = day.occasions.joinToString(" · ") { context.getString(it) }
-                root.addView(text("${longDayFormat.format(day.date)}: $names", 9f, INK)
-                    .apply { setPadding(0, 1, 0, 1) })
+            root.addView(LinearLayout(context).apply {
+                orientation = LinearLayout.HORIZONTAL
+                gravity = Gravity.CENTER_VERTICAL
+                setPadding(0, 12, 0, 4)
+                addView(View(context).apply { setBackgroundColor(OCCASION_BG) },
+                    LinearLayout.LayoutParams(14, 9).apply { marginEnd = 5 })
+                addView(text(context.getString(R.string.month_occasions), 10f, INK, bold = true))
+            })
+            occasions.forEach { (name, first, last) ->
+                // The calendar being printed first, the other beside it: the
+                // occasions are Hijri, the table may well be Gregorian.
+                val line = "${context.getString(name)}: ${span(first, last, hijri)} (${span(first, last, !hijri)})"
+                root.addView(text(line, 9f, INK).apply { setPadding(0, 1, 0, 1) })
             }
         }
 
@@ -163,6 +174,33 @@ class MonthExport(
         )
         root.layout(0, 0, root.measuredWidth, root.measuredHeight)
         return root
+    }
+
+    /**
+     * Each occasion once, over the run of days it covers - the three white
+     * days are one line, not three. In order of their first day.
+     */
+    private fun occasionSpans(): List<Triple<Int, Date, Date>> {
+        val spans = mutableListOf<Triple<Int, Date, Date>>()
+        days.forEachIndexed { i, day ->
+            day.occasions.forEach { name ->
+                val continues = i > 0 && name in days[i - 1].occasions
+                val open = spans.indexOfLast { it.first == name }
+                if (continues && open >= 0) spans[open] = spans[open].copy(third = day.date)
+                else spans += Triple(name, day.date, day.date)
+            }
+        }
+        return spans
+    }
+
+    /** "24 October", "24–26 October", or "30 October – 1 November", in either calendar. */
+    private fun span(first: Date, last: Date, inHijri: Boolean): String {
+        fun f(date: Date, pattern: String) = MonthTimetable.format(date, inHijri, pattern)
+        return when {
+            first == last -> f(first, "d MMMM")
+            f(first, "MMMM") == f(last, "MMMM") -> "${f(first, "d")}–${f(last, "d MMMM")}"
+            else -> "${f(first, "d MMMM")} – ${f(last, "d MMMM")}"
+        }
     }
 
     private fun row(
@@ -212,5 +250,7 @@ class MonthExport(
         val HEADER_BG = Color.rgb(0x1F, 0x6B, 0x4F)
         val BAND_BG = Color.rgb(0xF2, 0xF5, 0xF4)
         val FRIDAY_BG = Color.rgb(0xD9, 0xF0, 0xE4)
+        /** A warm yellow: plainly not the Friday green, still light enough to print. */
+        val OCCASION_BG = Color.rgb(0xFF, 0xE9, 0xA8)
     }
 }
